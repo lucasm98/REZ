@@ -1,0 +1,24 @@
+table, th, td, caption {
+    border: thin solid #a0a0a0;
+}
+
+table {
+    border-collapse: collapse;
+    margin: auto;
+    max-width: 100%;
+    width: 30%;
+}
+
+.ingredients {
+    width: 95%;
+    margin: 5px;
+}
+th, td {
+    padding: 5px;
+    font-weight: normal;
+    text-align: left;
+}
+th, caption {
+    background-color: #f1f3f4;
+    font-weight: 700;
+}
