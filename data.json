@@ -1,0 +1,31 @@
+{
+  "recipe": [
+    {
+      "id": 0,
+      "name":   "Nudeln mit Tomatensoße",
+      "time":   30,
+      "level":  1,
+      "rating": 5,
+      "ingredients":
+        [
+          ["Nudeln",500,"g"],
+          ["passierte Tomaten",500,"g"],
+          ["Zwiebeln",2,"stück"],
+          ["Knoblauch",2,"Zehen"],
+          ["Öl"],
+          ["Gewürze"]
+        ],
+      "preparation":
+        [
+          "Nudeln wie auf Packung kochen",
+          "Zwiebel und Knoblauch in kleine Würfel schneiden",
+          "Öl in eine Pfanne erhitzen",
+          "Zwiebel auf mittlere Temperatur für ca. 5 min anbraten",
+          "Knoblauch in die Pfanne geben und weitere 2 min anbraten",
+          "die passierten Tomaten dazugeben und kurz köcheln lassen",
+          "die Soße mit Salz, Pfeffer und Chilie abschmecken",
+          "Fertig"
+        ]
+    }
+  ]
+}

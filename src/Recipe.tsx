@@ -2,6 +2,7 @@ import {Ingredient} from "./Ingredient";
 
 export default class Recipe{
 
+
   constructor(
     public name: string,
     public time: number,
@@ -9,6 +10,7 @@ export default class Recipe{
     public rating: number,
     public ingredients: Ingredient[],
     public preparation: string[],
+    public id?:number,
   ) {
       this.name = name;
       this.time = time;
@@ -16,5 +18,6 @@ export default class Recipe{
       this.rating = rating;
       this.ingredients = ingredients;
       this.preparation = preparation;
+      this.id = id;
   }
 }
