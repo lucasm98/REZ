@@ -8,12 +8,32 @@
       "rating": 5,
       "ingredients":
         [
-          ["Nudeln",500,"g"],
-          ["passierte Tomaten",500,"g"],
-          ["Zwiebeln",2,"stück"],
-          ["Knoblauch",2,"Zehen"],
-          ["Öl"],
-          ["Gewürze"]
+          {
+            "name":"Nudeln",
+            "amount":500,
+            "unit":"g"
+          },
+          {
+            "name":"passierte Tomaten",
+            "amount":500,
+            "unit":"g"
+          },
+          {
+            "name":"Zwiebeln",
+            "amount":2,
+            "unit":"stück"
+          },
+          {
+            "name":"Knoblauch",
+            "amount":2,
+            "unit":"Zehen"
+          },
+          {
+            "name":"Öl"
+          },
+          {
+            "name":"Gewürze"
+          }
         ],
       "preparation":
         [

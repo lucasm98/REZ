@@ -2,7 +2,6 @@ import {Ingredient} from "./Ingredient";
 
 export default class Recipe{
 
-
   constructor(
     public name: string,
     public time: number,
