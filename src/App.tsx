@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
 
-import Recipe from "./Recipe";
+import RecipeView from "./Recipe.View";
 
 function App() {
   return (
     <div className="App">
-      <Recipe />
+      <RecipeView />
     </div>
   );
 }
