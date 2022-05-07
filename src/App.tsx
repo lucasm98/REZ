@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 
 import axios from "axios";
-import Recipe2, {RecipeData} from "./Recipe2";
+import Recipe from "./Recipe";
+import {RecipeData} from "./interface";
 
 function App() {
   const [recipeState, setRecipeState] = useState<RecipeData[]>( []);
@@ -21,7 +22,7 @@ function App() {
     console.log(recipeState);
     if(recipeState !== null && recipeState[0] !== undefined) {
       return (
-         <Recipe2
+         <Recipe
           name={recipeState[0].name}
           time={recipeState[0].time}
           level={recipeState[0].level}

@@ -1,8 +1,8 @@
 import React from "react";
-import Recipe from "./Recipe";
+import {RecipeData} from "./interface";
 
 interface props {
-  recipes: Recipe[];
+  recipes: RecipeData[];
 }
 
 export function RecipeBook({recipes}: props) {
