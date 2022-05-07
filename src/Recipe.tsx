@@ -2,6 +2,7 @@ import React from "react";
 import './Recipe.css';
 import {RecipeData} from "./interface";
 
+
 const Recipe = (recipeData: RecipeData) => {
 
   function renderIngredients(): JSX.Element[] {
