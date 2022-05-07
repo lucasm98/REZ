@@ -46,7 +46,7 @@ export default function RecipeCard(recipeData: RecipeData) {
       <CardContent sx={{display: "flex"}}>
         <Box sx={{ display: 'flex', flexDirection: 'column',margin:"auto"}}>
           <Typography variant="body1" paragraph>
-            Dauer: {recipeData.time}
+            Dauer: {recipeData.time} min
           </Typography>
           <Typography variant={"body1"} paragraph>
             Schwierigkeit: {recipeData.level}

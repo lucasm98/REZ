@@ -71,6 +71,49 @@
         "mit Honiglöffel umrühren",
         "Genießen"
       ]
+    },
+    {
+      "id": 2,
+      "name":   "Bier",
+      "time":   30240,
+      "level":  3,
+      "rating": 5,
+      "ingredients":
+      [
+        {
+          "name":"Wasser",
+          "amount": 33,
+          "unit":"l"
+        },
+        {
+          "name": "Pilsner Malz",
+          "amount": 4.25,
+          "unit": "kg"
+        },
+        {
+          "name": "Maisflocken",
+          "amount": 1,
+          "unit": "kg"
+        },
+        {
+          "name": "Lotus, ",
+          "amount": 20,
+          "unit": "g"
+        },
+        {
+          "name": "Trockenhefe(Fermentis SafAle K-97)"
+        }
+      ],
+      "preparation":
+      [
+        "MAISCHPLAN",
+        "Einmaischen bei 65 °C",
+        "Kombirast bei 65 °C für 60 min, wenn Jodnormal weiter zu",
+        "Abmaischen 78 °C für 1 min",
+        "HOPFENGABEN",
+        "Lotus 5g bei 60 min",
+        "Lotus 15g bei 5 min"
+      ]
     }
   ]
 }
