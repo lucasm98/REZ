@@ -86,7 +86,7 @@ export default function RecipeForm() {
   function renderIngredients() {
     return(
       ingredients.map((ingredient, index:number)=>(
-        <ListItem key={index}>
+        <ListItem key={index} >
           <TextField
             type="text"
             label="Name"
@@ -170,7 +170,8 @@ export default function RecipeForm() {
           <TextField
             id="name"
             label="Name"
-            variant="standard" />
+            variant="standard"
+          />
           <TextField
             id="time"
             label="Zeit"
@@ -185,18 +186,22 @@ export default function RecipeForm() {
               },
             }}
           />
-          <Slider
-            aria-label="level"
-            defaultValue={0}
-            step={1}
-            marks={levelMarks}
-            min={0}
-            max={2}
-            sx={{width:200}}
-            track={false}
-          />
-          <Box >
-            <Typography component="legend">Bewertung</Typography>
+          <Grid item>
+            <Typography>Aufwand</Typography>
+            <Slider
+              aria-label="level"
+              defaultValue={0}
+              step={1}
+              marks={levelMarks}
+              min={0}
+              max={2}
+              sx={{width:200, margin:"auto"}}
+              track={false}
+            />
+          </Grid>
+
+          <Grid item sx={{marginTop:"35px"}}>
+            <Typography>Bewertung</Typography>
             <StyledRating
               name="rating"
               defaultValue={2}
@@ -205,10 +210,10 @@ export default function RecipeForm() {
               emptyIcon={<LocalDiningIcon fontSize="inherit" />}
               sx={{magin:'auto'}}
             />
-          </Box>
-          <Box>
+          </Grid>
+          <Grid item sx={{marginTop:"25px"}}>
             <List>
-              <ListSubheader>Zutaten</ListSubheader>
+              <Typography >Zutaten</Typography>
               {renderIngredients()}
               <ListItem>
                 <Button
@@ -219,10 +224,10 @@ export default function RecipeForm() {
                 </Button>
               </ListItem>
             </List>
-          </Box>
-          <Box>
+          </Grid>
+          <Grid item sx={{marginTop:"25px"}}>
             <List>
-              <ListSubheader>Zubereitung</ListSubheader>
+              <Typography >Zubereitung</Typography>
               {renderPreparation()}
               <ListItem>
                 <Button
@@ -233,7 +238,7 @@ export default function RecipeForm() {
                 </Button>
               </ListItem>
             </List>
-          </Box>
+          </Grid>
         </Grid>
       </Box>
     </>
