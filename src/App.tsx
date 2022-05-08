@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 
 import axios from "axios";
-import Recipe from "./Recipe";
-import {RecipeBook} from "./RecipeBook";
+import Recipe from "./Recipe/Recipe";
+import {RecipeBook} from "./RecipeBook/RecipeBook";
 import {RecipeData} from "./interface";
 import {Route, Routes} from "react-router-dom";
+import PrimarySearchAppBar from "./Nav";
 
 function App() {
   const [recipeState, setRecipeState] = useState<RecipeData[]>( []);
@@ -38,6 +39,7 @@ function App() {
 
   return (
     <div className="App">
+      <PrimarySearchAppBar/>
       <Routes>
         <Route path="/" element={renderRecipe()} />
         <Route path="/book" element={<RecipeBook recipes={recipeState}/>} />

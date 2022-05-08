@@ -1,5 +1,5 @@
 import React from "react";
-import {RecipeData} from "./interface";
+import {RecipeData} from "../interface";
 import {Grid, Card} from "@mui/material";
 import RecipeCard from "./RecipeCard";
 
