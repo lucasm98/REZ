@@ -16,8 +16,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import {useNavigate} from "react-router-dom";
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import BookmarksIcon from '@mui/icons-material/Bookmarks';
-import {grey} from "@mui/material/colors";
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,7 +58,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function TopAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -159,8 +158,8 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: grey}} >
-      <AppBar position="static">
+    <Box sx={{ flexGrow: 1}} >
+      <AppBar position="static" >
         <Toolbar>
           <Typography
             variant="h6"
@@ -191,7 +190,7 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="go to save Recipes" color="inherit" href="/saved">
-              <BookmarksIcon />
+              <MenuBookIcon />
             </IconButton>
             <IconButton
               size="large"

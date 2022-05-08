@@ -1,6 +1,6 @@
 import React from "react";
 
-interface Ingredient{
+export interface Ingredient{
   name: string,
   amount?: number,
   unit?: string,

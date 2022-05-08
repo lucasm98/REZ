@@ -6,7 +6,8 @@ import Recipe from "./Recipe/Recipe";
 import {RecipeBook} from "./RecipeBook/RecipeBook";
 import {RecipeData} from "./interface";
 import {Route, Routes} from "react-router-dom";
-import PrimarySearchAppBar from "./Nav";
+import TopAppBar from "./Nav";
+import RecipeForm from "./RecipeForm";
 
 function App() {
   const [recipeState, setRecipeState] = useState<RecipeData[]>( []);
@@ -39,10 +40,13 @@ function App() {
 
   return (
     <div className="App">
-      <PrimarySearchAppBar/>
+      <TopAppBar/>
       <Routes>
         <Route path="/" element={renderRecipe()} />
-        <Route path="/book" element={<RecipeBook recipes={recipeState}/>} />
+        <Route path="/book"   element={<RecipeBook recipes={recipeState}/>} />
+        <Route path="/saved"  element={<RecipeBook recipes={recipeState}/>} />
+        <Route path="/add"    element={<RecipeForm/>} />
+        <Route path="*" element={renderRecipe()} />
       </Routes>
     </div>
   );
