@@ -2,62 +2,59 @@
   "recipe": [
     {
       "id": 0,
-      "name":   "Nudeln mit Tomatensoße",
-      "time":   30,
-      "level":  1,
+      "name": "Nudeln mit Tomatensoße",
+      "time": 30,
+      "level": 1,
       "rating": 5,
-      "ingredients":
-        [
-          {
-            "name":"Nudeln",
-            "amount":500,
-            "unit":"g"
-          },
-          {
-            "name":"passierte Tomaten",
-            "amount":500,
-            "unit":"g"
-          },
-          {
-            "name":"Zwiebeln",
-            "amount":2
-          },
-          {
-            "name":"Knoblauch",
-            "amount":2,
-            "unit":"Zehen"
-          },
-          {
-            "name":"Öl"
-          },
-          {
-            "name":"Gewürze"
-          }
-        ],
-      "preparation":
-        [
-          "Nudeln wie auf Packung kochen",
-          "Zwiebel und Knoblauch in kleine Würfel schneiden",
-          "Öl in eine Pfanne erhitzen",
-          "Zwiebel auf mittlere Temperatur für ca. 5 min anbraten",
-          "Knoblauch in die Pfanne geben und weitere 2 min anbraten",
-          "die passierten Tomaten dazugeben und kurz köcheln lassen",
-          "die Soße mit Salz, Pfeffer und Chilie abschmecken",
-          "Fertig"
-        ]
+      "ingredients": [
+        {
+          "name": "Nudeln",
+          "amount": 500,
+          "unit": "g"
+        },
+        {
+          "name": "passierte Tomaten",
+          "amount": 500,
+          "unit": "g"
+        },
+        {
+          "name": "Zwiebeln",
+          "amount": 2
+        },
+        {
+          "name": "Knoblauch",
+          "amount": 2,
+          "unit": "Zehen"
+        },
+        {
+          "name": "Öl"
+        },
+        {
+          "name": "Gewürze"
+        }
+      ],
+      "preparation": [
+        "Nudeln wie auf Packung kochen",
+        "Zwiebel und Knoblauch in kleine Würfel schneiden",
+        "Öl in eine Pfanne erhitzen",
+        "Zwiebel auf mittlere Temperatur für ca. 5 min anbraten",
+        "Knoblauch in die Pfanne geben und weitere 2 min anbraten",
+        "die passierten Tomaten dazugeben und kurz köcheln lassen",
+        "die Soße mit Salz, Pfeffer und Chilie abschmecken",
+        "Fertig"
+      ]
     },
     {
       "id": 1,
-      "name":   "Heiße Milch",
-      "time":   3,
-      "level":  1,
+      "name": "Heiße Milch",
+      "time": 3,
+      "level": 1,
       "rating": 5,
-      "ingredients":
-      [
+      "ingredients": [
         {
-          "name":"Milch",
-          "amount":200,
-          "unit":"ml"
+          "name": "Milch",
+          "amount": 200,
+          "unit": "ml"
         },
         {
           "name": "Honig",
@@ -65,8 +62,7 @@
           "unit": "Löffel"
         }
       ],
-      "preparation":
-      [
+      "preparation": [
         "Milch erwärmen",
         "mit Honiglöffel umrühren",
         "Genießen"
@@ -74,16 +70,15 @@
     },
     {
       "id": 2,
-      "name":   "Bier",
-      "time":   30240,
-      "level":  3,
+      "name": "Bier",
+      "time": 30240,
+      "level": 3,
       "rating": 5,
-      "ingredients":
-      [
+      "ingredients": [
         {
-          "name":"Wasser",
+          "name": "Wasser",
           "amount": 33,
-          "unit":"l"
+          "unit": "l"
         },
         {
           "name": "Pilsner Malz",
@@ -104,8 +99,7 @@
           "name": "Trockenhefe(Fermentis SafAle K-97)"
         }
       ],
-      "preparation":
-      [
+      "preparation": [
         "MAISCHPLAN",
         "Einmaischen bei 65 °C",
         "Kombirast bei 65 °C für 60 min, wenn Jodnormal weiter zu",
@@ -114,6 +108,29 @@
         "Lotus 5g bei 60 min",
         "Lotus 15g bei 5 min"
       ]
+    },
+    {
+      "name": "Reis",
+      "time": "15",
+      "level": "",
+      "rating": "4",
+      "ingredients": [
+        {
+          "name": "Reis",
+          "amount": "500",
+          "unit": "g"
+        },
+        {
+          "name": "Wasser",
+          "amount": "1",
+          "unit": "l"
+        }
+      ],
+      "preparation": [
+        "Resi und wasser in einen Topf geben und 15 min köcheln lassen.",
+        " Wenn das Wasser verkocht ist, ist der Reis fertig!"
+      ],
+      "id": 3
     }
   ]
 }

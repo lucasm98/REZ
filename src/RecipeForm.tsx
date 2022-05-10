@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import React, { useState} from "react";
 import {
   Box,
   Button, Grid,
   InputAdornment,
   List,
   ListItem,
-  ListSubheader,
   Rating,
   Slider,
   TextField,
@@ -15,6 +14,8 @@ import {styled} from "@mui/material/styles";
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
@@ -25,9 +26,17 @@ const StyledRating = styled(Rating)({
   },
 });
 
+interface InputIngredient {
+  name : string,
+  amount?: string,
+  unit?:string,
+}
+
 export default function RecipeForm() {
-  const [ingredients, setIngredients] = useState([{name:"",amount:"",unit:""}]);
+  const [ingredients, setIngredients] = useState<InputIngredient[]>([{name:"",amount:"",unit:""}]);
   const [preparations,setPreparations] = useState<string[]>([""]);
+  const [recipeData,setRecipeData] = useState({name:"",time:"",level:"",rating:""});
+  const navigate = useNavigate();
 
   const levelMarks = [
     {
@@ -130,10 +139,12 @@ export default function RecipeForm() {
         list[index].name = value;
         break;
       case "amount":
-        list[index].amount = value;
+        if(value === "")  list[index].amount = undefined;
+        else list[index].amount = value;
         break;
       case "unit":
-        list[index].unit = value;
+        if(value === "") list[index].unit = undefined;
+        else list[index].unit = value;
         break;
     }
     setIngredients(list);
@@ -149,6 +160,51 @@ export default function RecipeForm() {
     setIngredients([...ingredients, { name: "", amount: "", unit: "" }]);
   }
 
+  const handelSubmit = (event:any) => {
+    event.preventDefault();
+    const data = {
+      "name":recipeData.name,
+      "time":recipeData.time,
+      "level":recipeData.level,
+      "rating":recipeData.rating,
+      "ingredients":ingredients,
+      "preparation":preparations
+    };
+    axios.post('http://localhost:3001/recipe', data,{
+      headers: {
+        'content-type': 'application/json',
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    navigate("/saved");
+  }
+
+  const handelChangeOnInput = (e:any) => {
+    const {name , value} = e.target;
+    const newData = recipeData;
+
+    switch (name){
+      case "name":
+        newData.name=value;
+        break;
+      case "time":
+        newData.time=value;
+        break;
+      case "level":
+        newData.level=value;
+        break;
+      case "rating":
+        newData.rating=value;
+        break;
+    }
+    setRecipeData(newData);
+  }
+
   return(
     <>
       <Box
@@ -162,18 +218,20 @@ export default function RecipeForm() {
         }}
         noValidate
         autoComplete="off"
+        onSubmit={handelSubmit}
       >
         <Grid
           container
           direction="column"
         >
           <TextField
-            id="name"
             label="Name"
+            name="name"
             variant="standard"
+            onChange={(e) => handelChangeOnInput(e)}
           />
           <TextField
-            id="time"
+            name="time"
             label="Zeit"
             type="text"
             variant="standard"
@@ -185,10 +243,12 @@ export default function RecipeForm() {
                 pattern: "[0-9]*"
               },
             }}
+            onChange={(e) => handelChangeOnInput(e)}
           />
           <Grid item>
             <Typography>Aufwand</Typography>
             <Slider
+              name="level"
               aria-label="level"
               defaultValue={0}
               step={1}
@@ -197,6 +257,7 @@ export default function RecipeForm() {
               max={2}
               sx={{width:200, margin:"auto"}}
               track={false}
+              onChange={(e) => handelChangeOnInput(e)}
             />
           </Grid>
 
@@ -209,6 +270,7 @@ export default function RecipeForm() {
               icon={<LocalDiningIcon fontSize="inherit" />}
               emptyIcon={<LocalDiningIcon fontSize="inherit" />}
               sx={{magin:'auto'}}
+              onChange={(e) => handelChangeOnInput(e)}
             />
           </Grid>
           <Grid item sx={{marginTop:"25px"}}>
@@ -238,6 +300,16 @@ export default function RecipeForm() {
                 </Button>
               </ListItem>
             </List>
+          </Grid>
+          <Grid item>
+            <Button
+              type="submit"
+              name="Speichern"
+              variant="contained"
+              size="large"
+            >
+              Speichern
+            </Button>
           </Grid>
         </Grid>
       </Box>
