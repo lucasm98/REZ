@@ -131,6 +131,68 @@
         " Wenn das Wasser verkocht ist, ist der Reis fertig!"
       ],
       "id": 3
+    },
+    {
+      "name": "Käse Lauch Suppe",
+      "time": "30",
+      "level": 1,
+      "rating": "5",
+      "ingredients": [
+        {
+          "name": "Hackfleisch",
+          "amount": "500",
+          "unit": "g"
+        },
+        {
+          "name": "Lauch",
+          "amount": "3",
+          "unit": "Stangen"
+        },
+        {
+          "name": "Schmelzkäse",
+          "amount": "250",
+          "unit": "g"
+        },
+        {
+          "name": "Brühe",
+          "amount": "500",
+          "unit": "ml"
+        },
+        {
+          "name": "Knoblauch",
+          "amount": "5",
+          "unit": "Zehen"
+        },
+        {
+          "name": "Schmand",
+          "amount": "200",
+          "unit": "g"
+        }
+      ],
+      "preparation": [
+        "Hackfleisch, zwieben, knoblauch und lauch anbraten",
+        "Brühe, Käse und den Schmand Dazugeben",
+        "5 min köcheln lassen",
+        "Abschmecken und Fertig!"
+      ],
+      "id": 4
+    },
+    {
+      "name": "mem",
+      "time": "",
+      "level": "",
+      "rating": "",
+      "ingredients": [
+        {
+          "name": "",
+          "amount": "",
+          "unit": ""
+        }
+      ],
+      "preparation": [
+        ""
+      ],
+      "id": 5
     }
   ]
 }

@@ -16,6 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {RecipeData} from "./interface";
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {

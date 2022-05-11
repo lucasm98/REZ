@@ -1,38 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
 
-import axios from "axios";
 import Recipe from "./Recipe/Recipe";
 import {RecipeBook} from "./RecipeBook/RecipeBook";
-import {RecipeData} from "./interface";
 import {Route, Routes} from "react-router-dom";
 import TopAppBar from "./Nav";
 import RecipeForm from "./RecipeForm";
+import useRecipe from "./useRecipe";
 
 function App() {
-  const [recipeState, setRecipeState] = useState<RecipeData[]>( []);
-  //const [test,test2] = useState(axios.get('http://localhost:3001/recipe'));
+  const [recipes,addRecipe] = useRecipe();
 
-  useEffect(() => {
-    let recipesData:any = null;
-    const fetchData = async () => {
-      const { data } = await axios.get('http://localhost:3001/recipe');
-      recipesData = data;
-    };
-    fetchData().then(()=>( setRecipeState(recipesData)));
-    }, []
-  );
 
   function renderRecipe() {
-    if(recipeState !== null && recipeState[0] !== undefined) {
+    if(recipes !== null && recipes[0] !== undefined) {
       return (
          <Recipe
-          name={recipeState[0].name}
-          time={recipeState[0].time}
-          level={recipeState[0].level}
-          rating={recipeState[0].rating}
-          ingredients={recipeState[0].ingredients}
-          preparation={recipeState[0].preparation}
+          name={recipes[0].name}
+          time={recipes[0].time}
+          level={recipes[0].level}
+          rating={recipes[0].rating}
+          ingredients={recipes[0].ingredients}
+          preparation={recipes[0].preparation}
         />
       );
     }
@@ -42,11 +31,11 @@ function App() {
     <div className="App">
       <TopAppBar/>
       <Routes>
-        <Route path="/" element={renderRecipe()} />
-        <Route path="/book"   element={<RecipeBook recipes={recipeState}/>} />
-        <Route path="/saved"  element={<RecipeBook recipes={recipeState}/>} />
+        <Route path="/"       element={renderRecipe()} />
+        <Route path="/book"   element={<RecipeBook recipes={recipes}/>} />
+        <Route path="/saved"  element={<RecipeBook recipes={recipes}/>} />
         <Route path="/add"    element={<RecipeForm/>} />
-        <Route path="*" element={renderRecipe()} />
+        <Route path="*"       element={renderRecipe()} />
       </Routes>
     </div>
   );
