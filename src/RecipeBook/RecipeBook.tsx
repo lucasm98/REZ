@@ -1,13 +1,14 @@
 import React from "react";
 import {RecipeData} from "../interface";
-import {Grid, Card} from "@mui/material";
+import {Grid} from "@mui/material";
 import RecipeCard from "./RecipeCard";
 
 interface props {
   recipes: RecipeData[];
+  deleteRecipe: (id:number)=>void;
 }
 
-export function RecipeBook({recipes}: props) {
+export function RecipeBook({recipes, deleteRecipe}: props) {
 
   return (
     <>
@@ -22,8 +23,8 @@ export function RecipeBook({recipes}: props) {
         item
       >
         {recipes.map((recipe, index) => (
-          <Grid item md={6}>
-            <RecipeCard {...recipes[index]}/>
+          <Grid item md={6} key={index}>
+            <RecipeCard recipeData={recipes[index]}  deleteRecipe={deleteRecipe}/>
           </Grid>
         ))}
       </Grid>

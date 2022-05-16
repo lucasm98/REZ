@@ -14,9 +14,8 @@ import {styled} from "@mui/material/styles";
 import LocalDiningIcon from '@mui/icons-material/LocalDining';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {RecipeData} from "./interface";
+import {Ingredient, RecipeData} from "./interface";
 
 const StyledRating = styled(Rating)({
   '& .MuiRating-iconFilled': {
@@ -33,8 +32,12 @@ interface InputIngredient {
   unit?:string,
 }
 
-export default function RecipeForm() {
-  const [ingredients, setIngredients] = useState<InputIngredient[]>([{name:"",amount:"",unit:""}]);
+interface Props {
+  addRecipe: (recipe:RecipeData)=> void,
+}
+
+export default function RecipeForm({addRecipe}: Props) {
+  const [inputIngredients, setInputIngredients] = useState<InputIngredient[]>([{name:"",amount:"",unit:""}]);
   const [preparations,setPreparations] = useState<string[]>([""]);
   const [recipeData,setRecipeData] = useState({name:"",time:"",level:"",rating:""});
   const navigate = useNavigate();
@@ -95,7 +98,7 @@ export default function RecipeForm() {
 
   function renderIngredients() {
     return(
-      ingredients.map((ingredient, index:number)=>(
+      inputIngredients.map((ingredient, index:number)=>(
         <ListItem key={index} >
           <TextField
             type="text"
@@ -134,7 +137,7 @@ export default function RecipeForm() {
 
   const handleIngredientInputChange = (e:any, index:any) => {
     const { name, value } = e.target;
-    const list = [...ingredients];
+    const list = [...inputIngredients];
     switch (name){
       case "name":
         list[index].name = value;
@@ -148,40 +151,40 @@ export default function RecipeForm() {
         else list[index].unit = value;
         break;
     }
-    setIngredients(list);
+    setInputIngredients(list);
   };
 
   const handleIngredientRemoveClick = (index:number) => {
-    const list = [...ingredients];
+    const list = [...inputIngredients];
     list.splice(index, 1);
-    setIngredients(list);
+    setInputIngredients(list);
   };
 
   const handleIngredientAddClick = () => {
-    setIngredients([...ingredients, { name: "", amount: "", unit: "" }]);
+    setInputIngredients([...inputIngredients, { name: "", amount: "", unit: "" }]);
   }
 
   const handelSubmit = (event:any) => {
     event.preventDefault();
-    const data = {
+    const ingredients:Ingredient[] = inputIngredients.map((inputIngredient,index):Ingredient=>{
+      const ingredient:Ingredient =
+      {
+        "name":     inputIngredient.name,
+        "amount":   inputIngredient.amount==="" ? undefined :   parseInt(inputIngredient.amount as string),
+        "unit":     inputIngredient.unit  ==="" ? undefined :   inputIngredient.unit,
+      };
+      return ingredient;
+    });
+
+    const data:RecipeData = {
       "name":recipeData.name,
-      "time":recipeData.time,
-      "level":recipeData.level,
-      "rating":recipeData.rating,
+      "time": parseInt(recipeData.time),
+      "level":parseInt(recipeData.level),
+      "rating":parseInt(recipeData.rating),
       "ingredients":ingredients,
       "preparation":preparations
     };
-    axios.post('http://localhost:3001/recipe', data,{
-      headers: {
-        'content-type': 'application/json',
-      }
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    addRecipe(data);
     navigate("/saved");
   }
 

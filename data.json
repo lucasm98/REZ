@@ -178,15 +178,13 @@
       "id": 4
     },
     {
-      "name": "mem",
-      "time": "",
-      "level": "",
-      "rating": "",
+      "name": "test_neu",
+      "time": null,
+      "level": null,
+      "rating": null,
       "ingredients": [
         {
-          "name": "",
-          "amount": "",
-          "unit": ""
+          "name": ""
         }
       ],
       "preparation": [

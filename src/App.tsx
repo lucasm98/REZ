@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
 
 import Recipe from "./Recipe/Recipe";
@@ -9,7 +9,7 @@ import RecipeForm from "./RecipeForm";
 import useRecipe from "./useRecipe";
 
 function App() {
-  const [recipes,addRecipe] = useRecipe();
+  const [recipes,addRecipe,deleteRecipe] = useRecipe();
 
 
   function renderRecipe() {
@@ -32,9 +32,9 @@ function App() {
       <TopAppBar/>
       <Routes>
         <Route path="/"       element={renderRecipe()} />
-        <Route path="/book"   element={<RecipeBook recipes={recipes}/>} />
-        <Route path="/saved"  element={<RecipeBook recipes={recipes}/>} />
-        <Route path="/add"    element={<RecipeForm/>} />
+        <Route path="/book"   element={<RecipeBook recipes={recipes} deleteRecipe={deleteRecipe}/>} />
+        <Route path="/saved"  element={<RecipeBook recipes={recipes} deleteRecipe={deleteRecipe}/>} />
+        <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe}/>} />
         <Route path="*"       element={renderRecipe()} />
       </Routes>
     </div>
