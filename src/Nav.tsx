@@ -15,6 +15,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import HomeIcon from '@mui/icons-material/Home';
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
+import {useEffect} from "react";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,10 +58,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 interface Props {
+  searchInput: string;
   setSearchInput: (input:string)=> void;
 }
 
-export default function TopAppBar({setSearchInput}:Props) {
+export default function TopAppBar({setSearchInput,searchInput}:Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =    React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -179,7 +181,7 @@ export default function TopAppBar({setSearchInput}:Props) {
       <AppBar position="static" >
         <Toolbar>
           <Button
-            onClick={()=> navigate("/")}
+            onClick={()=> {setSearchInput("");navigate("/");}}
             sx={{
               mr: 1,
               pl: 3,
@@ -203,6 +205,8 @@ export default function TopAppBar({setSearchInput}:Props) {
               placeholder="Suchen…"
               inputProps={{ 'aria-label': 'search' }}
               onChange={handelSearchInput}
+              onKeyDown={handelSearchInput}
+              value={searchInput}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />

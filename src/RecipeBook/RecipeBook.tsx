@@ -1,14 +1,23 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {RecipeData} from "../interface";
 import {Grid} from "@mui/material";
 import RecipeCard from "./RecipeCard";
+import {useParams} from "react-router-dom";
 
 interface props {
   recipes: RecipeData[];
+  searchInput: string;
+  setSearchInput: (input:string)=> void;
   deleteRecipe: (id:number)=>void;
 }
 
-export function RecipeBook({recipes, deleteRecipe}: props) {
+export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput}: props) {
+  const input = useParams();
+
+  useEffect( ()=> {
+      if(input.input !== searchInput && searchInput === "") setSearchInput(input.input!.toString());
+    },[input]
+  );
 
   return (
     <>
