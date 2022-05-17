@@ -16,6 +16,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import HomeIcon from '@mui/icons-material/Home';
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 
@@ -122,25 +123,35 @@ export default function TopAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={()=> navigate("/")}>
         <IconButton
           size="large"
-          aria-label="show 17 new notifications"
+          aria-label="go to save Recipes"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
+          <HomeIcon />
         </IconButton>
-        <p>Notifications</p>
+        <p>Startseite</p>
+      </MenuItem>
+      <MenuItem onClick={()=> navigate("/book")}>
+        <IconButton
+          size="large"
+          aria-label="go to save Recipes"
+          color="inherit"
+        >
+          <MenuBookIcon />
+        </IconButton>
+        <p>Kochbuch</p>
+      </MenuItem>
+      <MenuItem onClick={()=> navigate("/add")} >
+        <IconButton
+          size="large"
+          aria-label="add Recipe"
+          color="inherit"
+        >
+          <AddBoxIcon />
+        </IconButton>
+        <p>Rezept Hinzufügen</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -152,7 +163,7 @@ export default function TopAppBar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Profil</p>
       </MenuItem>
     </Menu>
   );
