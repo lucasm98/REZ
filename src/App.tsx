@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import './App.css';
 
 import {RecipeBook} from "./RecipeBook/RecipeBook";
@@ -15,7 +15,7 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
 
   function getFilteredRecipes(filter:string):RecipeData[] {
-    return recipes.filter((recipe:RecipeData, index:number)=>(recipe.name.toLowerCase().includes(filter)));
+    return recipes.filter((recipe:RecipeData, index:number)=>(recipe.name.toLowerCase().includes(filter.toLowerCase())));
   }
 
   return (

@@ -15,7 +15,7 @@ export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput}: 
   const input = useParams();
 
   useEffect( ()=> {
-      if(input.input !== searchInput && searchInput === "") setSearchInput(input.input!.toString());
+      if(input.input !== searchInput && searchInput === "" && input.input !== undefined) setSearchInput(input.input!.toString());
     },[input]
   );
 

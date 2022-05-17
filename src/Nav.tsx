@@ -15,7 +15,6 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import HomeIcon from '@mui/icons-material/Home';
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
-import {useEffect} from "react";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -71,8 +70,10 @@ export default function TopAppBar({setSearchInput,searchInput}:Props) {
 
   const handelSearchInput = (e: any):void => {
     const lowerCase = e.target.value.toLowerCase();
-    setSearchInput(lowerCase);
-    navigate("/search/"+lowerCase);
+    const value =  e.target.value;
+    console.log(value);
+    setSearchInput(value);
+    navigate("/search/"+value);
   }
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
