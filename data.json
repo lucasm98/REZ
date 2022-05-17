@@ -176,21 +176,6 @@
         "Abschmecken und Fertig!"
       ],
       "id": 4
-    },
-    {
-      "name": "test_neu",
-      "time": null,
-      "level": null,
-      "rating": null,
-      "ingredients": [
-        {
-          "name": ""
-        }
-      ],
-      "preparation": [
-        ""
-      ],
-      "id": 5
     }
   ]
 }

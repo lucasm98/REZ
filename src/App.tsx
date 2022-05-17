@@ -7,6 +7,8 @@ import {Route, Routes} from "react-router-dom";
 import TopAppBar from "./Nav";
 import RecipeForm from "./RecipeForm";
 import useRecipe from "./useRecipe";
+import Main from './Main';
+import {Container} from "@mui/material";
 
 function App() {
   const [recipes,addRecipe,deleteRecipe] = useRecipe();
@@ -30,13 +32,15 @@ function App() {
   return (
     <div className="App">
       <TopAppBar/>
-      <Routes>
-        <Route path="/"       element={renderRecipe()} />
-        <Route path="/book"   element={<RecipeBook recipes={recipes} deleteRecipe={deleteRecipe}/>} />
-        <Route path="/saved"  element={<RecipeBook recipes={recipes} deleteRecipe={deleteRecipe}/>} />
-        <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe}/>} />
-        <Route path="*"       element={renderRecipe()} />
-      </Routes>
+      <Container sx={{marginTop : "20px",}}  maxWidth="xl" >
+        <Routes>
+          <Route path="/"       element={<Main />} />
+          <Route path="/book"   element={<RecipeBook recipes={recipes} deleteRecipe={deleteRecipe}/>} />
+          <Route path="/saved"  element={<RecipeBook recipes={recipes} deleteRecipe={deleteRecipe}/>} />
+          <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe}/>} />
+          <Route path="*"       element={renderRecipe()} />
+        </Routes>
+      </Container>
     </div>
   );
 }

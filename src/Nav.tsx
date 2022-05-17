@@ -14,9 +14,10 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import {useNavigate} from "react-router-dom";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import {useNavigate} from "react-router-dom";
+import {Button} from "@mui/material";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -60,11 +61,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function TopAppBar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
-
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =    React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const navigate = useNavigate();
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -161,23 +161,23 @@ export default function TopAppBar() {
     <Box sx={{ flexGrow: 1}} >
       <AppBar position="static" >
         <Toolbar>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
+          <Button
+            onClick={()=> navigate("/")}
             sx={{
-              mr: 2,
+              mr: 1,
+              pl: 3,
+              pr: 3,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
+              fontSize: 24,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
             REZ
-          </Typography>
+          </Button>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
@@ -189,14 +189,19 @@ export default function TopAppBar() {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="go to save Recipes" color="inherit" href="/saved">
+            <IconButton
+              size="large"
+              aria-label="go to save Recipes"
+              color="inherit"
+              onClick={()=> navigate("/book")}
+            >
               <MenuBookIcon />
             </IconButton>
             <IconButton
               size="large"
               aria-label="add Recipe"
               color="inherit"
-              href="/add"
+              onClick={()=> navigate("/add")}
             >
               <AddBoxIcon />
             </IconButton>
