@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import {UserData} from "../interface";
 import axios from "axios";
 
-export default function useUser():[boolean,UserData[],UserData,(name:string,password:string) => boolean, () => void] {
-  const [user,setUser] = useState<UserData[]>([]);
-  const [account,setAccount] = useState<UserData>({name:"",username:"",password:"",email:""});
+export default function useUser():[boolean,(name:string,password:string) => boolean, () => void,UserData[],UserData,any] {
+  const [users,setUsers] = useState<UserData[]>([]);
+  const [user,setUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
 
 
@@ -14,21 +14,21 @@ export default function useUser():[boolean,UserData[],UserData,(name:string,pass
         const { data } = await axios.get('http://localhost:3001/user');
         userData = data;
       };
-      fetchData().then(()=>( setUser(userData)) );
+      fetchData().then(()=>( setUsers(userData)) );
     }, []
   );
 
   const loggIn = (name:string,password:string):boolean => {
-    let onlyOneUser:boolean = false;
-    user.forEach((user:UserData, index:number)=> {
-      if(user.username === name && user.password===password && !onlyOneUser){
-        onlyOneUser = true;
+    let firstUserFound:boolean = false;
+    users.forEach((user:UserData, index:number)=> {
+      if(user.username === name && user.password===password && !firstUserFound){
+        firstUserFound = true;
         setIsLoggedIn(true);
-        setAccount(user);
+        setUser(user);
       }
     });
-    console.log(onlyOneUser?"Login succeeded":"Login failed");
-    return onlyOneUser;
+    console.log(firstUserFound?"Login succeeded":"Login failed");
+    return firstUserFound;
   }
 
   const loggOut = ():void => {
@@ -36,5 +36,5 @@ export default function useUser():[boolean,UserData[],UserData,(name:string,pass
     setIsLoggedIn(false);
   }
 
-  return [isLoggedIn,user,account,loggIn,loggOut];
+  return [isLoggedIn,loggIn,loggOut,users,user,setUser];
 }

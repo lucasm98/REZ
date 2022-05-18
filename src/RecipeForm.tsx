@@ -34,9 +34,10 @@ interface InputIngredient {
 
 interface Props {
   addRecipe: (recipe:RecipeData)=> void,
+  user: number;
 }
 
-export default function RecipeForm({addRecipe}: Props) {
+export default function RecipeForm({addRecipe,user}: Props) {
   const [inputIngredients, setInputIngredients] = useState<InputIngredient[]>([{name:"",amount:"",unit:""}]);
   const [preparations,setPreparations] = useState<string[]>([""]);
   const [recipeData,setRecipeData] = useState({name:"",time:"",level:"",rating:""});
@@ -181,8 +182,10 @@ export default function RecipeForm({addRecipe}: Props) {
       "time": parseInt(recipeData.time),
       "level":parseInt(recipeData.level),
       "rating":parseInt(recipeData.rating),
+      "user":user,
       "ingredients":ingredients,
-      "preparation":preparations
+      "preparation":preparations,
+      "id":-1
     };
     addRecipe(data);
     navigate("/saved");

@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {RecipeData} from "../interface";
-import {Grid} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import RecipeCard from "./RecipeCard";
 import {useParams} from "react-router-dom";
 
@@ -37,6 +37,7 @@ export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput}: 
             {!deleteRecipe && <RecipeCard recipeData={recipes[index]}  />}
           </Grid>
         ))}
+        {recipes.length === 0 && <Typography variant="h4">Keine Rezepte gefunden...</Typography>}
       </Grid>
     </>
   );

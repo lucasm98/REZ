@@ -63,7 +63,7 @@ export default function Main() {
       </Grid>
       <Grid item xs={6} md={6}>
         <Card>
-          <CardActionArea onClick={()=>navigate("/recipes")}>
+          <CardActionArea onClick={()=>navigate("/created")}>
             <CardMedia sx={{marginTop:"20px"}}>
               <ListIcon/>
             </CardMedia>

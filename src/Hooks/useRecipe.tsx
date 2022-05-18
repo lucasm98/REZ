@@ -19,7 +19,7 @@ export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:
 
   const addRecipe = async (data:RecipeData) => {
 
-    data.id=getNextFreeId();
+    if(data.id===-1) data.id = getNextFreeId();
 
     await axios.post('http://localhost:3001/recipe', data,{
       headers: {

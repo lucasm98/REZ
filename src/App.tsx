@@ -15,10 +15,19 @@ import useUser from "./Hooks/useUser";
 function App() {
   const [recipes,addRecipe,deleteRecipe] = useRecipe();
   const [searchInput, setSearchInput] = useState("");
-  const [isLoggedIn,user,account,loggIn,loggOut] = useUser();
+  const [isLoggedIn,loggIn,loggOut,users,user,setUser] = useUser();
 
   function getFilteredRecipes(filter:string):RecipeData[] {
-    return recipes.filter((recipe:RecipeData, index:number)=>(recipe.name.toLowerCase().includes(filter.toLowerCase())));
+    switch (filter) {
+      case "name":
+        return recipes.filter((recipe:RecipeData, index:number)=>(recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
+      case "user":
+        return recipes.filter((recipe:RecipeData, index:number)=>(recipe.user === user.id));
+      case "favorites":
+        return recipes.filter((recipe:RecipeData, index:number)=>(user.favorites.includes(recipe.id)));
+      default:
+        return recipes;
+    }
   }
 
   return (
@@ -31,32 +40,43 @@ function App() {
       />
       <Container sx={{marginTop : "20px",}}  maxWidth="xl" >
         <Routes>
-        <Route path="/"           element={isLoggedIn ? <Main />: <RecipeBook recipes={recipes} searchInput={searchInput} setSearchInput={setSearchInput}/>} />
-        <Route path="/recipes"    element={
-                                  <RecipeBook
-                                    recipes={recipes}
-                                    searchInput={searchInput}
-                                    setSearchInput={setSearchInput}
-                                    deleteRecipe={deleteRecipe}
-                                  />
-                                }/>
-          <Route path="/book"   element={
-                                  <RecipeBook
-                                    recipes={recipes}
-                                    searchInput={searchInput}
-                                    setSearchInput={setSearchInput}
-                                    deleteRecipe={deleteRecipe}
-                                  />
-                                 }/>
-          <Route path="/search/:input"  element={
-                                          <RecipeBook
-                                            recipes={getFilteredRecipes(searchInput)}
-                                            deleteRecipe={deleteRecipe}
-                                            searchInput={searchInput}
-                                            setSearchInput={setSearchInput}
-                                          />
-                                        }/>
-          <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe}/>} />
+          <Route path="/"
+                 element={isLoggedIn ? <Main />: <RecipeBook recipes={recipes} searchInput={searchInput} setSearchInput={setSearchInput}/>} />
+          <Route path="/recipes"
+                 element={
+                   <RecipeBook
+                     recipes={recipes}
+                     searchInput={searchInput}
+                     setSearchInput={setSearchInput}
+                   />
+                 }/>
+          <Route path="/book"
+                 element={
+                   <RecipeBook
+                     recipes={getFilteredRecipes("favorites")}
+                     searchInput={searchInput}
+                     setSearchInput={setSearchInput}
+                   />
+                 }/>
+          <Route path="/created"
+                 element={
+                   <RecipeBook
+                     recipes={getFilteredRecipes("user")}
+                     searchInput={searchInput}
+                     setSearchInput={setSearchInput}
+                     deleteRecipe={deleteRecipe}
+                   />
+                 }/>
+          <Route path="/search/:input"
+                 element={
+                   <RecipeBook
+                     recipes={getFilteredRecipes("name")}
+                     deleteRecipe={deleteRecipe}
+                     searchInput={searchInput}
+                     setSearchInput={setSearchInput}
+                   />
+                 }/>
+          <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe} user={user.id}/>} />
           <Route path="/login"  element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>} />
           <Route path="*"       element={<Navigate to="/" />} />
         </Routes>

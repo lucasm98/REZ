@@ -11,9 +11,10 @@ export interface RecipeData{
   time: number,
   level: number,
   rating: number,
+  user: number,
   ingredients: Ingredient[],
   preparation: string[],
-  id?:number,
+  id:number,
 }
 
 export interface UserData {
@@ -21,5 +22,6 @@ export interface UserData {
   username: string;
   password: string;
   email: string;
-  id?:number;
+  id:number;
+  favorites:number[];
 }
