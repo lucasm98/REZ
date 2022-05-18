@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {RecipeData} from "./interface";
+import {RecipeData} from "../interface";
 import axios from "axios";
 
 export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:number) => void] {

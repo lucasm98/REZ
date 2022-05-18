@@ -2,6 +2,8 @@ import React from "react";
 import {Card, CardActionArea, CardContent, CardMedia, Grid, Typography} from "@mui/material";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import ListIcon from '@mui/icons-material/List';
 import {useNavigate} from "react-router-dom";
 
 export default function Main() {
@@ -21,11 +23,11 @@ export default function Main() {
         <Card>
           <CardActionArea onClick={()=>navigate("/book")}>
             <CardMedia sx={{marginTop:"20px"}}>
-              <MenuBookIcon/>
+              <BookmarksIcon/>
             </CardMedia>
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
-                Kochbuch
+                Gespeicherte Rezepte
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -46,10 +48,32 @@ export default function Main() {
         </Card>
       </Grid>
       <Grid item xs={6} md={6}>
-        <Card></Card>
+        <Card>
+          <CardActionArea onClick={()=>navigate("/recipes")}>
+            <CardMedia sx={{marginTop:"20px"}}>
+              <MenuBookIcon/>
+            </CardMedia>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Alle Rezepte
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
       </Grid>
       <Grid item xs={6} md={6}>
-        <Card></Card>
+        <Card>
+          <CardActionArea onClick={()=>navigate("/recipes")}>
+            <CardMedia sx={{marginTop:"20px"}}>
+              <ListIcon/>
+            </CardMedia>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Erstellte Rezepte
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
       </Grid>
     </Grid>
   );

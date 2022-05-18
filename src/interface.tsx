@@ -15,3 +15,11 @@ export interface RecipeData{
   preparation: string[],
   id?:number,
 }
+
+export interface UserData {
+  name: string;
+  username: string;
+  password: string;
+  email: string;
+  id?:number;
+}

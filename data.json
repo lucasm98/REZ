@@ -177,5 +177,28 @@
       ],
       "id": 4
     }
+  ],
+  "user": [
+    {
+      "name": "admin",
+      "username": "admin",
+      "password": "admin",
+      "email": "test@test.de",
+      "id": 0
+    },
+    {
+      "name": "Lucas",
+      "username": "luc",
+      "password": "as",
+      "email": "test@test.de",
+      "id": 1
+    },
+    {
+      "name": "Fenja",
+      "username": "fen",
+      "password": "ja",
+      "email": "test@test.de",
+      "id": 2
+    }
   ]
 }
