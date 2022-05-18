@@ -26,7 +26,7 @@ interface ExpandMoreProps extends IconButtonProps {
 
 interface Props {
   recipeData: RecipeData;
-  deleteRecipe: (id:number)=> void;
+  deleteRecipe?: (id:number)=> void;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -77,7 +77,7 @@ export default function RecipeCard({recipeData , deleteRecipe}:Props) {
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
-        <IconButton
+        {deleteRecipe && <IconButton
           aria-label="delete recipe"
           onClick={()=>
             {
@@ -87,7 +87,7 @@ export default function RecipeCard({recipeData , deleteRecipe}:Props) {
           }
         >
           <DeleteForeverIcon />
-        </IconButton>
+        </IconButton>}
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

@@ -8,7 +8,7 @@ interface props {
   recipes: RecipeData[];
   searchInput: string;
   setSearchInput: (input:string)=> void;
-  deleteRecipe: (id:number)=>void;
+  deleteRecipe?: (id:number)=>void;
 }
 
 export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput}: props) {
@@ -33,7 +33,8 @@ export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput}: 
       >
         {recipes.map((recipe, index) => (
           <Grid item md={6} key={index}>
-            <RecipeCard recipeData={recipes[index]}  deleteRecipe={deleteRecipe}/>
+            {deleteRecipe && <RecipeCard recipeData={recipes[index]}  deleteRecipe={deleteRecipe}/>}
+            {!deleteRecipe && <RecipeCard recipeData={recipes[index]}  />}
           </Grid>
         ))}
       </Grid>

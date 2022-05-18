@@ -31,8 +31,8 @@ function App() {
       />
       <Container sx={{marginTop : "20px",}}  maxWidth="xl" >
         <Routes>
-          <Route path="/"       element={<Main />} />
-          <Route path="/recipes"   element={
+        <Route path="/"           element={isLoggedIn ? <Main />: <RecipeBook recipes={recipes} searchInput={searchInput} setSearchInput={setSearchInput}/>} />
+        <Route path="/recipes"    element={
                                   <RecipeBook
                                     recipes={recipes}
                                     searchInput={searchInput}
