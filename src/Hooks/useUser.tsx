@@ -32,6 +32,7 @@ export default function useUser():[boolean,UserData[],UserData,(name:string,pass
   }
 
   const loggOut = ():void => {
+    console.log("logged out");
     setIsLoggedIn(false);
   }
 

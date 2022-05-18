@@ -7,14 +7,14 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import {useNavigate} from "react-router-dom";
+import {Button} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import HomeIcon from '@mui/icons-material/Home';
-import {useNavigate} from "react-router-dom";
-import {Button} from "@mui/material";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,19 +59,19 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 interface Props {
   searchInput: string;
   setSearchInput: (input:string)=> void;
+  isLoggedIn:boolean;
+  loggOut:()=>void;
 }
 
-export default function TopAppBar({setSearchInput,searchInput}:Props) {
+export default function TopAppBar({setSearchInput,searchInput,isLoggedIn,loggOut}:Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =    React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const navigate = useNavigate();
 
-  const handelSearchInput = (e: any):void => {
-    const lowerCase = e.target.value.toLowerCase();
+  const handleSearchInput = (e: any):void => {
     const value =  e.target.value;
-    console.log(value);
     setSearchInput(value);
     navigate("/search/"+value);
   }
@@ -94,7 +94,7 @@ export default function TopAppBar({setSearchInput,searchInput}:Props) {
   };
 
   const menuId = 'primary-search-account-menu';
-  const renderMenu = (
+  const renderMenuLoggedIn = (
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
@@ -110,10 +110,54 @@ export default function TopAppBar({setSearchInput,searchInput}:Props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Mein Account</MenuItem>
+      <MenuItem onClick={()=>{loggOut();handleMenuClose()}}>Abmelden</MenuItem>
     </Menu>
   );
+
+  const renderMenuLoggedOut = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={()=>{navigate("/login");handleMenuClose();}}>Registrieren</MenuItem>
+      <MenuItem onClick={()=>{navigate("/login");handleMenuClose();}}>Anmelden</MenuItem>
+    </Menu>
+  );
+
+  const renderMenuButtonLoggedIn = (
+    <div>
+      <IconButton
+        size="large"
+        aria-label="go to save Recipes"
+        color="inherit"
+        onClick={()=> navigate("/book")}
+      >
+        <MenuBookIcon />
+      </IconButton>
+      <IconButton
+        size="large"
+        aria-label="add Recipe"
+        color="inherit"
+        onClick={()=> navigate("/add")}
+      >
+        <AddBoxIcon />
+      </IconButton>
+    </div>
+  );
+
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
@@ -205,29 +249,14 @@ export default function TopAppBar({setSearchInput,searchInput}:Props) {
             <StyledInputBase
               placeholder="Suchen…"
               inputProps={{ 'aria-label': 'search' }}
-              onChange={handelSearchInput}
-              onKeyDown={handelSearchInput}
+              onChange={handleSearchInput}
+              onKeyDown={handleSearchInput}
               value={searchInput}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton
-              size="large"
-              aria-label="go to save Recipes"
-              color="inherit"
-              onClick={()=> navigate("/book")}
-            >
-              <MenuBookIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="add Recipe"
-              color="inherit"
-              onClick={()=> navigate("/add")}
-            >
-              <AddBoxIcon />
-            </IconButton>
+            {isLoggedIn && renderMenuButtonLoggedIn}
             <IconButton
               size="large"
               edge="end"
@@ -255,7 +284,8 @@ export default function TopAppBar({setSearchInput,searchInput}:Props) {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+      {isLoggedIn && renderMenuLoggedIn}
+      {!isLoggedIn && renderMenuLoggedOut}
     </Box>
   );
 }

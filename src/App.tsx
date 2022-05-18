@@ -23,7 +23,12 @@ function App() {
 
   return (
     <div className="App">
-      <TopAppBar setSearchInput={setSearchInput} searchInput={searchInput}/>
+      <TopAppBar
+        setSearchInput={setSearchInput}
+        searchInput={searchInput}
+        isLoggedIn={isLoggedIn}
+        loggOut={loggOut}
+      />
       <Container sx={{marginTop : "20px",}}  maxWidth="xl" >
         <Routes>
           <Route path="/"       element={<Main />} />

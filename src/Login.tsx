@@ -7,7 +7,7 @@ import {
   Typography
 } from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {useNavigate} from "react-router-dom";
 
 interface Props {
