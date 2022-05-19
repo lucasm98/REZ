@@ -48,20 +48,18 @@ export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput,us
     // console.log("recipe.user: "+recipe.user.toString()+"| user?.id:"+user?.id.toString());
     if(recipe.user === user?.id){
       return (
-        <RecipeCard
-          key={recipe.id}
+        <RecipeCard  key={recipe.id}
           recipeData={recipe}
           deleteRecipe={deleteRecipe}
-          favorite={user.favorites.includes(recipe.id)}
+          user={user}
           setUserData={setUserData}
         />
       );
     } else if(user) {
       return (
-        <RecipeCard
-          key={recipe.id}
+        <RecipeCard  key={recipe.id}
           recipeData={recipe}
-          favorite={user.favorites.includes(recipe.id)}
+          user={user}
           setUserData={setUserData}
         />
       );

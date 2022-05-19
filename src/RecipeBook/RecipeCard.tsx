@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {RecipeData} from "../interface";
+import {RecipeData, UserData} from "../interface";
 import {
   Card,
   CardContent,
@@ -15,7 +15,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import {useNavigate} from "react-router-dom";
+import EditIcon from '@mui/icons-material/Edit';
+import {useLocation, useNavigate} from "react-router-dom";
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -23,8 +24,8 @@ interface ExpandMoreProps extends IconButtonProps {
 
 interface Props {
   recipeData: RecipeData;
+  user?: UserData;
   deleteRecipe?: (id:number)=> void;
-  favorite?: boolean;
   setUserData?: (data:string,value:string)=>void,
 }
 
@@ -39,15 +40,71 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function RecipeCard({recipeData , deleteRecipe, favorite, setUserData}:Props) {
+export default function RecipeCard({recipeData , user,deleteRecipe, setUserData}:Props) {
   const [expanded, setExpanded] = useState(false);
-  const [favoriteLocal, setFavoriteLocal] = useState(favorite);
+  const [favoriteLocal, setFavoriteLocal] = useState(user?.favorites.includes(recipeData.id));
   const navigate = useNavigate();
+  const path = useLocation();
 
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const onClickFavorite = () => {
+    if (setUserData) {
+      setUserData("toggleFavorite", recipeData.id.toString());
+      setFavoriteLocal(!favoriteLocal);
+    }
+  }
+
+  const onClickDelete = () => {
+    if (deleteRecipe) {
+      deleteRecipe(recipeData.id!);
+      navigate("/created");
+    }
+  }
+
+  const onClickEdit = () => {
+    console.log("edit");
+  }
+
+
+  const getCardActions = () => {
+    const ownRecipe:boolean|undefined = (user && user?.id === recipeData.user);
+
+    return(
+      <CardActions disableSpacing>
+        {user && <IconButton
+          aria-label="add to favorites"
+          onClick={onClickFavorite}
+        >
+          {favoriteLocal?<FavoriteIcon />:<FavoriteBorderIcon/>}
+        </IconButton>}
+        {ownRecipe && <IconButton
+          aria-label="delete recipe"
+          onClick={onClickDelete}
+        >
+          <DeleteForeverIcon />
+        </IconButton>}
+        {ownRecipe && <IconButton
+          aria-label="edit recipe"
+          onClick={onClickEdit}
+        >
+          <EditIcon />
+        </IconButton>}
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          Zubereitung
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
+    );
+  }
 
   return(
     <Card>
@@ -73,37 +130,7 @@ export default function RecipeCard({recipeData , deleteRecipe, favorite, setUser
             })}
         </Box>
       </CardContent>
-      <CardActions disableSpacing>
-        {(setUserData) && <IconButton
-          aria-label="add to favorites"
-          onClick={()=>{
-            setUserData("toggleFavorite",recipeData.id.toString());
-            setFavoriteLocal(!favoriteLocal);
-          }}
-        >
-          {favoriteLocal?<FavoriteIcon />:<FavoriteBorderIcon/>}
-        </IconButton>}
-        {deleteRecipe && <IconButton
-          aria-label="delete recipe"
-          onClick={()=>
-            {
-              deleteRecipe(recipeData.id!);
-              navigate("/created");
-            }
-          }
-        >
-          <DeleteForeverIcon />
-        </IconButton>}
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          Zubereitung
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
+      {getCardActions()}
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Zubereitung:</Typography>

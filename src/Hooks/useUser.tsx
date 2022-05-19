@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {UserData} from "../interface";
+import {RecipeData, UserData} from "../interface";
 import axios from "axios";
 
 export default function useUser():
@@ -55,11 +55,16 @@ export default function useUser():
           newUser.favorites = [...newUser.favorites,favID];
         }
         setUser(newUser);
+        updateUser(newUser);
         break;
       default:
         console.log("Default | setUserData: "+data+" with Value: "+value);
         break;
     }
+  }
+
+  const updateUser = async (user:UserData) => {
+    await axios.patch(`http://localhost:3001/user/${user.id}`,user);
   }
 
   return [isLoggedIn,loggIn,loggOut,users,user,setUserData];
