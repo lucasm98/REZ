@@ -16,6 +16,90 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [isLoggedIn,loggIn,loggOut,users,user,setUserData] = useUser();
 
+  const getRoutesPublic = () => {
+
+    return(
+      <Routes>
+        <Route path="/"
+               element={
+          <RecipeBook
+            recipes={recipes}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}/>}
+        />
+        <Route path="/search/:input"
+               element={
+                 <RecipeBook
+                   recipes={recipes}
+                   searchInput={searchInput}
+                   setSearchInput={setSearchInput}
+                   setUserData={setUserData}
+                   user={user}
+                   filter={"name"}
+                 />
+               }/>
+        <Route path="/login"  element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>} />
+        <Route path="*"       element={<Navigate to="/" />} />
+      </Routes>
+    );
+  }
+
+  const getRoutesPrivate = () => {
+
+    return(
+      <Routes>
+        <Route path="/"
+               element={<Main />} />
+        <Route path="/recipes"
+               element={
+                 <RecipeBook
+                   recipes={recipes}
+                   searchInput={searchInput}
+                   setSearchInput={setSearchInput}
+                   setUserData={setUserData}
+                   user={user}
+                 />
+               }/>
+        <Route path="/book"
+               element={
+                 <RecipeBook
+                   recipes={recipes}
+                   searchInput={searchInput}
+                   setSearchInput={setSearchInput}
+                   setUserData={setUserData}
+                   user={user}
+                   filter={"favorites"}
+                 />
+               }/>
+        <Route path="/created"
+               element={
+                 <RecipeBook
+                   recipes={recipes}
+                   searchInput={searchInput}
+                   setSearchInput={setSearchInput}
+                   setUserData={setUserData}
+                   deleteRecipe={deleteRecipe}
+                   user={user}
+                   filter={"user"}
+                 />
+               }/>
+        <Route path="/search/:input"
+               element={
+                 <RecipeBook
+                   recipes={recipes}
+                   searchInput={searchInput}
+                   setSearchInput={setSearchInput}
+                   setUserData={setUserData}
+                   user={user}
+                   filter={"name"}
+                 />
+               }/>
+        <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe} user={user.id}/>} />
+        <Route path="*"       element={<Navigate to="/" />} />
+      </Routes>
+    );
+  }
+
   return (
     <div className="App">
       <TopAppBar
@@ -25,57 +109,8 @@ function App() {
         loggOut={loggOut}
       />
       <Container sx={{marginTop : "20px",}}  maxWidth="xl" >
-        <Routes>
-          <Route path="/"
-                 element={isLoggedIn ? <Main />: <RecipeBook recipes={recipes} searchInput={searchInput} setSearchInput={setSearchInput}/>} />
-          <Route path="/recipes"
-                 element={
-                   <RecipeBook
-                     recipes={recipes}
-                     searchInput={searchInput}
-                     setSearchInput={setSearchInput}
-                     setUserData={setUserData}
-                     user={user}
-                   />
-                 }/>
-          <Route path="/book"
-                 element={
-                   <RecipeBook
-                     recipes={recipes}
-                     searchInput={searchInput}
-                     setSearchInput={setSearchInput}
-                     setUserData={setUserData}
-                     user={user}
-                     filter={"favorites"}
-                   />
-                 }/>
-          <Route path="/created"
-                 element={
-                   <RecipeBook
-                     recipes={recipes}
-                     searchInput={searchInput}
-                     setSearchInput={setSearchInput}
-                     setUserData={setUserData}
-                     deleteRecipe={deleteRecipe}
-                     user={user}
-                     filter={"user"}
-                   />
-                 }/>
-          <Route path="/search/:input"
-                 element={
-                   <RecipeBook
-                     recipes={recipes}
-                     searchInput={searchInput}
-                     setSearchInput={setSearchInput}
-                     setUserData={setUserData}
-                     user={user}
-                     filter={"name"}
-                   />
-                 }/>
-          <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe} user={user.id}/>} />
-          <Route path="/login"  element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>} />
-          <Route path="*"       element={<Navigate to="/" />} />
-        </Routes>
+        {!isLoggedIn && getRoutesPublic()}
+        {isLoggedIn && getRoutesPrivate()}
       </Container>
     </div>
   );

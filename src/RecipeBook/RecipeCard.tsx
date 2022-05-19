@@ -44,7 +44,6 @@ export default function RecipeCard({recipeData , user,deleteRecipe, setUserData}
   const [expanded, setExpanded] = useState(false);
   const [favoriteLocal, setFavoriteLocal] = useState(user?.favorites.includes(recipeData.id));
   const navigate = useNavigate();
-  const path = useLocation();
 
 
   const handleExpandClick = () => {
@@ -67,43 +66,6 @@ export default function RecipeCard({recipeData , user,deleteRecipe, setUserData}
 
   const onClickEdit = () => {
     console.log("edit");
-  }
-
-
-  const getCardActions = () => {
-    const ownRecipe:boolean|undefined = (user && user?.id === recipeData.user);
-
-    return(
-      <CardActions disableSpacing>
-        {user && <IconButton
-          aria-label="add to favorites"
-          onClick={onClickFavorite}
-        >
-          {favoriteLocal?<FavoriteIcon />:<FavoriteBorderIcon/>}
-        </IconButton>}
-        {ownRecipe && <IconButton
-          aria-label="delete recipe"
-          onClick={onClickDelete}
-        >
-          <DeleteForeverIcon />
-        </IconButton>}
-        {ownRecipe && <IconButton
-          aria-label="edit recipe"
-          onClick={onClickEdit}
-        >
-          <EditIcon />
-        </IconButton>}
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          Zubereitung
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-    );
   }
 
   return(
@@ -130,7 +92,35 @@ export default function RecipeCard({recipeData , user,deleteRecipe, setUserData}
             })}
         </Box>
       </CardContent>
-      {getCardActions()}
+      <CardActions disableSpacing>
+        {user && <IconButton
+          aria-label="add to favorites"
+          onClick={onClickFavorite}
+        >
+          {favoriteLocal?<FavoriteIcon />:<FavoriteBorderIcon/>}
+        </IconButton>}
+        {(user && user?.id === recipeData.user) && <IconButton
+          aria-label="delete recipe"
+          onClick={onClickDelete}
+        >
+          <DeleteForeverIcon />
+        </IconButton>}
+        {(user && user?.id === recipeData.user) && <IconButton
+          aria-label="edit recipe"
+          onClick={onClickEdit}
+        >
+          <EditIcon />
+        </IconButton>}
+        <ExpandMore
+          expand={expanded}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          Zubereitung
+          <ExpandMoreIcon />
+        </ExpandMore>
+      </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph>Zubereitung:</Typography>
