@@ -26,7 +26,7 @@ interface Props {
   recipeData: RecipeData;
   user?: UserData;
   deleteRecipe?: (id:number)=> void;
-  setUserData?: (data:string,value:string)=>void,
+  toggleFavoriteByRecipeId?: (id:number)=>boolean,
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -40,7 +40,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function RecipeCard({recipeData , user,deleteRecipe, setUserData}:Props) {
+export default function RecipeCard({recipeData , user,deleteRecipe, toggleFavoriteByRecipeId}:Props) {
   const [expanded, setExpanded] = useState(false);
   const [favoriteLocal, setFavoriteLocal] = useState(user?.favorites.includes(recipeData.id));
   const navigate = useNavigate();
@@ -51,9 +51,8 @@ export default function RecipeCard({recipeData , user,deleteRecipe, setUserData}
   };
 
   const onClickFavorite = () => {
-    if (setUserData) {
-      setUserData("toggleFavorite", recipeData.id.toString());
-      setFavoriteLocal(!favoriteLocal);
+    if (toggleFavoriteByRecipeId) {
+      setFavoriteLocal(toggleFavoriteByRecipeId(recipeData.id));
     }
   }
 

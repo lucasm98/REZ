@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {RecipeData, UserData} from "../interface";
+import {UserData} from "../interface";
 import axios from "axios";
 
 export default function useUser():
@@ -9,7 +9,7 @@ export default function useUser():
     () => void,
     UserData[],
     UserData,
-    (data:string,value:string)=>void
+    (id:number)=>boolean
   ] {
   const [users,setUsers] = useState<UserData[]>([]);
   const [user,setUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
@@ -43,29 +43,31 @@ export default function useUser():
     console.log("logged out");
     setIsLoggedIn(false);
   }
+  const removeFavorite = (id:number,favorites:number[]) =>  favorites.filter((fav:number)=>( fav !== id ));
+  const addFavorite = (id:number,favorites:number[]) => [id, ...favorites];
+  const isFavorite = (id:number,favorites:number[]):boolean => favorites.includes(id);
 
-  const setUserData = (data:string,value:string):void => {
-    switch (data) {
-      case "toggleFavorite":
-        const favID = parseInt(value);
-        let newUser:UserData = user;
-        if( newUser.favorites.includes(favID)){
-          newUser.favorites = newUser.favorites.filter((fav:number)=>( fav !== favID ));
-        } else {
-          newUser.favorites = [...newUser.favorites,favID];
-        }
-        setUser(newUser);
-        updateUser(newUser);
-        break;
-      default:
-        console.log("Default | setUserData: "+data+" with Value: "+value);
-        break;
-    }
+  const toggleFavoriteByRecipeId = (id:number):boolean => {
+    let favorites:number[] = user.favorites;
+
+    const isFav = isFavorite(id, favorites);
+
+    favorites = isFav ? removeFavorite(id, favorites) : addFavorite(id, favorites)
+
+    updateUser({
+      ...user,
+      favorites
+    }).then(user => {
+      setUser(user);
+    })
+
+    return !isFav;
   }
 
   const updateUser = async (user:UserData) => {
     await axios.patch(`http://localhost:3001/user/${user.id}`,user);
+    return user;
   }
 
-  return [isLoggedIn,loggIn,loggOut,users,user,setUserData];
+  return [isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId];
 }
