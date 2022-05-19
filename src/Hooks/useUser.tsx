@@ -2,7 +2,15 @@ import React, {useEffect, useState} from "react";
 import {UserData} from "../interface";
 import axios from "axios";
 
-export default function useUser():[boolean,(name:string,password:string) => boolean, () => void,UserData[],UserData,any] {
+export default function useUser():
+  [
+    boolean,
+    (name:string,password:string) => boolean,
+    () => void,
+    UserData[],
+    UserData,
+    (data:string,value:string)=>void
+  ] {
   const [users,setUsers] = useState<UserData[]>([]);
   const [user,setUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
@@ -36,5 +44,23 @@ export default function useUser():[boolean,(name:string,password:string) => bool
     setIsLoggedIn(false);
   }
 
-  return [isLoggedIn,loggIn,loggOut,users,user,setUser];
+  const setUserData = (data:string,value:string):void => {
+    switch (data) {
+      case "toggleFavorite":
+        const favID = parseInt(value);
+        let newUser:UserData = user;
+        if( newUser.favorites.includes(favID)){
+          newUser.favorites = newUser.favorites.filter((fav:number)=>( fav !== favID ));
+        } else {
+          newUser.favorites = [...newUser.favorites,favID];
+        }
+        setUser(newUser);
+        break;
+      default:
+        console.log("Default | setUserData: "+data+" with Value: "+value);
+        break;
+    }
+  }
+
+  return [isLoggedIn,loggIn,loggOut,users,user,setUserData];
 }

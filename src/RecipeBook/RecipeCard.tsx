@@ -1,20 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import {RecipeData} from "../interface";
 import {
   Card,
   CardContent,
   CardHeader,
   Typography,
-  List,
-  ListItem,
-  ListSubheader,
   Box,
   CardActions,
   Collapse,
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -27,6 +24,8 @@ interface ExpandMoreProps extends IconButtonProps {
 interface Props {
   recipeData: RecipeData;
   deleteRecipe?: (id:number)=> void;
+  favorite?: boolean;
+  setUserData?: (data:string,value:string)=>void,
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -40,8 +39,9 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function RecipeCard({recipeData , deleteRecipe}:Props) {
-  const [expanded, setExpanded] = React.useState(false);
+export default function RecipeCard({recipeData , deleteRecipe, favorite, setUserData}:Props) {
+  const [expanded, setExpanded] = useState(false);
+  const [favoriteLocal, setFavoriteLocal] = useState(favorite);
   const navigate = useNavigate();
 
 
@@ -74,15 +74,21 @@ export default function RecipeCard({recipeData , deleteRecipe}:Props) {
         </Box>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
+        {(setUserData) && <IconButton
+          aria-label="add to favorites"
+          onClick={()=>{
+            setUserData("toggleFavorite",recipeData.id.toString());
+            setFavoriteLocal(!favoriteLocal);
+          }}
+        >
+          {favoriteLocal?<FavoriteIcon />:<FavoriteBorderIcon/>}
+        </IconButton>}
         {deleteRecipe && <IconButton
           aria-label="delete recipe"
           onClick={()=>
             {
               deleteRecipe(recipeData.id!);
-              navigate("/saved");
+              navigate("/created");
             }
           }
         >

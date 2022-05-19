@@ -188,7 +188,7 @@ export default function RecipeForm({addRecipe,user}: Props) {
       "id":-1
     };
     addRecipe(data);
-    navigate("/saved");
+    navigate("/created");
   }
 
   const handelChangeOnInput = (e:any) => {
