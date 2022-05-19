@@ -8,12 +8,13 @@ interface props {
   recipes: RecipeData[];
   searchInput: string;
   setSearchInput: (input:string)=> void;
+  filter?: string;
   user?: UserData;
   setUserData?: (data:string,value:string)=>void,
   deleteRecipe?: (id:number)=>void;
 }
 
-export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput,user,setUserData}: props) {
+export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput,user,setUserData, filter}: props) {
   const input = useParams();
 
   useEffect( ()=> {
@@ -21,6 +22,26 @@ export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput,us
     },[input]
   );
 
+
+  const getFilteredRecipes = (filter:string|undefined):RecipeData[] => {
+    console.log("getFilteredRecipes: "+filter);
+    let returnRecipeData:RecipeData[];
+    switch (filter) {
+      case "name":
+        returnRecipeData =  recipes.filter((recipe:RecipeData, index:number)=>(recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
+        break;
+      case "user":
+        returnRecipeData =  recipes.filter((recipe:RecipeData, index:number)=>(recipe.user === user?.id));
+        break;
+      case "favorites":
+        returnRecipeData = recipes.filter((recipe:RecipeData, index:number)=>(user?.favorites.includes(recipe.id)));
+        break;
+      default:
+        returnRecipeData = recipes;
+        break;
+    }
+    return returnRecipeData;
+  }
 
 
   const renderRecipeCard = (recipe:RecipeData):any => {
@@ -64,7 +85,7 @@ export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput,us
         md={8}
         item
       >
-        {recipes.map((recipe, index) => (
+        {getFilteredRecipes(filter).map((recipe, index) => (
           <Grid item md={6} key={index}>
             {renderRecipeCard(recipe)}
           </Grid>

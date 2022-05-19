@@ -8,7 +8,6 @@ import RecipeForm from "./RecipeForm";
 import useRecipe from "./Hooks/useRecipe";
 import Main from './Main';
 import {Container} from "@mui/material";
-import {RecipeData} from "./interface";
 import Login from "./Login";
 import useUser from "./Hooks/useUser";
 
@@ -16,26 +15,6 @@ function App() {
   const [recipes,addRecipe,deleteRecipe] = useRecipe();
   const [searchInput, setSearchInput] = useState("");
   const [isLoggedIn,loggIn,loggOut,users,user,setUserData] = useUser();
-
-  const getFilteredRecipes = (filter:string):RecipeData[] => {
-    console.log("getFilteredRecipes: "+filter);
-    let returnRecipeData:RecipeData[];
-    switch (filter) {
-      case "name":
-        returnRecipeData =  recipes.filter((recipe:RecipeData, index:number)=>(recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
-        break;
-      case "user":
-        returnRecipeData =  recipes.filter((recipe:RecipeData, index:number)=>(recipe.user === user.id));
-        break;
-      case "favorites":
-        returnRecipeData = recipes.filter((recipe:RecipeData, index:number)=>(user.favorites.includes(recipe.id)));
-        break;
-      default:
-        returnRecipeData = recipes;
-        break;
-    }
-    return returnRecipeData;
-  }
 
   return (
     <div className="App">
@@ -62,32 +41,35 @@ function App() {
           <Route path="/book"
                  element={
                    <RecipeBook
-                     recipes={getFilteredRecipes("favorites")}
+                     recipes={recipes}
                      searchInput={searchInput}
                      setSearchInput={setSearchInput}
                      setUserData={setUserData}
                      user={user}
+                     filter={"favorites"}
                    />
                  }/>
           <Route path="/created"
                  element={
                    <RecipeBook
-                     recipes={getFilteredRecipes("user")}
+                     recipes={recipes}
                      searchInput={searchInput}
                      setSearchInput={setSearchInput}
                      setUserData={setUserData}
                      deleteRecipe={deleteRecipe}
                      user={user}
+                     filter={"user"}
                    />
                  }/>
           <Route path="/search/:input"
                  element={
                    <RecipeBook
-                     recipes={getFilteredRecipes("name")}
+                     recipes={recipes}
                      searchInput={searchInput}
                      setSearchInput={setSearchInput}
                      setUserData={setUserData}
                      user={user}
+                     filter={"name"}
                    />
                  }/>
           <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe} user={user.id}/>} />
