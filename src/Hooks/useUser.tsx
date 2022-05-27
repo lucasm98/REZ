@@ -43,6 +43,7 @@ export default function useUser():
     console.log("logged out");
     setIsLoggedIn(false);
   }
+
   const removeFavorite = (id:number,favorites:number[]) =>  favorites.filter((fav:number)=>( fav !== id ));
   const addFavorite = (id:number,favorites:number[]) => [id, ...favorites];
   const isFavorite = (id:number,favorites:number[]):boolean => favorites.includes(id);

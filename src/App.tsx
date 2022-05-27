@@ -96,7 +96,7 @@ function App() {
                    user={user}
                  />
                }/>
-        <Route path="/add"    element={<RecipeForm  addRecipe={addRecipe} user={user.id}/>} />
+        <Route path="/add"    element={<RecipeForm addRecipe={addRecipe} user={user.id}/>} />
         <Route path="*"       element={<Navigate to="/" />} />
       </Routes>
     );
