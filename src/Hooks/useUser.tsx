@@ -9,12 +9,24 @@ export default function useUser():
     () => void,
     UserData[],
     UserData,
-    (id:number)=>boolean
+    (id:number)=>boolean,
+    (user:UserData)=>void
   ] {
   const [users,setUsers] = useState<UserData[]>([]);
   const [user,setUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
 
+  const getNextFreeId = ():number => {
+    let id=0;
+    const usedIds:number[]=[];
+    users.forEach((user,index:number)=> {
+      usedIds.push(user.id!);
+    });
+    while(usedIds.includes(id)){
+      id++;
+    }
+    return id;
+  }
 
   useEffect(() => {
       let userData:any = null;
@@ -70,5 +82,19 @@ export default function useUser():
     return user;
   }
 
-  return [isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId];
+  const addUser = async (data:UserData) => {
+
+    if(data.id===-1) data.id = getNextFreeId();
+
+    await axios.post('http://localhost:3001/user', data,{
+      headers: {
+        'content-type': 'application/json',
+      }
+    })
+    setUsers(users => [...users,data]);
+
+    console.log("User Posted | ID: "+data.id+"| Name:"+data.username);
+  }
+
+  return [isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId,addUser];
 }

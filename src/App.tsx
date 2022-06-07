@@ -11,11 +11,12 @@ import {Container} from "@mui/material";
 import Login from "./Login";
 import useUser from "./Hooks/useUser";
 import {RecipeData} from "./interface";
+import {RegisterForm} from "./RegisterForm/RegisterForm";
 
 function App() {
   const [recipes, addRecipe, deleteRecipe] = useRecipe();
   const [searchInput, setSearchInput] = useState("");
-  const [isLoggedIn, loggIn, loggOut, users, user, toggleFavoriteByRecipeId] = useUser();
+  const [isLoggedIn, loggIn, loggOut, users, user, toggleFavoriteByRecipeId,addUser] = useUser();
 
   const filterRecipesByName = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
   const filterRecipesByCreator = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.user === user?.id));
@@ -43,6 +44,7 @@ function App() {
                    filter={"name"}
                  />
                }/>
+        <Route path="/register" element={<RegisterForm addUser={addUser}/>} />
         <Route path="/login" element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>}/>
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>

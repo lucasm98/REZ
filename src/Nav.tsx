@@ -132,7 +132,7 @@ export default function TopAppBar({setSearchInput,searchInput,isLoggedIn,loggOut
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={()=>{navigate("/login");handleMenuClose();}}>Registrieren</MenuItem>
+      <MenuItem onClick={()=>{navigate("/register");handleMenuClose();}}>Registrieren</MenuItem>
       <MenuItem onClick={()=>{navigate("/login");handleMenuClose();}}>Anmelden</MenuItem>
     </Menu>
   );

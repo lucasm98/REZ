@@ -218,6 +218,17 @@
         1,
         4
       ]
+    },
+    {
+      "name": "test",
+      "username": "test",
+      "email": "test@s.s",
+      "password": "test",
+      "id": 3,
+      "favorites": [
+        1,
+        0
+      ]
     }
   ]
 }
