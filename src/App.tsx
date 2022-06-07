@@ -1,10 +1,10 @@
-import React, { useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 
 import {RecipeBook} from "./RecipeBook/RecipeBook";
 import {Navigate, Route, Routes} from "react-router-dom";
 import TopAppBar from "./Nav";
-import RecipeForm from "./RecipeForm";
+import {RecipeForm} from "./RecipeForm/RecipeForm";
 import useRecipe from "./Hooks/useRecipe";
 import Main from './Main';
 import {Container} from "@mui/material";
@@ -13,24 +13,24 @@ import useUser from "./Hooks/useUser";
 import {RecipeData} from "./interface";
 
 function App() {
-  const [recipes,addRecipe,deleteRecipe] = useRecipe();
+  const [recipes, addRecipe, deleteRecipe] = useRecipe();
   const [searchInput, setSearchInput] = useState("");
-  const [isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId] = useUser();
+  const [isLoggedIn, loggIn, loggOut, users, user, toggleFavoriteByRecipeId] = useUser();
 
-  const filterRecipesByName = () => recipes.filter((recipe:RecipeData, index:number)=>(recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
-  const filterRecipesByCreator = () => recipes.filter((recipe:RecipeData, index:number)=>(recipe.user === user?.id));
-  const filterRecipesByFavorites = () => recipes.filter((recipe:RecipeData, index:number)=>(user?.favorites.includes(recipe.id)));
+  const filterRecipesByName = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
+  const filterRecipesByCreator = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.user === user?.id));
+  const filterRecipesByFavorites = () => recipes.filter((recipe: RecipeData, index: number) => (user?.favorites.includes(recipe.id)));
 
   const getRoutesPublic = () => {
 
-    return(
+    return (
       <Routes>
         <Route path="/"
                element={
-          <RecipeBook
-            recipes={recipes}
-            searchInput={searchInput}
-            setSearchInput={setSearchInput}/>}
+                 <RecipeBook
+                   recipes={recipes}
+                   searchInput={searchInput}
+                   setSearchInput={setSearchInput}/>}
         />
         <Route path="/search/:input"
                element={
@@ -43,18 +43,17 @@ function App() {
                    filter={"name"}
                  />
                }/>
-        <Route path="/login"  element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>} />
-        <Route path="*"       element={<Navigate to="/" />} />
+        <Route path="/login" element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>}/>
+        <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
     );
   }
 
   const getRoutesPrivate = () => {
-
-    return(
+    return (
       <Routes>
         <Route path="/"
-               element={<Main />} />
+               element={<Main/>}/>
         <Route path="/recipes"
                element={
                  <RecipeBook
@@ -96,8 +95,8 @@ function App() {
                    user={user}
                  />
                }/>
-        <Route path="/add"    element={<RecipeForm addRecipe={addRecipe} user={user.id}/>} />
-        <Route path="*"       element={<Navigate to="/" />} />
+        <Route path="/add" element={<RecipeForm addRecipe={addRecipe} user={user.id}/>}/>
+        <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
     );
   }
@@ -110,7 +109,7 @@ function App() {
         isLoggedIn={isLoggedIn}
         loggOut={loggOut}
       />
-      <Container sx={{marginTop : "20px",}}  maxWidth="xl" >
+      <Container sx={{marginTop: "20px",}} maxWidth="xl">
         {!isLoggedIn && getRoutesPublic()}
         {isLoggedIn && getRoutesPrivate()}
       </Container>

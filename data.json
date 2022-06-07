@@ -74,7 +74,7 @@
       "id": 2,
       "name": "Bier",
       "time": 30240,
-      "level": 3,
+      "level": 2,
       "rating": 5,
       "user": 0,
       "ingredients": [
@@ -115,7 +115,7 @@
     {
       "name": "Reis",
       "time": "15",
-      "level": "",
+      "level": "1",
       "rating": "4",
       "user": 1,
       "ingredients": [
@@ -191,6 +191,7 @@
       "email": "test@test.de",
       "id": 0,
       "favorites": [
+        4,
         3
       ]
     },
