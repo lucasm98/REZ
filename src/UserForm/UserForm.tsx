@@ -1,6 +1,6 @@
 import React from 'react';
 import {Formik, useFormik, Form} from "formik";
-import {RegisterSchema} from "../Validation/RegisterValidation";
+import {UserSchema} from "../Validation/UserValidation";
 import {Box, Button} from "@mui/material";
 import {UserData} from "../interface";
 import {useNavigate} from "react-router-dom";
@@ -35,12 +35,13 @@ export const UserForm = ({updateUser,user}:Props) => {
         "id":values.id,
         "favorites":values.favorites
       })
-      navigate("/login");
+      navigate(user?"/account":"/login");
     },
-    validationSchema:RegisterSchema
+    validationSchema:UserSchema(user?user:undefined),
+    validateOnChange:false
   });
 
-  console.log(formik.errors);
+  // console.log(formik.errors);
 
   return (
     <Formik
