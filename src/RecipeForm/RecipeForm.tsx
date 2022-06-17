@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Formik, useFormik} from 'formik';
 import {Ingredient, RecipeData} from "../interface";
 import {Box, Button, Grid, InputAdornment, Rating, Slider, TextField, Typography} from "@mui/material";
@@ -6,16 +6,24 @@ import {RecipeSchema} from "../Validation/RecipeValidation";
 import LocalDiningIcon from "@mui/icons-material/LocalDining";
 import {IngredientForm} from "./IngredientForm";
 import {PreparationForm} from "./PreparationForm";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 interface Props {
-  addRecipe: (recipe: RecipeData) => void,
-  user: number;
-  recipeData?: RecipeData;
+  updateRecipe: (recipe: RecipeData) => void,
+  user: number,
+  recipeData?: RecipeData,
+  setActiveRecipe?: (id:number)=>void
 }
 
-export const RecipeForm = ({addRecipe, user, recipeData}: Props) => {
+export const RecipeForm = ({updateRecipe, user, recipeData, setActiveRecipe}: Props) => {
   const navigate = useNavigate();
+  const input = useParams();
+
+  useEffect( ()=> {
+      if(input !== undefined && input.recipeId !== undefined && setActiveRecipe) setActiveRecipe(parseInt(input.recipeId!))
+    },[input]
+  );
+
   const initialValues:RecipeData = {
     name: "",
     time: 0,
@@ -27,9 +35,9 @@ export const RecipeForm = ({addRecipe, user, recipeData}: Props) => {
     id: -1
   }
   const formik = useFormik({
-      initialValues:initialValues,
+      initialValues: recipeData ? recipeData : initialValues,
       onSubmit: (values) => {
-        addRecipe(values);
+        updateRecipe(values);
         navigate("/created");
       },
       validationSchema:RecipeSchema

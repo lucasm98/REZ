@@ -1,9 +1,31 @@
-import React from "react";
+import React, {useEffect} from "react";
 import './Recipe.css';
 import {RecipeData} from "../interface";
+import {useParams} from "react-router-dom";
 
+interface Props {
+  recipeData: RecipeData,
+  setActiveRecipe: (id:number)=>void
+}
 
-const Recipe = (recipeData: RecipeData) => {
+export const Recipe = ({
+  recipeData={
+  "name":"",
+  "time":0,
+  "level":0,
+  "rating":0,
+  "user":0,
+  "id":0,
+  "ingredients":[],
+  "preparation":[]
+},
+setActiveRecipe}:Props) => {
+  const input = useParams();
+
+  useEffect( ()=> {
+      if(input.recipeId !== undefined) setActiveRecipe(parseInt(input.recipeId!))
+    },[input]
+  );
 
   function renderIngredients(): JSX.Element[] {
     return  recipeData.ingredients.map((ingredient, index) => (
@@ -71,5 +93,3 @@ const Recipe = (recipeData: RecipeData) => {
     </div>
   );
 };
-
-export default Recipe;

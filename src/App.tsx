@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 
 import {RecipeBook} from "./RecipeBook/RecipeBook";
-import {Navigate, Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes, useParams} from "react-router-dom";
 import TopAppBar from "./Nav";
 import {RecipeForm} from "./RecipeForm/RecipeForm";
 import useRecipe from "./Hooks/useRecipe";
@@ -11,19 +11,26 @@ import {Container} from "@mui/material";
 import Login from "./Login";
 import useUser from "./Hooks/useUser";
 import {RecipeData} from "./interface";
-import {RegisterForm} from "./RegisterForm/RegisterForm";
+import {UserForm} from "./UserForm/UserForm";
+import {Recipe} from "./Recipe/Recipe";
+import {User} from "./User/User";
+
+
 
 function App() {
-  const [recipes, addRecipe, deleteRecipe] = useRecipe();
+  const [recipes, updateRecipe, deleteRecipe] = useRecipe();
   const [searchInput, setSearchInput] = useState("");
-  const [isLoggedIn, loggIn, loggOut, users, user, toggleFavoriteByRecipeId,addUser] = useUser();
+  const [isLoggedIn, loggIn, loggOut, users, user, toggleFavoriteByRecipeId,updateUser] = useUser();
+  const [activeRecipeId,setActiveRecipeId] = useState<number>(-1);
 
   const filterRecipesByName = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
   const filterRecipesByCreator = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.user === user?.id));
   const filterRecipesByFavorites = () => recipes.filter((recipe: RecipeData, index: number) => (user?.favorites.includes(recipe.id)));
 
-  const getRoutesPublic = () => {
+  const getRecipeById = () => recipes.filter((recipe: RecipeData) => (recipe.id === activeRecipeId))[0];
+  const isRecipeFromCurrentUser = (): boolean => (user.favorites.includes(activeRecipeId));
 
+  const getRoutesPublic = () => {
     return (
       <Routes>
         <Route path="/"
@@ -44,7 +51,8 @@ function App() {
                    filter={"name"}
                  />
                }/>
-        <Route path="/register" element={<RegisterForm addUser={addUser}/>} />
+        <Route path="/recipe/:recipeId" element={<Recipe recipeData={getRecipeById()} setActiveRecipe={setActiveRecipeId}></Recipe>} />
+        <Route path="/register" element={<UserForm updateUser={updateUser}/>} />
         <Route path="/login" element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>}/>
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
@@ -97,7 +105,15 @@ function App() {
                    user={user}
                  />
                }/>
-        <Route path="/add" element={<RecipeForm addRecipe={addRecipe} user={user.id}/>}/>
+        <Route path="/recipe/:recipeId" element={<Recipe recipeData={getRecipeById()} setActiveRecipe={setActiveRecipeId}></Recipe>} />
+        <Route path="/edit/:recipeId" element={
+          // (isRecipeFromCurrentUser()) ?
+            <RecipeForm updateRecipe={updateRecipe} user={user.id} recipeData={getRecipeById()} setActiveRecipe={setActiveRecipeId}></RecipeForm>
+            // :<Navigate to={`/recipe/${activeRecipeId}`}/>
+        } />
+        <Route path="/add" element={<RecipeForm updateRecipe={updateRecipe} user={user.id}/>}/>
+        <Route path="/account" element={<User userData={user}/>}/>
+        <Route path="/account/edit" element={<UserForm updateUser={updateUser} user={user}/>} />
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
     );

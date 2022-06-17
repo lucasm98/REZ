@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {UserData} from "../interface";
+import {RecipeData, UserData} from "../interface";
 import axios from "axios";
 
 export default function useUser():
@@ -70,31 +70,43 @@ export default function useUser():
     updateUser({
       ...user,
       favorites
-    }).then(user => {
-      setUser(user);
     })
 
     return !isFav;
   }
 
-  const updateUser = async (user:UserData) => {
-    await axios.patch(`http://localhost:3001/user/${user.id}`,user);
-    return user;
-  }
+  const updateUser = async (data:UserData) => {
 
-  const addUser = async (data:UserData) => {
-
-    if(data.id===-1) data.id = getNextFreeId();
-
-    await axios.post('http://localhost:3001/user', data,{
-      headers: {
-        'content-type': 'application/json',
-      }
-    })
-    setUsers(users => [...users,data]);
+    console.log("updateUser",data);
+    if(data.id === -1) {
+      data.id = getNextFreeId();
+      addUser(data)
+        .then(newUser=> {
+          setUsers( users => [...users,newUser]);
+      })
+    } else {
+      correctUser(data)
+        .then(existingUser => {
+          setUser(existingUser);
+          setUsers( users => [...users,existingUser]);
+        })
+    }
 
     console.log("User Posted | ID: "+data.id+"| Name:"+data.username);
   }
 
-  return [isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId,addUser];
+  const correctUser = async (existingUser:UserData) => {
+    console.log("correctUser",existingUser);
+    await axios.patch(`http://localhost:3001/user/${existingUser.id}`,existingUser);
+    return existingUser;
+  }
+
+  const addUser = async (newUser:UserData) => {
+    console.log("addUser",newUser);
+    await axios.post('http://localhost:3001/user', newUser);
+    setUsers(users => [...users,newUser]);
+    return newUser
+  }
+
+  return [isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId,updateUser];
 }

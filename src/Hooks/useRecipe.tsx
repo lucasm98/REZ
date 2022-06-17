@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {RecipeData} from "../interface";
+import {RecipeData, UserData} from "../interface";
 import axios from "axios";
 
 export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:number) => void] {
@@ -17,18 +17,35 @@ export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:
     return id;
   }
 
-  const addRecipe = async (data:RecipeData) => {
+  const updateRecipe = async (data:RecipeData) => {
 
-    if(data.id===-1) data.id = getNextFreeId();
+    if(data.id===-1) {
+      data.id = getNextFreeId();
+      addRecipe(data).then(recipe => {
+        setRecipes(recipes => [...recipes,data]);
+      })
+    } else {
+      correctRecipe(data)
+        .then(recipe => {
+          setRecipes(recipes => [...recipes,recipe]);
+      })
+    }
 
-    await axios.post('http://localhost:3001/recipe', data,{
+    console.log("Recipe Posted | ID: "+data.id+"| Name:"+data.name);
+  }
+
+  const correctRecipe = async (recipe:RecipeData) => {
+    await axios.patch(`http://localhost:3001/recipe/${recipe.id}`,recipe);
+    return recipe;
+  }
+
+  const addRecipe = async (recipe:RecipeData) => {
+    await axios.post('http://localhost:3001/recipe', recipe,{
       headers: {
         'content-type': 'application/json',
       }
     })
-    setRecipes(recipes => [...recipes,data]);
-
-    console.log("Recipe Posted | ID: "+data.id+"| Name:"+data.name);
+    return recipe;
   }
 
   const deleteRecipe = async (id: number) => {
@@ -48,5 +65,5 @@ export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:
 
 
 
-  return [recipes,addRecipe,deleteRecipe];
+  return [recipes,updateRecipe,deleteRecipe];
 }

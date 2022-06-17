@@ -110,8 +110,8 @@ export default function TopAppBar({setSearchInput,searchInput,isLoggedIn,loggOut
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profil</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Mein Account</MenuItem>
+      {/*<MenuItem onClick={handleMenuClose}>Profil</MenuItem>*/}
+      <MenuItem onClick={()=>{navigate("/account");handleMenuClose();}}>Mein Account</MenuItem>
       <MenuItem onClick={()=>{loggOut();handleMenuClose()}}>Abmelden</MenuItem>
     </Menu>
   );

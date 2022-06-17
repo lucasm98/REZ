@@ -191,7 +191,6 @@
       "email": "test@test.de",
       "id": 0,
       "favorites": [
-        4,
         3
       ]
     },
@@ -222,12 +221,13 @@
     {
       "name": "test",
       "username": "test",
-      "email": "test@s.s",
+      "email": "test@test.test",
       "password": "test",
       "id": 3,
       "favorites": [
+        0,
         1,
-        0
+        2
       ]
     }
   ]

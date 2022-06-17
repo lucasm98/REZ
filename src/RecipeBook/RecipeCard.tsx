@@ -7,7 +7,7 @@ import {
   Typography,
   Box,
   CardActions,
-  Collapse,
+  Collapse, CardActionArea,
 } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -64,33 +64,39 @@ export default function RecipeCard({recipeData , user,deleteRecipe, toggleFavori
   }
 
   const onClickEdit = () => {
-    console.log("edit");
+    if(user?.id === recipeData.user) {
+      navigate(`/edit/${recipeData.id}`);
+    }
   }
 
   return(
     <Card>
-      <CardHeader title={recipeData.name}/>
-      <CardContent sx={{display: "flex"}}>
-        <Box sx={{ display: 'flex', flexDirection: 'column',margin:"auto"}}>
-          <Typography variant="body1" paragraph>
-            Dauer: {recipeData.time} min
-          </Typography>
-          <Typography variant={"body1"} paragraph>
-            Schwierigkeit: {recipeData.level}
-          </Typography>
-          <Typography variant={"body1"} paragraph>
-            Bewertung: {recipeData.rating}
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column',margin:"auto"}}>
-          <Typography variant={"body1"} paragraph>
-           Zutaten:
-          </Typography>
-            {recipeData.ingredients?.map((ingredient, index) => {
-              return <Typography key={index} variant={"body1"} color="text.secondary">{ingredient?.amount} {ingredient?.unit} {ingredient?.name} </Typography>;
-            })}
-        </Box>
-      </CardContent>
+      <CardActionArea
+        onClick={()=>navigate(`/recipe/${recipeData.id}`)}
+      >
+        <CardHeader title={recipeData.name}/>
+        <CardContent sx={{display: "flex"}}>
+          <Box sx={{ display: 'flex', flexDirection: 'column',margin:"auto"}}>
+            <Typography variant="body1" paragraph>
+              Dauer: {recipeData.time} min
+            </Typography>
+            <Typography variant={"body1"} paragraph>
+              Schwierigkeit: {recipeData.level}
+            </Typography>
+            <Typography variant={"body1"} paragraph>
+              Bewertung: {recipeData.rating}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column',margin:"auto"}}>
+            <Typography variant={"body1"} paragraph>
+             Zutaten:
+            </Typography>
+              {recipeData.ingredients?.map((ingredient, index) => {
+                return <Typography key={index} variant={"body1"} color="text.secondary">{ingredient?.amount} {ingredient?.unit} {ingredient?.name} </Typography>;
+              })}
+          </Box>
+        </CardContent>
+      </CardActionArea>
       <CardActions disableSpacing>
         {user && <IconButton
           aria-label="add to favorites"
@@ -125,7 +131,7 @@ export default function RecipeCard({recipeData , user,deleteRecipe, toggleFavori
           <Typography paragraph>Zubereitung:</Typography>
           {recipeData.preparation?.map((step, index) => (
             <Typography paragraph key={index}>{index+1}. {step}</Typography>
-            ))}
+          ))}
         </CardContent>
       </Collapse>
     </Card>
