@@ -2,16 +2,26 @@ import React, {useEffect, useState} from "react";
 import {RecipeData, UserData} from "../interface";
 import axios from "axios";
 
-export default function useUser():
-  [
-    boolean,
-    (name:string,password:string) => boolean,
-    () => void,
-    UserData[],
-    UserData,
-    (id:number)=>boolean,
-    (user:UserData)=>void
-  ] {
+interface ReturnProps {
+  isLoggedIn:boolean,
+  loggIn:(name:string,password:string) => boolean,
+  loggOut:() => void,
+  users:UserData[],
+  user:UserData,
+  toggleFavoriteByRecipeId:(id:number)=>boolean,
+  updateUser:(user:UserData)=>void,
+  deleteUser:(id:number)=>void
+}
+
+/*boolean,
+  (name:string,password:string) => boolean,
+  () => void,
+  UserData[],
+  UserData,
+  (id:number)=>boolean,
+  (user:UserData)=>void*/
+
+export default function useUser(): ReturnProps {
   const [users,setUsers] = useState<UserData[]>([]);
   const [user,setUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
@@ -108,5 +118,11 @@ export default function useUser():
     return newUser
   }
 
-  return [isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId,updateUser];
+  const deleteUser = async (id: number) => {
+    await axios.delete(`http://localhost:3001/user/${id}`);
+    setUsers(users => users.filter((user:UserData) => user.id !== id));
+    setUser({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
+  }
+
+  return {isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId,updateUser,deleteUser};
 }

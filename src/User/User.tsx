@@ -4,13 +4,23 @@ import {Button, Grid, Typography} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 
 interface Props {
-  userData:UserData
+  userData:UserData,
+  deleteUser:(id:number)=>void,
+  loggOut:() => void
 }
 
-export const User = ({userData}:Props) => {
+export const User = ({userData,deleteUser,loggOut}:Props) => {
   const labelSize:number = 6;
   const varSize:number = 5;
   const navigate = useNavigate();
+
+  const deleteAccount = ():void => {
+    if (window.confirm('Sind sie sich sicher, dass sie ihren Account löschen wollen?')) {
+      deleteUser(userData.id);
+      loggOut();
+      navigate("/");
+    }
+  }
 
   return (
     <Grid
@@ -96,7 +106,7 @@ export const User = ({userData}:Props) => {
         </Button>
       </Grid>
       <Grid item mb={2}>
-        <Button variant="contained" >
+        <Button variant="contained" onClick={deleteAccount}>
           Account Löschen
         </Button>
       </Grid>

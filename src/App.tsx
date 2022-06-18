@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 
 import {RecipeBook} from "./RecipeBook/RecipeBook";
-import {Navigate, Route, Routes, useParams} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import TopAppBar from "./Nav";
 import {RecipeForm} from "./RecipeForm/RecipeForm";
 import useRecipe from "./Hooks/useRecipe";
@@ -20,7 +20,7 @@ import {User} from "./User/User";
 function App() {
   const [recipes, updateRecipe, deleteRecipe] = useRecipe();
   const [searchInput, setSearchInput] = useState("");
-  const [isLoggedIn, loggIn, loggOut, users, user, toggleFavoriteByRecipeId,updateUser] = useUser();
+  const {isLoggedIn, loggIn, loggOut, users, user, toggleFavoriteByRecipeId,updateUser,deleteUser} = useUser();
   const [activeRecipeId,setActiveRecipeId] = useState<number>(-1);
 
   const filterRecipesByName = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
@@ -112,7 +112,7 @@ function App() {
             // :<Navigate to={`/recipe/${activeRecipeId}`}/>
         } />
         <Route path="/add" element={<RecipeForm updateRecipe={updateRecipe} user={user.id}/>}/>
-        <Route path="/account" element={<User userData={user}/>}/>
+        <Route path="/account" element={<User userData={user} deleteUser={deleteUser} loggOut={loggOut}/>}/>
         <Route path="/account/edit" element={<UserForm updateUser={updateUser} user={user}/>} />
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
