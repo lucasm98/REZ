@@ -6,7 +6,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import TopAppBar from "./Nav";
 import {RecipeForm} from "./RecipeForm/RecipeForm";
 import useRecipe from "./Hooks/useRecipe";
-import Main from './Main';
+import Home from './Home/Home';
 import {Container} from "@mui/material";
 import Login from "./Login";
 import useUser from "./Hooks/useUser";
@@ -51,7 +51,7 @@ function App() {
                    filter={"name"}
                  />
                }/>
-        <Route path="/recipe/:recipeId" element={<Recipe recipeData={getRecipeById()} setActiveRecipe={setActiveRecipeId}></Recipe>} />
+        <Route path="/recipe/:recipeId" element={<Recipe recipes={recipes}></Recipe>} />
         <Route path="/register" element={<UserForm updateUser={updateUser}/>} />
         <Route path="/login" element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>}/>
         <Route path="*" element={<Navigate to="/"/>}/>
@@ -63,7 +63,7 @@ function App() {
     return (
       <Routes>
         <Route path="/"
-               element={<Main/>}/>
+               element={<Home user={user}/>}/>
         <Route path="/recipes"
                element={
                  <RecipeBook
@@ -105,7 +105,7 @@ function App() {
                    user={user}
                  />
                }/>
-        <Route path="/recipe/:recipeId" element={<Recipe recipeData={getRecipeById()} setActiveRecipe={setActiveRecipeId}></Recipe>} />
+        <Route path="/recipe/:recipeId" element={<Recipe recipes={recipes} ></Recipe>} />
         <Route path="/edit/:recipeId" element={
           // (isRecipeFromCurrentUser()) ?
             <RecipeForm updateRecipe={updateRecipe} user={user.id} recipeData={getRecipeById()} setActiveRecipe={setActiveRecipeId}></RecipeForm>

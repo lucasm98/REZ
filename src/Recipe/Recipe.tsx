@@ -1,95 +1,98 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import './Recipe.css';
-import {RecipeData} from "../interface";
+import {Ingredient, RecipeData} from "../interface";
 import {useParams} from "react-router-dom";
+import {
+  List,
+  ListItemText,
+  Stack,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Paper,
+  TableBody,
+  Card,
+  TextField
+} from "@mui/material";
 
 interface Props {
-  recipeData: RecipeData,
-  setActiveRecipe: (id:number)=>void
+  recipes: RecipeData[]
 }
 
-export const Recipe = ({
-  recipeData={
-  "name":"",
-  "time":0,
-  "level":0,
-  "rating":0,
-  "user":0,
-  "id":0,
-  "ingredients":[],
-  "preparation":[]
-},
-setActiveRecipe}:Props) => {
+export const Recipe = ({recipes}:Props) => {
   const input = useParams();
+  const [recipe,setRecipe] = useState<RecipeData>({"name":"","time":0,"level":0,"rating":0,"user":0,"id":0,"ingredients":[],"preparation":[]});
+  const [persons,setPersons] = useState<number>(4);
 
   useEffect( ()=> {
-      if(input.recipeId !== undefined) setActiveRecipe(parseInt(input.recipeId!))
+      if(input.recipeId !== undefined) setRecipe(recipes.filter((recipeData:RecipeData)=>(recipeData.id === parseInt(input.recipeId!)))[0])
     },[input]
   );
 
-  function renderIngredients(): JSX.Element[] {
-    return  recipeData.ingredients.map((ingredient, index) => (
-        <tr key={index}>
-          <td>{ingredient.name}</td>
-          <td>{ingredient.amount} {ingredient.unit}</td>
-        </tr>
-      ))
+  const handelPersonChange = (event:any):void => {
+    const value:number = event.target.value;
+    setPersons(value);
   }
 
-  function renderPreparation(): JSX.Element[] {
-    return  recipeData.preparation.map((step, index) => (
-      <li key={index}>{step}</li>
+
+  const renderIngredients = () => {
+    const rows:Ingredient[] = recipe.ingredients;
+    return(
+      <TableContainer component={Paper} sx={{width:"80%",alignSelf:"center"}} >
+        <Table  size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell colSpan={2}>
+                <Stack direction="row" spacing={2} textAlign="center">
+                  <Typography mt="auto" mb="auto">Anzahl der Personen</Typography>
+                  <TextField name="persons" value={persons} sx={{height:"auto",width:"10%"}} size="small" onChange={event => handelPersonChange(event)}></TextField>
+                </Stack>
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell align="center">Menge</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row" >{row.name}</TableCell>
+                <TableCell align="center">{row.amount?row.amount*(persons/4):""} {row.unit}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )}
+
+  const renderPreparation = ():JSX.Element[] => {
+    return  recipe.preparation.map((step, index) => (
+      <ListItemText key={index}><Typography variant="h6">{index+1}. {step}</Typography></ListItemText>
     ))
   }
 
   return(
     <div className="Recipe">
-      <table>
-        <caption>Rezept</caption>
-        <tbody>
-        <tr>
-          <td>Name:</td>
-          <td>{recipeData.name}</td>
-        </tr>
-        <tr>
-          <td>Dauer:</td>
-          <td>{recipeData.time}min</td>
-        </tr>
-        <tr>
-          <td>Schwierigkeit:</td>
-          <td>{recipeData.level}</td>
-        </tr>
-        <tr>
-          <td>Bewertung:</td>
-          <td>{recipeData.rating}</td>
-        </tr>
-        <tr>
-          <td colSpan={2}>
-            <table className="ingredients">
-              <thead>
-              <tr>
-                <td>Zutaten</td>
-                <td>Menge</td>
-              </tr>
-              </thead>
-              <tbody>
-                {renderIngredients()}
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td colSpan={2}>Zubereitung:</td>
-        </tr>
-        <tr>
-          <td colSpan={2}>
-            <ol>
-              {renderPreparation()}
-            </ol>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <Card sx={{width:"50%",margin:"auto"}}>
+        <Stack direction="column">
+          <Typography variant="h4" pt={2}>{recipe.name}</Typography>
+          <Typography variant="h5" pt={2}>Dauer: {recipe.time}min</Typography>
+          <Typography variant="h5" pt={1}>Schwierigkeit:  {recipe.level}</Typography>
+          <Typography variant="h5" pt={1} pb={1}>Bewertung: {recipe.rating}</Typography>
+          {renderIngredients()}
+          <Typography pt={3} variant="h5">Zubereitung:</Typography>
+          <List>
+            {renderPreparation()}
+          </List>
+        </Stack>
+      </Card>
     </div>
   );
 };
