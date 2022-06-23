@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Formik, useFormik} from 'formik';
 import {Ingredient, RecipeData} from "../interface";
 import {Box, Button, Grid, InputAdornment, Rating, Slider, TextField, Typography} from "@mui/material";
@@ -11,18 +11,12 @@ import {useNavigate, useParams} from "react-router-dom";
 interface Props {
   updateRecipe: (recipe: RecipeData) => void,
   user: number,
-  recipeData?: RecipeData,
-  setActiveRecipe?: (id:number)=>void
+  recipes?: RecipeData[]
 }
 
-export const RecipeForm = ({updateRecipe, user, recipeData, setActiveRecipe}: Props) => {
+export const RecipeForm = ({updateRecipe, user, recipes}: Props) => {
   const navigate = useNavigate();
   const input = useParams();
-
-  useEffect( ()=> {
-      if(input !== undefined && input.recipeId !== undefined && setActiveRecipe) setActiveRecipe(parseInt(input.recipeId!))
-    },[input]
-  );
 
   const initialValues:RecipeData = {
     name: "",
@@ -35,8 +29,21 @@ export const RecipeForm = ({updateRecipe, user, recipeData, setActiveRecipe}: Pr
     preparation: [],
     id: -1
   }
+
+  const getRecipe = ():RecipeData => {
+    if(input !== undefined && input.recipeId !== undefined && recipes ) {
+      const confirmUserRecipe:RecipeData = recipes.filter((recipeData:RecipeData)=>(recipeData.id.toString() === input.recipeId))[0];
+      if(confirmUserRecipe.user === user) return confirmUserRecipe;
+      else {
+        navigate(`/recipe/${confirmUserRecipe.id}`);
+        return initialValues;
+      }
+    }
+    else return initialValues;
+  }
+
   const formik = useFormik({
-      initialValues: recipeData ? recipeData : initialValues,
+      initialValues: getRecipe(),
       onSubmit: (values) => {
         updateRecipe(values);
         navigate("/created");

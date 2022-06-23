@@ -108,7 +108,7 @@ function App() {
         <Route path="/recipe/:recipeId" element={<Recipe recipes={recipes} ></Recipe>} />
         <Route path="/edit/:recipeId" element={
           // (isRecipeFromCurrentUser()) ?
-            <RecipeForm updateRecipe={updateRecipe} user={user.id} recipeData={getRecipeById()} setActiveRecipe={setActiveRecipeId}></RecipeForm>
+            <RecipeForm updateRecipe={updateRecipe} user={user.id} recipes={recipes}></RecipeForm>
             // :<Navigate to={`/recipe/${activeRecipeId}`}/>
         } />
         <Route path="/add" element={<RecipeForm updateRecipe={updateRecipe} user={user.id}/>}/>
