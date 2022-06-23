@@ -14,6 +14,8 @@ import {RecipeData} from "./interface";
 import {UserForm} from "./UserForm/UserForm";
 import {Recipe} from "./Recipe/Recipe";
 import {User} from "./User/User";
+import {UserList} from "./Admin/UserList/UserList";
+import {RecipeList} from "./Admin/RecipeList/RecipeList";
 
 
 
@@ -21,14 +23,17 @@ function App() {
   const [recipes, updateRecipe, deleteRecipe] = useRecipe();
   const [searchInput, setSearchInput] = useState("");
   const {isLoggedIn, loggIn, loggOut, users, user, toggleFavoriteByRecipeId,updateUser,deleteUser} = useUser();
-  const [activeRecipeId,setActiveRecipeId] = useState<number>(-1);
 
   const filterRecipesByName = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
   const filterRecipesByCreator = () => recipes.filter((recipe: RecipeData, index: number) => (recipe.user === user?.id));
   const filterRecipesByFavorites = () => recipes.filter((recipe: RecipeData, index: number) => (user?.favorites.includes(recipe.id)));
 
-  const getRecipeById = () => recipes.filter((recipe: RecipeData) => (recipe.id === activeRecipeId))[0];
-  const isRecipeFromCurrentUser = (): boolean => (user.favorites.includes(activeRecipeId));
+  const getAdminRoutes = () =>(
+    <Route path="/admin">
+      <Route path="/admin/users" element={<UserList userDataList={users} recipes={recipes}/>}/>
+      <Route path="/admin/recipes" element={<RecipeList userDataList={users} recipes={recipes}/>}/>
+    </Route>
+  )
 
   const getRoutesPublic = () => {
     return (
@@ -106,14 +111,11 @@ function App() {
                  />
                }/>
         <Route path="/recipe/:recipeId" element={<Recipe recipes={recipes} ></Recipe>} />
-        <Route path="/edit/:recipeId" element={
-          // (isRecipeFromCurrentUser()) ?
-            <RecipeForm updateRecipe={updateRecipe} user={user.id} recipes={recipes}></RecipeForm>
-            // :<Navigate to={`/recipe/${activeRecipeId}`}/>
-        } />
+        <Route path="/edit/:recipeId" element={<RecipeForm updateRecipe={updateRecipe} user={user.id} recipes={recipes}></RecipeForm>}/>
         <Route path="/add" element={<RecipeForm updateRecipe={updateRecipe} user={user.id}/>}/>
         <Route path="/account" element={<User userData={user} deleteUser={deleteUser} loggOut={loggOut} recipes={recipes}/>}/>
         <Route path="/account/edit" element={<UserForm updateUser={updateUser} user={user}/>} />
+        {user && user.id === 0 && getAdminRoutes() }
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
     );

@@ -26,7 +26,7 @@ export default function Home({user}:Props) {
             </Typography>
           </Grid>
           <HomeCard name="Benutzer verwalten" link="/admin/users" icon={<PersonIcon/>}/>
-          <HomeCard name="Rezepte Verwalten" link="/admin/recipe" icon={<BorderColorIcon/>}/>
+          <HomeCard name="Rezepte Verwalten" link="/admin/recipes" icon={<BorderColorIcon/>}/>
         </>
       );
     }
