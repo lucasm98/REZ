@@ -80,6 +80,9 @@ export default function RecipeCard({recipeData , user,deleteRecipe, toggleFavori
             <Typography variant="body1" paragraph>
               Dauer: {recipeData.time} min
             </Typography>
+            <Typography variant="body1" paragraph>
+              Personen: {recipeData.persons}
+            </Typography>
             <Typography variant={"body1"} paragraph>
               Schwierigkeit: {recipeData.level}
             </Typography>

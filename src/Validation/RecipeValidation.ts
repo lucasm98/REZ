@@ -7,8 +7,14 @@ export const RecipeSchema = object().shape({
     .typeError('Bitte Zahl eingeben')
     .positive('Bitte positive Zahl eingeben')
     .integer('Bitte ganze Zahl eingeben')
-    .lessThan(10000)
+    .lessThan(100000)
     .required('Die Zeit ist Erforderlich'),
+  persons: number()
+    .typeError('Bitte Zahl eingeben')
+    .positive('Bitte positive Zahl eingeben')
+    .integer('Bitte ganze Zahl eingeben')
+    .lessThan(50)
+    .required('Die Anzahl der Personen ist Erforderlich'),
   level: number()
     .required()
     .moreThan(-1)

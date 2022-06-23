@@ -27,7 +27,7 @@ export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:
     } else {
       correctRecipe(data)
         .then(recipe => {
-          setRecipes(recipes => [...recipes,recipe]);
+          setRecipes(recipes => [...recipes.filter((recipeData:RecipeData)=>(recipeData.id!==data.id)),recipe]);
       })
     }
 

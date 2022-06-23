@@ -12,6 +12,7 @@ export interface RecipeData{
   level: number,
   rating: number,
   user: number,
+  persons: number,
   ingredients: Ingredient[],
   preparation: string[],
   id:number,

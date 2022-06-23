@@ -30,6 +30,7 @@ export const RecipeForm = ({updateRecipe, user, recipeData, setActiveRecipe}: Pr
     level: 0,
     rating: 1,
     user: user,
+    persons:0,
     ingredients: [],
     preparation: [],
     id: -1
@@ -123,6 +124,15 @@ export const RecipeForm = ({updateRecipe, user, recipeData, setActiveRecipe}: Pr
             onBlur={formik.handleBlur}
           />
           {formik.errors.time && formik.touched.time && <Typography variant="subtitle1" color="red">{formik.errors.time}</Typography>}
+          <TextField
+            label="Anzahl der Personen"
+            name="persons"
+            variant="standard"
+            value={formik.values.persons === 0 ? "" : formik.values.persons}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.errors.persons && formik.touched.persons && <Typography variant="subtitle1" color="red">{formik.errors.persons}</Typography>}
           <Grid item>
             <Typography>Aufwand</Typography>
             <Slider

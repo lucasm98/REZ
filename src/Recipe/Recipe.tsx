@@ -24,11 +24,16 @@ interface Props {
 
 export const Recipe = ({recipes}:Props) => {
   const input = useParams();
-  const [recipe,setRecipe] = useState<RecipeData>({"name":"","time":0,"level":0,"rating":0,"user":0,"id":0,"ingredients":[],"preparation":[]});
+  const [recipe,setRecipe] = useState<RecipeData>({"name":"","time":0,"level":0,"rating":0,"user":0,"id":0,"persons":0,"ingredients":[],"preparation":[]});
   const [persons,setPersons] = useState<number>(4);
 
   useEffect( ()=> {
-      if(input.recipeId !== undefined) setRecipe(recipes.filter((recipeData:RecipeData)=>(recipeData.id === parseInt(input.recipeId!)))[0])
+      if(input.recipeId !== undefined)
+      {
+        const inputRecipe:RecipeData = recipes.filter((recipeData:RecipeData)=>(recipeData.id === parseInt(input.recipeId!)))[0];
+        setRecipe(inputRecipe);
+        setPersons(inputRecipe.persons);
+      }
     },[input]
   );
 
@@ -64,7 +69,7 @@ export const Recipe = ({recipes}:Props) => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row" >{row.name}</TableCell>
-                <TableCell align="center">{row.amount?row.amount*(persons/4):""} {row.unit}</TableCell>
+                <TableCell align="center">{row.amount?row.amount*(persons/recipe.persons):""} {row.unit}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -83,7 +88,7 @@ export const Recipe = ({recipes}:Props) => {
       <Card sx={{width:"50%",margin:"auto"}}>
         <Stack direction="column">
           <Typography variant="h4" pt={2}>{recipe.name}</Typography>
-          <Typography variant="h5" pt={2}>Dauer: {recipe.time}min</Typography>
+          <Typography variant="h5" pt={2}>Dauer: {recipe.time} min</Typography>
           <Typography variant="h5" pt={1}>Schwierigkeit:  {recipe.level}</Typography>
           <Typography variant="h5" pt={1} pb={1}>Bewertung: {recipe.rating}</Typography>
           {renderIngredients()}
