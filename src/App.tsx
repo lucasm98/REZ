@@ -112,7 +112,7 @@ function App() {
             // :<Navigate to={`/recipe/${activeRecipeId}`}/>
         } />
         <Route path="/add" element={<RecipeForm updateRecipe={updateRecipe} user={user.id}/>}/>
-        <Route path="/account" element={<User userData={user} deleteUser={deleteUser} loggOut={loggOut}/>}/>
+        <Route path="/account" element={<User userData={user} deleteUser={deleteUser} loggOut={loggOut} recipes={recipes}/>}/>
         <Route path="/account/edit" element={<UserForm updateUser={updateUser} user={user}/>} />
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
