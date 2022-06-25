@@ -8,13 +8,12 @@ interface props {
   recipeList: RecipeData[];
   searchInput: string;
   setSearchInput: (input:string)=> void;
-  filter?: string;
   currentUser?: UserData;
   toggleFavoriteByRecipeId?: (id:number)=>boolean,
   deleteRecipe?: (id:number)=>void;
 }
 
-export function RecipeBook({recipeList, deleteRecipe,searchInput, setSearchInput,currentUser,toggleFavoriteByRecipeId, filter}: props) {
+export function RecipeBook({recipeList, deleteRecipe,searchInput, setSearchInput,currentUser,toggleFavoriteByRecipeId}: props) {
   const input = useParams();
 
   useEffect( ()=> {

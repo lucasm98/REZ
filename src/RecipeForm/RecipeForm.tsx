@@ -92,7 +92,7 @@ export const RecipeForm = ({updateRecipe, currentUser, recipeList,admin}: Props)
   return (
     <Formik
       initialValues={formik.initialValues}
-      onSubmit={(e)=>formik.handleSubmit()}>
+      onSubmit={()=>formik.handleSubmit()}>
       <Box
         component="form"
         sx={{

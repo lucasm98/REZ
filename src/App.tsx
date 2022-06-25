@@ -24,9 +24,9 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const {isLoggedIn, loggIn, loggOut, userList, currentUser, toggleFavoriteByRecipeId,updateUser,deleteUser} = useUser();
 
-  const filterrecipeListByName = () => recipeList.filter((recipe: RecipeData, index: number) => (recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
-  const filterrecipeListByCreator = () => recipeList.filter((recipe: RecipeData, index: number) => (recipe.user === currentUser?.id));
-  const filterrecipeListByFavorites = () => recipeList.filter((recipe: RecipeData, index: number) => (currentUser?.favorites.includes(recipe.id)));
+  const filterrecipeListByName = () => recipeList.filter((recipe: RecipeData) => (recipe.name.toLowerCase().includes(searchInput.toLowerCase())));
+  const filterrecipeListByCreator = () => recipeList.filter((recipe: RecipeData) => (recipe.user === currentUser?.id));
+  const filterrecipeListByFavorites = () => recipeList.filter((recipe: RecipeData) => (currentUser?.favorites.includes(recipe.id)));
 
   const getAdminRoutes = () =>(
     <Route path="/admin">
@@ -60,7 +60,6 @@ function App() {
                    setSearchInput={setSearchInput}
                    toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
                    currentUser={currentUser}
-                   filter={"name"}
                  />
                }/>
         <Route path="/recipe/:recipeId" element={<Recipe recipeList={recipeList}></Recipe>} />

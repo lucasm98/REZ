@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {UserData} from "../interface";
 import axios from "axios";
 
@@ -21,7 +21,7 @@ export default function useUser(): ReturnProps {
   const getNextFreeId = ():number => {
     let id=0;
     const usedIds:number[]=[];
-    userList.forEach((user,index:number)=> {
+    userList.forEach((user)=> {
       usedIds.push(user.id!);
     });
     while(usedIds.includes(id)){
@@ -42,7 +42,7 @@ export default function useUser(): ReturnProps {
 
   const loggIn = (name:string,password:string):boolean => {
     let firstUserFound:boolean = false;
-    userList.forEach((user:UserData, index:number)=> {
+    userList.forEach((user:UserData)=> {
       if(user.username === name && user.password===password && !firstUserFound){
         firstUserFound = true;
         setIsLoggedIn(true);

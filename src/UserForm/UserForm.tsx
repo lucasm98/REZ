@@ -58,7 +58,7 @@ export const UserForm = ({updateUser,currentUser,userList}:Props) => {
   return (
     <Formik
       initialValues={formik.initialValues}
-      onSubmit={(e)=>formik.handleSubmit()}
+      onSubmit={()=>formik.handleSubmit()}
     >
       <Form
         onSubmit={formik.handleSubmit}
