@@ -4,23 +4,23 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteIcon from "@mui/icons-material/Delete";
 
  interface Props {
-   preparation:  string[],
+   preparationList:  string[],
    setPreparation: (preparation:string[]) => void,
    error?: any,
    setTouched?: any,
    touched?: any
  }
 
-export const PreparationForm = ({preparation,setPreparation,touched,setTouched,error}:Props) => {
+export const PreparationForm = ({preparationList,setPreparation,touched,setTouched,error}:Props) => {
 
   const removePreparation = (index:number) => {
-    const list = [...preparation];
+    const list = [...preparationList];
     list.splice(index, 1);
     setPreparation(list);
   };
 
   const addPreparation = () => {
-    setPreparation([...preparation,""]);
+    setPreparation([...preparationList,""]);
     setTouched("preparation");
   }
 
@@ -30,7 +30,7 @@ export const PreparationForm = ({preparation,setPreparation,touched,setTouched,e
 
   const handleChange = (e: React.ChangeEvent<any>, index:number):void => {
     const {value} = e.target;
-    const list:string[] = [...preparation];
+    const list:string[] = [...preparationList];
     list[index] = value;
     setPreparation(list);
   }
@@ -40,7 +40,7 @@ export const PreparationForm = ({preparation,setPreparation,touched,setTouched,e
       <List>
         <Typography >Zubereitung</Typography>
         {
-          preparation.map((step:string, index:number)=>(
+          preparationList.map((step:string, index:number)=>(
             <ListItem key={index}>
               <TextField
                 type="text"

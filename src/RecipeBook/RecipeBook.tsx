@@ -5,16 +5,16 @@ import RecipeCard from "./RecipeCard";
 import {useParams} from "react-router-dom";
 
 interface props {
-  recipes: RecipeData[];
+  recipeList: RecipeData[];
   searchInput: string;
   setSearchInput: (input:string)=> void;
   filter?: string;
-  user?: UserData;
+  currentUser?: UserData;
   toggleFavoriteByRecipeId?: (id:number)=>boolean,
   deleteRecipe?: (id:number)=>void;
 }
 
-export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput,user,toggleFavoriteByRecipeId, filter}: props) {
+export function RecipeBook({recipeList, deleteRecipe,searchInput, setSearchInput,currentUser,toggleFavoriteByRecipeId, filter}: props) {
   const input = useParams();
 
   useEffect( ()=> {
@@ -26,20 +26,20 @@ export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput,us
 
   const renderRecipeCard = (recipe:RecipeData):any => {
     // console.log("recipe.user: "+recipe.user.toString()+"| user?.id:"+user?.id.toString());
-    if(recipe.user === user?.id){
+    if(recipe.user === currentUser?.id){
       return (
         <RecipeCard  key={recipe.id}
           recipeData={recipe}
           deleteRecipe={deleteRecipe}
-          user={user}
+          user={currentUser}
           toggleFavoriteByRecipeId ={toggleFavoriteByRecipeId}
         />
       );
-    } else if(user) {
+    } else if(currentUser) {
       return (
         <RecipeCard  key={recipe.id}
           recipeData={recipe}
-          user={user}
+          user={currentUser}
           toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
         />
       );
@@ -63,12 +63,12 @@ export function RecipeBook({recipes, deleteRecipe,searchInput, setSearchInput,us
         md={8}
         item
       >
-        {recipes.map((recipe, index) => (
+        {recipeList.map((recipe, index) => (
           <Grid item md={6} key={index}>
             {renderRecipeCard(recipe)}
           </Grid>
         ))}
-        {recipes.length === 0 && <Typography variant="h4">Keine Rezepte gefunden...</Typography>}
+        {recipeList.length === 0 && <Typography variant="h4">Keine Rezepte gefunden...</Typography>}
       </Grid>
     </>
   );

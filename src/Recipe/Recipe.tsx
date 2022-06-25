@@ -19,10 +19,10 @@ import {
 } from "@mui/material";
 
 interface Props {
-  recipes: RecipeData[]
+  recipeList: RecipeData[]
 }
 
-export const Recipe = ({recipes}:Props) => {
+export const Recipe = ({recipeList}:Props) => {
   const input = useParams();
   const [recipe,setRecipe] = useState<RecipeData>({"name":"","time":0,"level":0,"rating":0,"user":0,"id":0,"persons":0,"ingredients":[],"preparation":[]});
   const [persons,setPersons] = useState<number>(4);
@@ -30,7 +30,7 @@ export const Recipe = ({recipes}:Props) => {
   useEffect( ()=> {
       if(input.recipeId !== undefined)
       {
-        const inputRecipe:RecipeData = recipes.filter((recipeData:RecipeData)=>(recipeData.id === parseInt(input.recipeId!)))[0];
+        const inputRecipe:RecipeData = recipeList.filter((recipeData:RecipeData)=>(recipeData.id === parseInt(input.recipeId!)))[0];
         setRecipe(inputRecipe);
         setPersons(inputRecipe.persons);
       }

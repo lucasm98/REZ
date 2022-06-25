@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Formik, useFormik} from 'formik';
 import {Ingredient, RecipeData} from "../interface";
 import {Box, Button, Grid, InputAdornment, Rating, Slider, TextField, Typography} from "@mui/material";
@@ -10,11 +10,12 @@ import {useNavigate, useParams} from "react-router-dom";
 
 interface Props {
   updateRecipe: (recipe: RecipeData) => void,
-  user: number,
-  recipes?: RecipeData[]
+  currentUser: number,
+  recipeList?: RecipeData[],
+  admin?: boolean,
 }
 
-export const RecipeForm = ({updateRecipe, user, recipes}: Props) => {
+export const RecipeForm = ({updateRecipe, currentUser, recipeList,admin}: Props) => {
   const navigate = useNavigate();
   const input = useParams();
 
@@ -23,7 +24,7 @@ export const RecipeForm = ({updateRecipe, user, recipes}: Props) => {
     time: 0,
     level: 0,
     rating: 1,
-    user: user,
+    user: currentUser,
     persons:0,
     ingredients: [],
     preparation: [],
@@ -31,9 +32,9 @@ export const RecipeForm = ({updateRecipe, user, recipes}: Props) => {
   }
 
   const getRecipe = ():RecipeData => {
-    if(input !== undefined && input.recipeId !== undefined && recipes ) {
-      const confirmUserRecipe:RecipeData = recipes.filter((recipeData:RecipeData)=>(recipeData.id.toString() === input.recipeId))[0];
-      if(confirmUserRecipe.user === user) return confirmUserRecipe;
+    if(input !== undefined && input.recipeId !== undefined && recipeList ) {
+      const confirmUserRecipe:RecipeData = recipeList.filter((recipeData:RecipeData)=>(recipeData.id.toString() === input.recipeId))[0];
+      if(confirmUserRecipe.user === currentUser || admin) return confirmUserRecipe;
       else {
         navigate(`/recipe/${confirmUserRecipe.id}`);
         return initialValues;
@@ -172,14 +173,14 @@ export const RecipeForm = ({updateRecipe, user, recipes}: Props) => {
           </Grid>
           {formik.errors.rating && formik.touched.rating && <Typography variant="subtitle1" color="red">{formik.errors.rating}</Typography>}
           <IngredientForm
-            ingredients={formik.values.ingredients}
+            ingredientList={formik.values.ingredients}
             setIngredients={setIngredients}
             error={formik.errors.ingredients ? formik.errors.ingredients : undefined}
             setTouched={setTouched}
             touched={formik.touched ? formik.touched: undefined}
           />
           <PreparationForm
-            preparation={formik.values.preparation}
+            preparationList={formik.values.preparation}
             setPreparation={setPreparation}
             error={formik.errors.preparation ? formik.errors.preparation : undefined}
             setTouched={setTouched}

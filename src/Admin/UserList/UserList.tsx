@@ -1,26 +1,35 @@
 import React from 'react';
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import {RecipeData, UserData} from "../../interface";
+import IconButton from "@mui/material/IconButton";
+import PersonIcon from '@mui/icons-material/Person';
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
-  userDataList: UserData[],
-  recipes: RecipeData[],
+  userList: UserData[],
+  recipeList: RecipeData[],
 }
 
-export const UserList = ({userDataList,recipes}:Props) => {
+export const UserList = ({userList,recipeList}:Props) => {
+  const navigate = useNavigate();
 
   const renderUserData = () => {
 
     return (
-      userDataList.map((userData:UserData)=>(
+      userList.map((userData:UserData)=>(
         <TableRow key={userData.id}>
+          <TableCell>
+            <IconButton onClick={()=>navigate(`/admin/user/${userData.id}`)}><PersonIcon /></IconButton>
+            <IconButton onClick={()=>navigate(`/admin/user/edit/${userData.id}`)}><BorderColorIcon/></IconButton>
+          </TableCell>
           <TableCell>{userData.id}</TableCell>
           <TableCell>{userData.name}</TableCell>
           <TableCell>{userData.username}</TableCell>
           <TableCell>{userData.email}</TableCell>
           <TableCell>{userData.password}</TableCell>
           <TableCell>{userData.favorites.map((id:number)=>(id+" "))}</TableCell>
-          <TableCell>{recipes.map((recipe:RecipeData)=>(recipe.user===userData.id?recipe.id+" ":""))}</TableCell>
+          <TableCell>{recipeList.map((recipe:RecipeData)=>(recipe.user===userData.id?recipe.id+" ":""))}</TableCell>
         </TableRow>
       ))
     );
@@ -30,6 +39,7 @@ export const UserList = ({userDataList,recipes}:Props) => {
     <Table>
       <TableHead>
         <TableRow>
+          <TableCell>Aktionen</TableCell>
           <TableCell>ID</TableCell>
           <TableCell>Name</TableCell>
           <TableCell>Benutzername</TableCell>

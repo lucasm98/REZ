@@ -1,35 +1,27 @@
 import React, {useEffect, useState} from "react";
-import {RecipeData, UserData} from "../interface";
+import {UserData} from "../interface";
 import axios from "axios";
 
 interface ReturnProps {
   isLoggedIn:boolean,
   loggIn:(name:string,password:string) => boolean,
   loggOut:() => void,
-  users:UserData[],
-  user:UserData,
+  userList:UserData[],
+  currentUser:UserData,
   toggleFavoriteByRecipeId:(id:number)=>boolean,
   updateUser:(user:UserData)=>void,
   deleteUser:(id:number)=>void
 }
 
-/*boolean,
-  (name:string,password:string) => boolean,
-  () => void,
-  UserData[],
-  UserData,
-  (id:number)=>boolean,
-  (user:UserData)=>void*/
-
 export default function useUser(): ReturnProps {
-  const [users,setUsers] = useState<UserData[]>([]);
-  const [user,setUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
+  const [userList,setUserList] = useState<UserData[]>([]);
+  const [currentUser,setCurrentUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
 
   const getNextFreeId = ():number => {
     let id=0;
     const usedIds:number[]=[];
-    users.forEach((user,index:number)=> {
+    userList.forEach((user,index:number)=> {
       usedIds.push(user.id!);
     });
     while(usedIds.includes(id)){
@@ -44,17 +36,17 @@ export default function useUser(): ReturnProps {
         const { data } = await axios.get('http://localhost:3001/user');
         userData = data;
       };
-      fetchData().then(()=>( setUsers(userData)) );
+      fetchData().then(()=>( setUserList(userData)) );
     }, []
   );
 
   const loggIn = (name:string,password:string):boolean => {
     let firstUserFound:boolean = false;
-    users.forEach((user:UserData, index:number)=> {
+    userList.forEach((user:UserData, index:number)=> {
       if(user.username === name && user.password===password && !firstUserFound){
         firstUserFound = true;
         setIsLoggedIn(true);
-        setUser(user);
+        setCurrentUser(user);
       }
     });
     console.log(firstUserFound?"Login succeeded":"Login failed");
@@ -71,14 +63,14 @@ export default function useUser(): ReturnProps {
   const isFavorite = (id:number,favorites:number[]):boolean => favorites.includes(id);
 
   const toggleFavoriteByRecipeId = (id:number):boolean => {
-    let favorites:number[] = user.favorites;
+    let favorites:number[] = currentUser.favorites;
 
     const isFav = isFavorite(id, favorites);
 
     favorites = isFav ? removeFavorite(id, favorites) : addFavorite(id, favorites)
 
     updateUser({
-      ...user,
+      ...currentUser,
       favorites
     })
 
@@ -92,13 +84,13 @@ export default function useUser(): ReturnProps {
       data.id = getNextFreeId();
       addUser(data)
         .then(newUser=> {
-          setUsers( users => [...users,newUser]);
+          setUserList( users => [...users,newUser]);
       })
     } else {
       correctUser(data)
         .then(existingUser => {
-          setUser(existingUser);
-          setUsers( users => [...users,existingUser]);
+          if(currentUser.id !== 0)   setCurrentUser(existingUser);
+          setUserList( users => [...users.filter((userData:UserData)=>(userData.id !== existingUser.id)),existingUser]);
         })
     }
 
@@ -114,15 +106,15 @@ export default function useUser(): ReturnProps {
   const addUser = async (newUser:UserData) => {
     console.log("addUser",newUser);
     await axios.post('http://localhost:3001/user', newUser);
-    setUsers(users => [...users,newUser]);
+    setUserList(users => [...users,newUser]);
     return newUser
   }
 
   const deleteUser = async (id: number) => {
     await axios.delete(`http://localhost:3001/user/${id}`);
-    setUsers(users => users.filter((user:UserData) => user.id !== id));
-    setUser({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
+    setUserList(users => users.filter((user:UserData) => user.id !== id));
+    setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
   }
 
-  return {isLoggedIn,loggIn,loggOut,users,user,toggleFavoriteByRecipeId,updateUser,deleteUser};
+  return {isLoggedIn,loggIn,loggOut,userList: userList,currentUser: currentUser,toggleFavoriteByRecipeId,updateUser,deleteUser};
 }

@@ -11,13 +11,13 @@ import {UserData} from "../interface";
 import {HomeCard} from "./HomeCard";
 
 interface Props {
-  user:UserData,
+  currentUser:UserData,
 }
 
-export default function Home({user}:Props) {
+export default function Home({currentUser}:Props) {
 
   const renderAdminCards = () => {
-    if (user.id === 0) {
+    if (currentUser.id === 0) {
       return(
         <>
           <Grid item xs={12} md={12} mt={2}>
@@ -25,8 +25,8 @@ export default function Home({user}:Props) {
               Admin
             </Typography>
           </Grid>
-          <HomeCard name="Benutzer verwalten" link="/admin/users" icon={<PersonIcon/>}/>
-          <HomeCard name="Rezepte Verwalten" link="/admin/recipes" icon={<BorderColorIcon/>}/>
+          <HomeCard name="Benutzer verwalten" link="/admin/user" icon={<PersonIcon/>}/>
+          <HomeCard name="Rezepte Verwalten" link="/admin/recipe" icon={<BorderColorIcon/>}/>
         </>
       );
     }

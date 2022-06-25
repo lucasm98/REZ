@@ -193,9 +193,13 @@
       "name": "admin",
       "username": "admin",
       "password": "admin",
-      "email": "test@test.de",
+      "email": "admin@admin.de",
       "id": 0,
       "favorites": [
+        4,
+        2,
+        1,
+        0,
         3
       ]
     },
@@ -203,7 +207,7 @@
       "name": "Lucas",
       "username": "luc",
       "password": "as",
-      "email": "test@test.de",
+      "email": "lucas@lucas.de",
       "id": 1,
       "favorites": [
         1,
@@ -216,7 +220,7 @@
       "name": "Fenja",
       "username": "fen",
       "password": "ja",
-      "email": "test@test.de",
+      "email": "fenja@fenja.de",
       "id": 2,
       "favorites": [
         1,

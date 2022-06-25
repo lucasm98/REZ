@@ -1,30 +1,33 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Formik, useFormik, Form} from "formik";
 import {UserSchema} from "../Validation/UserValidation";
 import {Box, Button} from "@mui/material";
 import {UserData} from "../interface";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {TextField} from "./TextField";
 
 interface Props {
   updateUser : (user:UserData)=> void,
-  user?: UserData
+  currentUser?: UserData,
+  userList?:  UserData[]
 }
 
-export const UserForm = ({updateUser,user}:Props) => {
+const initialValues:UserData = {
+  name:"",
+  username:"",
+  email:"",
+  password:"",
+  id:-1,
+  favorites:[]
+}
 
+export const UserForm = ({updateUser,currentUser,userList}:Props) => {
   const navigate = useNavigate();
-  const initialValues = {
-    name:"",
-    username:"",
-    email:"",
-    password:"",
-    confirmationPassword:"",
-    id:-1,
-    favorites:[]
-  }
+  const input = useParams();
+  const [user,setUser] = useState<UserData>(currentUser?currentUser:initialValues);
+
   const formik = useFormik({
-    initialValues: user?{...user,confirmationPassword:user.password}:initialValues,
+    initialValues: {...user,confirmationPassword:user.password},
     onSubmit: (values)=> {
       console.log(values);
       updateUser({
@@ -35,13 +38,22 @@ export const UserForm = ({updateUser,user}:Props) => {
         "id":values.id,
         "favorites":values.favorites
       })
-      navigate(user?"/account":"/login");
+      if(currentUser?.id === 0) navigate("/admin/user");
+      else navigate(currentUser?"/":"/login"); // TO-DO: When logged in redirect to /account and show new Userdata
     },
-    validationSchema:UserSchema(user?user:undefined),
+    validationSchema:UserSchema(currentUser?currentUser:undefined,currentUser?.id === 0 ? user : undefined),
     validateOnChange:false
   });
 
-  // console.log(formik.errors);
+  useEffect( ()=> {
+      if(input.userId !== undefined && userList !== undefined && currentUser !== undefined && currentUser.id === 0)
+      {
+        const inputUser:UserData = userList.filter((userData:UserData)=>(userData.id === parseInt(input.userId as string)))[0];
+        setUser(inputUser);
+        formik.setValues({...inputUser,confirmationPassword:inputUser.password});
+      }
+    },[input]
+  );
 
   return (
     <Formik

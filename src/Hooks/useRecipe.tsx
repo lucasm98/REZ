@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
-import {RecipeData, UserData} from "../interface";
+import {useEffect, useState} from "react";
+import {RecipeData} from "../interface";
 import axios from "axios";
 
 export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:number) => void] {
-  const [recipes,setRecipes] = useState<RecipeData[]>([]);
+  const [recipeList,setRecipeList] = useState<RecipeData[]>([]);
 
   const getNextFreeId = ():number => {
     let id=0;
     const usedIds:number[]=[];
-    recipes.forEach((recipe:RecipeData,index:number)=> {
+    recipeList.forEach((recipe:RecipeData)=> {
       usedIds.push(recipe.id!);
     });
     while(usedIds.includes(id)){
@@ -22,12 +22,12 @@ export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:
     if(data.id===-1) {
       data.id = getNextFreeId();
       addRecipe(data).then(recipe => {
-        setRecipes(recipes => [...recipes,data]);
+        setRecipeList(recipes => [...recipes,data]);
       })
     } else {
       correctRecipe(data)
         .then(recipe => {
-          setRecipes(recipes => [...recipes.filter((recipeData:RecipeData)=>(recipeData.id!==data.id)),recipe]);
+          setRecipeList(recipes => [...recipes.filter((recipeData:RecipeData)=>(recipeData.id!==data.id)),recipe]);
       })
     }
 
@@ -50,7 +50,7 @@ export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:
 
   const deleteRecipe = async (id: number) => {
     await axios.delete(`http://localhost:3001/recipe/${id}`);
-    setRecipes(recipes => recipes.filter((recipe:RecipeData) => recipe.id !== id));
+    setRecipeList(recipes => recipes.filter((recipe:RecipeData) => recipe.id !== id));
   }
 
   useEffect(() => {
@@ -59,11 +59,11 @@ export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:
         const { data } = await axios.get('http://localhost:3001/recipe');
         recipesData = data;
       };
-      fetchData().then(()=>( setRecipes(recipesData)));
+      fetchData().then(()=>( setRecipeList(recipesData)));
     }, []
   );
 
 
 
-  return [recipes,updateRecipe,deleteRecipe];
+  return [recipeList,updateRecipe,deleteRecipe];
 }

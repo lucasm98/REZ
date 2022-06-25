@@ -5,34 +5,34 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 interface Props {
-  ingredients:  Ingredient[],
+  ingredientList:  Ingredient[],
   setIngredients: (ingredients:Ingredient[])=>void
   error?: any,
   setTouched?: any,
   touched?: any
 }
 
-export const IngredientForm = ({ingredients,setIngredients,error,setTouched,touched}:Props) => {
+export const IngredientForm = ({ingredientList,setIngredients,error,setTouched,touched}:Props) => {
 
   const removeIngredient = (index:number) => {
-    const list = [...ingredients];
+    const list = [...ingredientList];
     list.splice(index, 1);
     setIngredients(list);
   };
 
   const addIngredient = () => {
     const emptyIngredient:Ingredient={name:""};
-    setIngredients( [...ingredients,emptyIngredient]);
+    setIngredients( [...ingredientList,emptyIngredient]);
     setTouched("ingredients");
   }
 
   const handleChange = (e: React.ChangeEvent<any>, index:number):void => {
     const {name , value} = e.target;
-    ingredients[index] = {
-      ...ingredients[index],
+    ingredientList[index] = {
+      ...ingredientList[index],
       [name]: value
     };
-    setIngredients(ingredients);
+    setIngredients(ingredientList);
   }
 
   const handelBlur = (e: React.ChangeEvent<any>, index:number):void => {
@@ -58,7 +58,7 @@ export const IngredientForm = ({ingredients,setIngredients,error,setTouched,touc
       <List>
         <Typography >Zutaten</Typography>
         {
-          ingredients.map((ingredient:Ingredient, index:number)=>(
+          ingredientList.map((ingredient:Ingredient, index:number)=>(
             <ListItem key={index} >
               <TextField
                 type="text"

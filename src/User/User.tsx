@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {RecipeData, UserData} from "../interface";
 import {Button, Card, CardActionArea, CardContent, Collapse, Grid, Stack, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {styled} from "@mui/material/styles";
 
@@ -17,10 +17,11 @@ const ExpandMore = styled((props: any) => {
 }));
 
 interface Props {
-  userData:UserData,
+  currentUser:UserData,
   deleteUser:(id:number)=>void,
   loggOut:() => void,
-  recipes:RecipeData[]
+  recipeList:RecipeData[],
+  userList?: UserData[]
 }
 
 interface State {
@@ -28,17 +29,30 @@ interface State {
   created:boolean
 }
 
-export const User = ({userData,deleteUser,loggOut,recipes}:Props) => {
+export const User = ({currentUser,deleteUser,loggOut,recipeList,userList}:Props) => {
   const [state, setState] = useState<State>( {favorites:false,created:false});
+  const [user,setUser] = useState<UserData>(currentUser);
+  const input = useParams();
   const labelSize:number = 6;
   const varSize:number = 5;
   const navigate = useNavigate();
 
+  useEffect( ()=> {
+      if(input !== undefined && input.userId !== undefined && userList !== undefined && currentUser.id === 0)
+      {
+        const inputUser:UserData = userList.filter((userData:UserData)=>(userData.id === parseInt(input.userId as string)))[0];
+        setUser(inputUser);
+      }
+    },[input]
+  );
+
   const deleteAccount = ():void => {
     if (window.confirm('Sind sie sich sicher, dass sie ihren Account löschen wollen?')) {
-      deleteUser(userData.id);
-      loggOut();
-      navigate("/");
+      deleteUser(user.id);
+      if(currentUser.id !== 0){
+        loggOut();
+        navigate("/");
+      }
     }
   }
 
@@ -51,16 +65,16 @@ export const User = ({userData,deleteUser,loggOut,recipes}:Props) => {
   };
 
   const getCreatedRecipesCount = ():number => {
-    return recipes.filter((recipeData:RecipeData)=>(recipeData.user===userData.id)).length;
+    return recipeList.filter((recipeData:RecipeData)=>(recipeData.user===user.id)).length;
   }
 
 
   const renderRecipes= (name:string,varName:string) => {
     return (
       <Stack direction="column" spacing={1} mt={2}>
-        {recipes.filter((recipeData:RecipeData) => (varName === "favorites" ? userData.favorites.includes(recipeData.id):recipeData.user===userData.id))
+        {recipeList.filter((recipeData:RecipeData) => (varName === "favorites" ? user.favorites.includes(recipeData.id):recipeData.user===user.id))
           .map((recipe:RecipeData)=> (
-          <Card>
+          <Card key={recipe.id}>
             <CardActionArea
               onClick={()=>navigate(`/recipe/${recipe.id}`)}
             >
@@ -104,7 +118,7 @@ export const User = ({userData,deleteUser,loggOut,recipes}:Props) => {
           <Typography variant="h4">Name:</Typography>
         </Grid>
         <Grid item xs={varSize}>
-          <Typography variant="h4">{userData.name}</Typography>
+          <Typography variant="h4">{user.name}</Typography>
         </Grid>
       </Grid>
       <Grid
@@ -119,7 +133,7 @@ export const User = ({userData,deleteUser,loggOut,recipes}:Props) => {
           <Typography variant="h4">Benutzername:</Typography>
         </Grid>
         <Grid item xs={varSize}>
-          <Typography variant="h4">{userData.username}</Typography>
+          <Typography variant="h4">{user.username}</Typography>
         </Grid>
       </Grid>
       <Grid
@@ -134,7 +148,7 @@ export const User = ({userData,deleteUser,loggOut,recipes}:Props) => {
           <Typography variant="h4">Email:</Typography>
         </Grid>
         <Grid item xs={varSize}>
-          <Typography variant="h4">{userData.email}</Typography>
+          <Typography variant="h4">{user.email}</Typography>
         </Grid>
       </Grid>
       <Grid
@@ -146,7 +160,7 @@ export const User = ({userData,deleteUser,loggOut,recipes}:Props) => {
         alignItems="center"
       >
         <Grid item xs={labelSize}>
-          <Typography variant="h4">Favoriten({userData.favorites.length})</Typography>
+          <Typography variant="h4">Favoriten({user.favorites.length})</Typography>
         </Grid>
         <Grid item xs={varSize}>
           <Button
@@ -188,7 +202,7 @@ export const User = ({userData,deleteUser,loggOut,recipes}:Props) => {
         {renderRecipes("Erstellte Rezepte","created")}
       </Collapse>
       <Grid item>
-        <Button variant="contained" onClick={()=>navigate("/account/edit")}>
+        <Button variant="contained" onClick={()=>navigate(userList?`/admin/user/edit/${input.userId}`:"/account/edit")}>
           Informationen bearbeiten
         </Button>
       </Grid>
