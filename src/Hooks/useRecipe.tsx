@@ -2,7 +2,13 @@ import {useEffect, useState} from "react";
 import {RecipeData} from "../interface";
 import axios from "axios";
 
-export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:number) => void] {
+interface ReturnProps {
+  recipeList: RecipeData[],
+  updateRecipe: (recipe:RecipeData)=>void,
+  deleteRecipe: (id:number) => void
+}
+
+export default function useRecipe():ReturnProps{
   const [recipeList,setRecipeList] = useState<RecipeData[]>([]);
 
   const getNextFreeId = ():number => {
@@ -65,5 +71,5 @@ export default function useRecipe():[RecipeData[],(recipe:RecipeData)=>void,(id:
 
 
 
-  return [recipeList,updateRecipe,deleteRecipe];
+  return {recipeList,updateRecipe,deleteRecipe};
 }

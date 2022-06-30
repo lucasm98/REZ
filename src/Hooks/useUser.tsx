@@ -1,21 +1,22 @@
 import {useEffect, useState} from "react";
-import {UserData} from "../interface";
+import {ShoppingListEntry, UserData} from "../interface";
 import axios from "axios";
 
 interface ReturnProps {
   isLoggedIn:boolean,
   loggIn:(name:string,password:string) => boolean,
   loggOut:() => void,
-  userList:UserData[],
-  currentUser:UserData,
+  getUserList:()=>UserData[],
+  getCurrentUser:()=>UserData,
   toggleFavoriteByRecipeId:(id:number)=>boolean,
   updateUser:(user:UserData)=>void,
-  deleteUser:(id:number)=>void
+  deleteUser:(id:number)=>void,
+  addRecipeToShoppingList:(shoppingListEntry:ShoppingListEntry)=>void
 }
 
 export default function useUser(): ReturnProps {
   const [userList,setUserList] = useState<UserData[]>([]);
-  const [currentUser,setCurrentUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
+  const [currentUser,setCurrentUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[]});
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
 
   const getNextFreeId = ():number => {
@@ -77,6 +78,26 @@ export default function useUser(): ReturnProps {
     return !isFav;
   }
 
+  const addRecipeToShoppingList = (shoppingListEntry:ShoppingListEntry):void => {
+    let newShoppingList:ShoppingListEntry[] = currentUser.shoppingList;
+    let includesRecipe:boolean = false;
+    newShoppingList.forEach((listEntry:ShoppingListEntry,index:number)=>{
+      if(listEntry.recipe === shoppingListEntry.recipe) {
+        newShoppingList[index].amount += shoppingListEntry.amount;
+        includesRecipe = true;
+      }
+    });
+    if(includesRecipe) console.log("Updated Recipe",shoppingListEntry.recipe,"for +",shoppingListEntry.amount,"Persons to shoppinglist");
+    else {
+        newShoppingList.push(shoppingListEntry);
+        console.log("Added Recipe",shoppingListEntry.recipe,"for",shoppingListEntry.amount,"Persons to shoppinglist");
+    }
+    updateUser({
+      ...currentUser,
+      shoppingList:newShoppingList
+    })
+  }
+
   const updateUser = async (data:UserData) => {
 
     console.log("updateUser",data);
@@ -113,8 +134,11 @@ export default function useUser(): ReturnProps {
   const deleteUser = async (id: number) => {
     await axios.delete(`http://localhost:3001/user/${id}`);
     setUserList(users => users.filter((user:UserData) => user.id !== id));
-    setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[]});
+    setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[]});
   }
 
-  return {isLoggedIn,loggIn,loggOut,userList: userList,currentUser: currentUser,toggleFavoriteByRecipeId,updateUser,deleteUser};
+  const getUserList = ():UserData[] => (userList)
+  const getCurrentUser = ():UserData => (currentUser)
+
+  return {isLoggedIn,loggIn,loggOut,getUserList,getCurrentUser,toggleFavoriteByRecipeId,updateUser,deleteUser,addRecipeToShoppingList};
 }

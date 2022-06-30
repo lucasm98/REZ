@@ -25,4 +25,9 @@ export interface UserData {
   email: string;
   id:number;
   favorites:number[];
+  shoppingList: ShoppingListEntry[];
+}
+export interface ShoppingListEntry {
+  recipe: number,
+  amount: number
 }

@@ -15,6 +15,7 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import HomeIcon from '@mui/icons-material/Home';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -139,6 +140,14 @@ export default function TopAppBar({setSearchInput,searchInput,isLoggedIn,loggOut
 
   const renderMenuButtonLoggedIn = (
     <div>
+      <IconButton
+        size="large"
+        aria-label="go to Shopping Lsit"
+        color="inherit"
+        onClick={()=> navigate("/shoppinglist")}
+      >
+        <ShoppingBagIcon />
+      </IconButton>
       <IconButton
         size="large"
         aria-label="go to save Recipes"

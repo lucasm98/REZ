@@ -18,7 +18,8 @@ const initialValues:UserData = {
   email:"",
   password:"",
   id:-1,
-  favorites:[]
+  favorites:[],
+  shoppingList:[]
 }
 
 export const UserForm = ({updateUser,currentUser,userList}:Props) => {
@@ -36,7 +37,8 @@ export const UserForm = ({updateUser,currentUser,userList}:Props) => {
         "email":values.email,
         "password":values.confirmationPassword,
         "id":values.id,
-        "favorites":values.favorites
+        "favorites":values.favorites,
+        "shoppingList":values.shoppingList
       })
       if(currentUser?.id === 0) navigate("/admin/user");
       else navigate(currentUser?"/":"/login"); // TO-DO: When logged in redirect to /account and show new Userdata

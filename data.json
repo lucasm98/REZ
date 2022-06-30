@@ -186,6 +186,38 @@
         "Abschmecken und Fertig!"
       ],
       "id": 4
+    },
+    {
+      "name": "Nudeln mit aglio e olio",
+      "time": "20",
+      "level": 1,
+      "rating": "5",
+      "user": -1,
+      "persons": "4",
+      "ingredients": [
+        {
+          "name": "Nudeln",
+          "amount": "400",
+          "unit": "g"
+        },
+        {
+          "name": "Knoblauch",
+          "amount": "4",
+          "unit": "Zehen"
+        },
+        {
+          "name": "Öl",
+          "amount": "150",
+          "unit": "ml"
+        }
+      ],
+      "preparation": [
+        "Die Spaghetti in einem großen Topf in reichlich Salzwasser al dente (ca. 8 Minuten) kochen",
+        "Die Knoblauchzehen schälen, durch die Knoblauchpresse drücken oder fein hacken. Die Petersilie waschen, trockenschwenken und die Blätter fein hacken.",
+        " In einer Pfanne das Olivenöl mit Knoblauch, Petersilie und Pfefferoni bei schwacher Hitze erwärmen, etwa 3 Min. ziehen lassen. Nach Belieben salzen.",
+        " Die Nudeln in ein Sieb schütten, gut abtropfen lassen, in die Pfanne zum Knoblauchöl hinzugeben und gut durchmischen."
+      ],
+      "id": 5
     }
   ],
   "user": [
@@ -201,7 +233,8 @@
         1,
         0,
         3
-      ]
+      ],
+      "shoppingList": []
     },
     {
       "name": "Lucas",
@@ -214,7 +247,8 @@
         2,
         3,
         4
-      ]
+      ],
+      "shoppingList": []
     },
     {
       "name": "Fenja",
@@ -225,7 +259,8 @@
       "favorites": [
         1,
         4
-      ]
+      ],
+      "shoppingList": []
     },
     {
       "name": "test",
@@ -234,9 +269,21 @@
       "password": "test",
       "id": 3,
       "favorites": [
-        0,
-        1,
-        2
+        0
+      ],
+      "shoppingList": [
+        {
+          "recipe": 1,
+          "amount": "4"
+        },
+        {
+          "recipe": 3,
+          "amount": 4
+        },
+        {
+          "recipe": 0,
+          "amount": 4
+        }
       ]
     }
   ]

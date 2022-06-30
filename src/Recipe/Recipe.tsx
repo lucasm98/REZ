@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import './Recipe.css';
-import {Ingredient, RecipeData} from "../interface";
-import {useParams} from "react-router-dom";
+import {Ingredient, RecipeData, ShoppingListEntry, UserData} from "../interface";
+import {useNavigate, useParams} from "react-router-dom";
 import {
   List,
   ListItemText,
@@ -15,33 +15,39 @@ import {
   Paper,
   TableBody,
   Card,
-  TextField
+  TextField, Button
 } from "@mui/material";
+import {Formik, useFormik} from "formik";
+import {RecipePersonsSchema} from "../Validation/RecipeValidation";
 
 interface Props {
-  recipeList: RecipeData[]
+  recipeList: RecipeData[],
+  addRecipeToShoppingList?: (shoppingListEntry:ShoppingListEntry)=>void
 }
 
-export const Recipe = ({recipeList}:Props) => {
+export const Recipe = ({recipeList,addRecipeToShoppingList}:Props) => {
+  const navigate = useNavigate();
   const input = useParams();
   const [recipe,setRecipe] = useState<RecipeData>({"name":"","time":0,"level":0,"rating":0,"user":0,"id":0,"persons":0,"ingredients":[],"preparation":[]});
-  const [persons,setPersons] = useState<number>(4);
+
+  const formik = useFormik({
+    initialValues: {"persons":4},
+    onSubmit: (values) => {
+      if(addRecipeToShoppingList)addRecipeToShoppingList({"recipe":recipe.id,"amount":values.persons});
+      navigate("/shoppinglist")
+    },
+    validationSchema:RecipePersonsSchema(addRecipeToShoppingList)
+  });
 
   useEffect( ()=> {
       if(input.recipeId !== undefined)
       {
         const inputRecipe:RecipeData = recipeList.filter((recipeData:RecipeData)=>(recipeData.id === parseInt(input.recipeId!)))[0];
         setRecipe(inputRecipe);
-        setPersons(inputRecipe.persons);
+        formik.setValues({persons: inputRecipe.persons})
       }
     },[input]
   );
-
-  const handelPersonChange = (event:any):void => {
-    const value:number = event.target.value;
-    setPersons(value);
-  }
-
 
   const renderIngredients = () => {
     const rows:Ingredient[] = recipe.ingredients;
@@ -52,8 +58,33 @@ export const Recipe = ({recipeList}:Props) => {
             <TableRow>
               <TableCell colSpan={2}>
                 <Stack direction="row" spacing={2} textAlign="center">
-                  <Typography mt="auto" mb="auto">Anzahl der Personen</Typography>
-                  <TextField name="persons" value={persons} sx={{height:"auto",width:"10%"}} size="small" onChange={event => handelPersonChange(event)}></TextField>
+                  <Formik initialValues={formik.initialValues} onSubmit={()=>formik.handleSubmit()}>
+                    <Stack
+                      component="form"
+                      onSubmit={formik.handleSubmit}
+                      direction="row"
+                      spacing={1}
+                    >
+                      <Typography mt="auto" mb="auto">Anzahl der Personen</Typography>
+                      <TextField
+                        name="persons"
+                        value={formik.values.persons}
+                        sx={{height:"auto",width:"10.5%"}}
+                        size="small"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                      />
+                      {formik.errors.persons && formik.touched.persons && <Typography variant="subtitle1" color="red">{formik.errors.persons}</Typography>}
+                      <Button
+                        type="submit"
+                        name="addToShoppingList"
+                        variant="contained"
+                        size="small"
+                      >
+                        Zur Einkaufsliste Hinzufügen
+                      </Button>
+                    </Stack>
+                  </Formik>
                 </Stack>
               </TableCell>
             </TableRow>
@@ -69,7 +100,7 @@ export const Recipe = ({recipeList}:Props) => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row" >{row.name}</TableCell>
-                <TableCell align="center">{row.amount?row.amount*(persons/recipe.persons):""} {row.unit}</TableCell>
+                <TableCell align="center">{row.amount?row.amount*(formik.values.persons/recipe.persons):""} {row.unit}</TableCell>
               </TableRow>
             ))}
           </TableBody>
