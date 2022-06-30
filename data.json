@@ -10,28 +10,34 @@
       "user": 0,
       "ingredients": [
         {
+          "id": 0,
           "name": "Nudeln",
           "amount": 500,
           "unit": "g"
         },
         {
+          "id": 1,
           "name": "passierte Tomaten",
           "amount": 500,
           "unit": "g"
         },
         {
+          "id": 2,
           "name": "Zwiebeln",
           "amount": 2
         },
         {
+          "id": 3,
           "name": "Knoblauch",
           "amount": 2,
           "unit": "Zehen"
         },
         {
+          "id": 4,
           "name": "Öl"
         },
         {
+          "id": 5,
           "name": "Gewürze"
         }
       ],
@@ -56,11 +62,13 @@
       "user": 0,
       "ingredients": [
         {
+          "id": 0,
           "name": "Milch",
           "amount": 200,
           "unit": "ml"
         },
         {
+          "id": 1,
           "name": "Honig",
           "amount": 1,
           "unit": "Löffel"
@@ -82,26 +90,31 @@
       "user": 0,
       "ingredients": [
         {
+          "id": 0,
           "name": "Wasser",
           "amount": 33,
           "unit": "l"
         },
         {
+          "id": 1,
           "name": "Pilsner Malz",
           "amount": 4.25,
           "unit": "kg"
         },
         {
+          "id": 2,
           "name": "Maisflocken",
           "amount": 1,
           "unit": "kg"
         },
         {
+          "id": 3,
           "name": "Lotus, ",
           "amount": 20,
           "unit": "g"
         },
         {
+          "id": 4,
           "name": "Trockenhefe(Fermentis SafAle K-97)"
         }
       ],
@@ -124,11 +137,13 @@
       "user": 1,
       "ingredients": [
         {
+          "id": 0,
           "name": "Reis",
           "amount": "500",
           "unit": "g"
         },
         {
+          "id": 1,
           "name": "Wasser",
           "amount": "1",
           "unit": "l"
@@ -149,31 +164,37 @@
       "user": 2,
       "ingredients": [
         {
+          "id": 0,
           "name": "Hackfleisch",
           "amount": "500",
           "unit": "g"
         },
         {
+          "id": 1,
           "name": "Lauch",
           "amount": "3",
           "unit": "Stangen"
         },
         {
+          "id": 2,
           "name": "Schmelzkäse",
           "amount": "250",
           "unit": "g"
         },
         {
+          "id": 3,
           "name": "Brühe",
           "amount": "500",
           "unit": "ml"
         },
         {
+          "id": 4,
           "name": "Knoblauch",
           "amount": "5",
           "unit": "Zehen"
         },
         {
+          "id": 5,
           "name": "Schmand",
           "amount": "200",
           "unit": "g"
@@ -196,16 +217,19 @@
       "persons": "4",
       "ingredients": [
         {
+          "id": 0,
           "name": "Nudeln",
           "amount": "400",
           "unit": "g"
         },
         {
+          "id": 1,
           "name": "Knoblauch",
           "amount": "4",
           "unit": "Zehen"
         },
         {
+          "id": 2,
           "name": "Öl",
           "amount": "150",
           "unit": "ml"
@@ -273,16 +297,38 @@
       ],
       "shoppingList": [
         {
-          "recipe": 1,
-          "amount": "4"
-        },
-        {
-          "recipe": 3,
-          "amount": 4
-        },
-        {
           "recipe": 0,
-          "amount": 4
+          "amount": "20",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            false
+          ],
+          "allChecked": true
+        },
+        {
+          "recipe": 1,
+          "amount": "10",
+          "checked": [
+            true,
+            true
+          ],
+          "allChecked": true
+        },
+        {
+          "recipe": 2,
+          "amount": "20",
+          "checked": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "allChecked": true
         }
       ]
     }

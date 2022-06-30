@@ -9,6 +9,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 import {UserData} from "../interface";
 import {HomeCard} from "./HomeCard";
+import {ShoppingBag} from "@mui/icons-material";
 
 interface Props {
   currentUser:UserData,
@@ -46,6 +47,7 @@ export default function Home({currentUser}:Props) {
       <HomeCard name={"Rezept Hinzufügen"} link={"/add"} icon={<AddBoxIcon/>}/>
       <HomeCard name={"Alle Rezepte"} link={"/recipes"} icon={<MenuBookIcon/>}/>
       <HomeCard name={"Erstellte Rezepte"} link={"/created"} icon={<ListIcon/>}/>
+      <HomeCard name={"Einkausliste"} link={"/shoppinglist"} icon={<ShoppingBag/>}/>
       {renderAdminCards()}
     </Grid>
   );

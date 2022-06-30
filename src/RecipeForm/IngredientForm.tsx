@@ -14,6 +14,18 @@ interface Props {
 
 export const IngredientForm = ({ingredientList,setIngredients,error,setTouched,touched}:Props) => {
 
+  const getNextFreeId = ():number => {
+    let id=0;
+    const ingredientIds:number[]=[];
+    ingredientList.forEach((ingredient:Ingredient)=> {
+      ingredientIds.push(ingredient.id);
+    });
+    while(ingredientIds.includes(id)){
+      id++;
+    }
+    return id;
+  }
+
   const removeIngredient = (index:number) => {
     const list = [...ingredientList];
     list.splice(index, 1);
@@ -21,7 +33,7 @@ export const IngredientForm = ({ingredientList,setIngredients,error,setTouched,t
   };
 
   const addIngredient = () => {
-    const emptyIngredient:Ingredient={name:""};
+    const emptyIngredient:Ingredient={id:getNextFreeId(),name:""};
     setIngredients( [...ingredientList,emptyIngredient]);
     setTouched("ingredients");
   }

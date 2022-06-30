@@ -33,7 +33,7 @@ export const Recipe = ({recipeList,addRecipeToShoppingList}:Props) => {
   const formik = useFormik({
     initialValues: {"persons":4},
     onSubmit: (values) => {
-      if(addRecipeToShoppingList)addRecipeToShoppingList({"recipe":recipe.id,"amount":values.persons});
+      if(addRecipeToShoppingList)addRecipeToShoppingList({"recipe":recipe.id,"amount":values.persons,"checked":new Array(recipe.ingredients.length).fill(true),"allChecked":true});
       navigate("/shoppinglist")
     },
     validationSchema:RecipePersonsSchema(addRecipeToShoppingList)

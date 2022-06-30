@@ -1,6 +1,7 @@
 import React from "react";
 
 export interface Ingredient{
+  id:number,
   name: string,
   amount?: number,
   unit?: string,
@@ -29,5 +30,7 @@ export interface UserData {
 }
 export interface ShoppingListEntry {
   recipe: number,
-  amount: number
+  amount: number,
+  checked: boolean[],
+  allChecked: boolean,
 }
