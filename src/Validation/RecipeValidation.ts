@@ -6,18 +6,17 @@ export const ShoppingListPersonsSchema = object().shape({
     .typeError('Bitte Zahl eingeben')
     .integer('Bitte ganze Zahl eingeben')
     .moreThan(-1,'Bitte positive Zahl eingeben')
-    .lessThan(500)
+    .lessThan(501)
     .required('Die Personenanzahl ist Erforderlich')
 });
 
-export const RecipePersonsSchema= (addRecipeToShoppingList?:(shoppingListEntry:ShoppingListEntry)=>void) => object().shape({
+export const RecipePersonsSchema = object().shape({
   persons: number()
     .typeError('Bitte Zahl eingeben')
-    .positive('Bitte positive Zahl eingeben')
+    .moreThan(-1,'Bitte positive Zahl eingeben')
     .integer('Bitte ganze Zahl eingeben')
-    .lessThan(500)
+    .lessThan(501)
     .required('Die Personenanzahl ist Erforderlich')
-    .test('Logged in', 'Anmelden um Rezepte zur Einkaufsliste hinzuzufügen',()=>(addRecipeToShoppingList !== undefined))
 });
 
 export const RecipeSchema = object().shape({

@@ -297,15 +297,24 @@
       ],
       "shoppingList": [
         {
+          "recipe": 1,
+          "amount": 123,
+          "checked": [
+            true,
+            true
+          ],
+          "allChecked": true
+        },
+        {
           "recipe": 0,
-          "amount": 0,
+          "amount": 52,
           "checked": [
             true,
             true,
             true,
             true,
-            false,
-            false
+            true,
+            true
           ],
           "allChecked": true
         }

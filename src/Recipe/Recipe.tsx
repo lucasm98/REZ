@@ -17,8 +17,7 @@ import {
   Card,
   TextField, Button
 } from "@mui/material";
-import {Formik, useFormik} from "formik";
-import {RecipePersonsSchema} from "../Validation/RecipeValidation";
+import {RecipePersonsSchema, ShoppingListPersonsSchema} from "../Validation/RecipeValidation";
 
 interface Props {
   recipeList: RecipeData[],
@@ -29,25 +28,47 @@ export const Recipe = ({recipeList,addRecipeToShoppingList}:Props) => {
   const navigate = useNavigate();
   const input = useParams();
   const [recipe,setRecipe] = useState<RecipeData>({"name":"","time":0,"level":0,"rating":0,"user":0,"id":0,"persons":0,"ingredients":[],"preparation":[]});
+  const [persons,setPersons] = useState<number>(4);
+  const [error,setError] = useState<boolean>(false);
 
-  const formik = useFormik({
-    initialValues: {"persons":4},
-    onSubmit: (values) => {
-      if(addRecipeToShoppingList)addRecipeToShoppingList({"recipe":recipe.id,"amount":values.persons,"checked":new Array(recipe.ingredients.length).fill(true),"allChecked":true});
-      navigate("/shoppinglist")
-    },
-    validationSchema:RecipePersonsSchema(addRecipeToShoppingList)
-  });
+  const submit = () => {
+    if(addRecipeToShoppingList && RecipePersonsSchema.isValid(persons)){
+      addRecipeToShoppingList({"recipe":recipe.id,"amount":persons,"checked":new Array(recipe.ingredients.length).fill(true),"allChecked":true});
+      navigate("/shoppinglist");
+    } else if(!addRecipeToShoppingList){
+      setError(true);
+    }
+  };
+
+  const handelChange = (event:any):void => {
+    const amount:number = event.target.value;
+    ShoppingListPersonsSchema.isValid({"persons":amount})
+      .then((valid)=>{
+        if(valid) {
+          setPersons(parseInt(amount.toString()));
+        }
+      });
+    if(event.target.value==="")setPersons(0);
+  }
 
   useEffect( ()=> {
       if(input.recipeId !== undefined)
       {
         const inputRecipe:RecipeData = recipeList.filter((recipeData:RecipeData)=>(recipeData.id === parseInt(input.recipeId!)))[0];
         setRecipe(inputRecipe);
-        formik.setValues({persons: inputRecipe.persons})
+        setPersons(inputRecipe.persons)
       }
     },[input]
   );
+
+  useEffect(() => {
+    if(error){
+      setTimeout(() => {
+        setError(false)
+      }, 2500);
+    }
+
+  }, [error]);
 
   const renderIngredients = () => {
     const rows:Ingredient[] = recipe.ingredients;
@@ -58,36 +79,28 @@ export const Recipe = ({recipeList,addRecipeToShoppingList}:Props) => {
             <TableRow>
               <TableCell colSpan={2}>
                 <Stack direction="row" spacing={2} textAlign="center">
-                  <Formik initialValues={formik.initialValues} onSubmit={()=>formik.handleSubmit()}>
-                    <Stack
-                      component="form"
-                      onSubmit={formik.handleSubmit}
-                      direction="row"
-                      spacing={1}
-                    >
-                      <Typography mt="auto" mb="auto">Anzahl der Personen</Typography>
-                      <TextField
-                        name="persons"
-                        value={formik.values.persons}
-                        sx={{height:"auto",width:"10.5%"}}
-                        size="small"
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                      />
-                      {formik.errors.persons && formik.touched.persons && <Typography variant="subtitle1" color="red">{formik.errors.persons}</Typography>}
-                      <Button
-                        type="submit"
-                        name="addToShoppingList"
-                        variant="contained"
-                        size="small"
-                      >
-                        Zur Einkaufsliste Hinzufügen
-                      </Button>
-                    </Stack>
-                  </Formik>
+                  <Typography mt="auto" mb="auto">Anzahl der Personen</Typography>
+                  <TextField
+                    name="persons"
+                    value={persons}
+                    sx={{height:"auto",width:"10.5%"}}
+                    size="small"
+                    onChange={handelChange}
+                  />
+                  <Button
+                    name="addToShoppingList"
+                    variant="contained"
+                    size="small"
+                    onClick={submit}
+                  >
+                    Zur Einkaufsliste Hinzufügen
+                  </Button>
                 </Stack>
               </TableCell>
             </TableRow>
+            {error && <TableRow>
+              <TableCell colSpan={2}><Typography variant="h5" color="red" align="center">Für die Einkaufsliste bitte Anmelden</Typography></TableCell>
+            </TableRow>}
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell align="center">Menge</TableCell>
@@ -100,7 +113,7 @@ export const Recipe = ({recipeList,addRecipeToShoppingList}:Props) => {
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row" >{row.name}</TableCell>
-                <TableCell align="center">{row.amount?row.amount*(formik.values.persons/recipe.persons):""} {row.unit}</TableCell>
+                <TableCell align="center">{row.amount?row.amount*(persons/recipe.persons):""} {row.unit}</TableCell>
               </TableRow>
             ))}
           </TableBody>
