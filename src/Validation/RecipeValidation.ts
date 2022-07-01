@@ -1,14 +1,13 @@
 import {array, number, object, string} from "yup";
 import {ShoppingListEntry} from "../interface";
 
-export const ShoppingListSchema = object().shape({
-  list: array()
-    .of(
-      object().shape({
-        recipe: number(),
-        amount: number()
-      })
-    )
+export const ShoppingListPersonsSchema = object().shape({
+  persons: number()
+    .typeError('Bitte Zahl eingeben')
+    .integer('Bitte ganze Zahl eingeben')
+    .moreThan(-1,'Bitte positive Zahl eingeben')
+    .lessThan(500)
+    .required('Die Personenanzahl ist Erforderlich')
 });
 
 export const RecipePersonsSchema= (addRecipeToShoppingList?:(shoppingListEntry:ShoppingListEntry)=>void) => object().shape({

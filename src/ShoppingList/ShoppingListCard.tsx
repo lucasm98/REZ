@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Ingredient, RecipeData, ShoppingListEntry} from "../interface";
 import {Button, Card, CardContent, Checkbox, Grid, Stack, TextField, Typography} from "@mui/material";
+import {RecipePersonsSchema, ShoppingListPersonsSchema} from "../Validation/RecipeValidation";
 
 interface Props {
   recipe: RecipeData,
@@ -15,7 +16,13 @@ export const ShoppingListCard = ({recipe,getShoppingListEntry,shoppingListEntryI
 
   const handelChange = (event:any):void => {
     const amount:number = event.target.value;
-    updateShoppingList(shoppingListEntryIndex,{...shoppingListEntry,amount});
+    ShoppingListPersonsSchema.isValid({"persons":amount})
+      .then((valid)=>{
+        if(valid) {
+          updateShoppingList(shoppingListEntryIndex,{...shoppingListEntry,"amount": parseInt(amount.toString())});
+        }
+    });
+    if(event.target.value==="")updateShoppingList(shoppingListEntryIndex,{...shoppingListEntry,"amount":0});
   }
 
   const checkAllIngredients = (event:any) => {

@@ -9,7 +9,7 @@ interface Props {
   updateUser: (user: UserData) => void,
 }
 
-export const getCurrentDate = (separator:string):string => {
+export const getCurrentDate = (separator1:string,separator2:string,separator3:string):string => {
 
   const newDate = new Date()
   const date = newDate.getDate();
@@ -18,7 +18,7 @@ export const getCurrentDate = (separator:string):string => {
   const hour = newDate.getHours();
   const minute = newDate.getMinutes();
 
-  return `${date}.${month<10?`0${month}`:`${month}`}.${year}${separator}${hour}.${minute}`;
+  return `${date}${separator1}${month<10?`0${month}`:`${month}`}${separator1}${year}${separator2}${hour}${separator3}${minute}`;
 }
 
 export const ShoppingList = ({recipeList,getCurrentUser,updateUser}:Props) => {
@@ -32,13 +32,13 @@ export const ShoppingList = ({recipeList,getCurrentUser,updateUser}:Props) => {
     const blob = new Blob([fileData], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.download = `Einkaufsliste_${getCurrentDate("_")}.txt`;
+    link.download = `Einkaufsliste_${getCurrentDate(".","_",".")}.txt`;
     link.href = url;
     link.click();
   }
 
   const ingredientsListToString = (ingredientList:Ingredient[]):string => {
-    let textToWrite:string = `Einkaufsliste ${getCurrentDate(" ")}\n`;
+    let textToWrite:string = `Einkaufsliste ${getCurrentDate(".","",":")}\n`;
     ingredientList.forEach((ingredient:Ingredient)=>{
       textToWrite=textToWrite.concat(`⬤ ${ingredient.name} ${ingredient.amount?ingredient.amount:""} ${ingredient.unit?ingredient.unit:""}\n`);
     })
@@ -95,7 +95,7 @@ export const ShoppingList = ({recipeList,getCurrentUser,updateUser}:Props) => {
         :allIngredientList
           .sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase()? 1 : -1)
           .map((ingredient:Ingredient,index:number)=>(
-            <ListItemText sx={{"textAlign":"left"}} key={index} ><Typography variant="h6" >{ingredient.name} {ingredient.amount} {ingredient.unit}</Typography></ListItemText>
+            <ListItemText sx={{"textAlign":"left"}} key={index} ><Typography variant="h6" >⬤ {ingredient.name} {ingredient.amount} {ingredient.unit}</Typography></ListItemText>
           ))
     )  ;
   }
@@ -141,26 +141,25 @@ export const ShoppingList = ({recipeList,getCurrentUser,updateUser}:Props) => {
         xs={6}
       >
         <Typography variant="h3">Einkaufsliste</Typography>
-        <Card >
+        <Card>
           <CardContent>
             <Stack
               direction="column"
               spacing={1}
-              justifyContent="center"
-              alignItems="center"
               minWidth={400}
             >
               <List>
                 {renderShoppingList()}
               </List>
             </Stack>
+            {getCurrentUser().shoppingList.length > 0 &&
             <Button
               variant="contained"
               size="small"
               onClick={()=>exportIngredientList(allIngredientList)}
             >
               Download als .txt
-            </Button>
+            </Button>}
           </CardContent>
         </Card>
       </Grid>
