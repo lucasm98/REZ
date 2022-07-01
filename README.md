@@ -9,7 +9,9 @@ Install NodeJS    `sudo apt install nodejs`
 
 Install npm       `sudo apt install npm`
 
-Install Yarn      `npm install --global yarn`
+Install Yarn      `sudo npm install --global yarn`
+
+Install Git       `sudo apt install git`
 
 Clone Git-Repo    `git clone git@github.com:lucasm98/REZ.git`
 
