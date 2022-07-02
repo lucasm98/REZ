@@ -57,7 +57,7 @@ export default function RecipeCard({recipeData , user,deleteRecipe, toggleFavori
   }
 
   const onClickDelete = () => {
-    if (deleteRecipe) {
+    if (deleteRecipe && window.confirm('Rezept Wirklich Löschen?')) {
       deleteRecipe(recipeData.id!);
       navigate("/created");
     }

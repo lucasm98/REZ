@@ -41,7 +41,7 @@ function App() {
       </Route>
       <Route path="/admin/recipe">
         <Route path="/admin/recipe/edit/:recipeId" element={<RecipeForm updateRecipe={updateRecipe} currentUser={currentUser.id} recipeList={recipeList} admin></RecipeForm>}/>
-        <Route path="/admin/recipe" element={<RecipeList userList={userList} recipeList={recipeList}/>}/>
+        <Route path="/admin/recipe" element={<RecipeList userList={userList} recipeList={recipeList} deleteRecipe={deleteRecipe}/>}/>
       </Route>
     </Route>
   )

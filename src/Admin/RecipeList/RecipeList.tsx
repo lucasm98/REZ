@@ -5,22 +5,31 @@ import {useNavigate} from "react-router-dom";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import IconButton from "@mui/material/IconButton";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 interface Props {
   userList: UserData[],
   recipeList: RecipeData[],
+  deleteRecipe: (id:number) => void
 }
 
-export const RecipeList = ({userList,recipeList}:Props) => {
+export const RecipeList = ({userList,recipeList,deleteRecipe}:Props) => {
   const navigate = useNavigate();
-  const renderRecipeData = () => {
 
+  const onClickDelete = (recipe:RecipeData) => {
+    if (window.confirm('Rezept Wirklich Löschen?')) {
+      deleteRecipe(recipe.id);
+    }
+  }
+
+  const renderRecipeData = () => {
     return (
       recipeList.map((recipe:RecipeData)=>(
         <TableRow key={recipe.id} >
           <TableCell>
             <IconButton onClick={()=>navigate(`/recipe/${recipe.id}`)}><MenuBookIcon/></IconButton>
             <IconButton onClick={()=>navigate(`/admin/recipe/edit/${recipe.id}`)}><BorderColorIcon/></IconButton>
+            <IconButton onClick={()=>onClickDelete(recipe)}><DeleteForeverIcon/></IconButton>
           </TableCell>
           <TableCell>{recipe.id}</TableCell>
           <TableCell>{userList.filter((user:UserData)=>(user.id === recipe.user))[0].name}</TableCell>
