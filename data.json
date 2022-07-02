@@ -130,7 +130,7 @@
     },
     {
       "name": "Reis",
-      "time": "15",
+      "time": "16",
       "level": "1",
       "persons": 4,
       "rating": "4",
@@ -157,7 +157,7 @@
     },
     {
       "name": "Käse Lauch Suppe",
-      "time": "30",
+      "time": "31",
       "persons": 4,
       "level": 1,
       "rating": "5",
@@ -213,7 +213,7 @@
       "time": "20",
       "level": 1,
       "rating": "5",
-      "user": -1,
+      "user": 0,
       "persons": "4",
       "ingredients": [
         {
@@ -287,7 +287,7 @@
       "shoppingList": []
     },
     {
-      "name": "test",
+      "name": "test1",
       "username": "test",
       "email": "test@test.test",
       "password": "test",

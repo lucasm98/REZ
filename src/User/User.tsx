@@ -17,7 +17,7 @@ const ExpandMore = styled((props: any) => {
 }));
 
 interface Props {
-  currentUser:UserData,
+  getCurrentData: () => UserData,
   deleteUser:(id:number)=>void,
   loggOut:() => void,
   recipeList:RecipeData[],
@@ -29,19 +29,21 @@ interface State {
   created:boolean
 }
 
-export const User = ({currentUser,deleteUser,loggOut,recipeList,userList}:Props) => {
+export const User = ({getCurrentData,deleteUser,loggOut,recipeList,userList}:Props) => {
   const [state, setState] = useState<State>( {favorites:false,created:false});
-  const [user,setUser] = useState<UserData>(currentUser);
+  const [user,setUser] = useState<UserData>(getCurrentData());
   const input = useParams();
   const labelSize:number = 6;
   const varSize:number = 5;
   const navigate = useNavigate();
 
   useEffect( ()=> {
-      if(input !== undefined && input.userId !== undefined && userList !== undefined && currentUser.id === 0)
+      if(input !== undefined && input.userId !== undefined && userList !== undefined && getCurrentData().id === 0)
       {
         const inputUser:UserData = userList.filter((userData:UserData)=>(userData.id === parseInt(input.userId as string)))[0];
         setUser(inputUser);
+      } else {
+        setUser(getCurrentData());
       }
     },[input]
   );
@@ -49,7 +51,7 @@ export const User = ({currentUser,deleteUser,loggOut,recipeList,userList}:Props)
   const deleteAccount = ():void => {
     if (window.confirm('Sind sie sich sicher, dass sie ihren Account löschen wollen?')) {
       deleteUser(user.id);
-      if(currentUser.id !== 0){
+      if(getCurrentData().id !== 0){
         loggOut();
         navigate("/");
       }

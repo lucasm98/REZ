@@ -47,7 +47,7 @@ export const RecipeForm = ({updateRecipe, currentUser, recipeList,admin}: Props)
       initialValues: getRecipe(),
       onSubmit: (values) => {
         updateRecipe(values);
-        navigate("/created");
+        navigate(currentUser===0?"/admin/recipe":"/created");
       },
       validationSchema:RecipeSchema
   });

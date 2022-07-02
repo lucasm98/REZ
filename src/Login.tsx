@@ -39,10 +39,7 @@ export default function Login({loggIn,isLoggedIn}:Props) {
   }
 
   return (
-    <Grid item md={4}>
-      <Avatar >
-        <LockOutlinedIcon />
-      </Avatar>
+    <Grid item md={4} sx={{width:"50%",marginLeft:"auto",marginRight:"auto"}}>
       <Typography variant="h5">
         Anmelden
       </Typography>

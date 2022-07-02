@@ -8,7 +8,7 @@ import {TextField} from "./TextField";
 
 interface Props {
   updateUser : (user:UserData)=> void,
-  currentUser?: UserData,
+  getCurrentData?: ()=>UserData,
   userList?:  UserData[]
 }
 
@@ -22,10 +22,10 @@ const initialValues:UserData = {
   shoppingList:[]
 }
 
-export const UserForm = ({updateUser,currentUser,userList}:Props) => {
+export const UserForm = ({updateUser,getCurrentData,userList}:Props) => {
   const navigate = useNavigate();
   const input = useParams();
-  const [user,setUser] = useState<UserData>(currentUser?currentUser:initialValues);
+  const [user,setUser] = useState<UserData>(getCurrentData?getCurrentData():initialValues);
 
   const formik = useFormik({
     initialValues: {...user,confirmationPassword:user.password},
@@ -40,15 +40,15 @@ export const UserForm = ({updateUser,currentUser,userList}:Props) => {
         "favorites":values.favorites,
         "shoppingList":values.shoppingList
       })
-      if(currentUser?.id === 0) navigate("/admin/user");
-      else navigate(currentUser?"/":"/login"); // TO-DO: When logged in redirect to /account and show new Userdata
+      if(getCurrentData && getCurrentData()?.id === 0) navigate("/admin/user");
+      else navigate(getCurrentData?"/account":"/login"); // TO-DO: When logged in redirect to /account and show new Userdata
     },
-    validationSchema:UserSchema(currentUser?currentUser:undefined,currentUser?.id === 0 ? user : undefined),
+    validationSchema:UserSchema(getCurrentData?getCurrentData():undefined,getCurrentData && getCurrentData()?.id === 0 ? user : undefined),
     validateOnChange:false
   });
 
   useEffect( ()=> {
-      if(input.userId !== undefined && userList !== undefined && currentUser !== undefined && currentUser.id === 0)
+      if(input.userId !== undefined && userList !== undefined && getCurrentData !== undefined && getCurrentData().id === 0)
       {
         const inputUser:UserData = userList.filter((userData:UserData)=>(userData.id === parseInt(input.userId as string)))[0];
         setUser(inputUser);

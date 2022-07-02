@@ -8,12 +8,12 @@ interface props {
   recipeList: RecipeData[];
   searchInput: string;
   setSearchInput: (input:string)=> void;
-  currentUser?: UserData;
+  getCurrentUser?: () => UserData;
   toggleFavoriteByRecipeId?: (id:number)=>boolean,
   deleteRecipe?: (id:number)=>void;
 }
 
-export function RecipeBook({recipeList, deleteRecipe,searchInput, setSearchInput,currentUser,toggleFavoriteByRecipeId}: props) {
+export function RecipeBook({recipeList, deleteRecipe,searchInput, setSearchInput,getCurrentUser,toggleFavoriteByRecipeId}: props) {
   const input = useParams();
 
   useEffect( ()=> {
@@ -25,20 +25,20 @@ export function RecipeBook({recipeList, deleteRecipe,searchInput, setSearchInput
 
   const renderRecipeCard = (recipe:RecipeData):any => {
     // console.log("recipe.user: "+recipe.user.toString()+"| user?.id:"+user?.id.toString());
-    if(recipe.user === currentUser?.id){
+    if(getCurrentUser && recipe.user === getCurrentUser()?.id){
       return (
         <RecipeCard  key={recipe.id}
           recipeData={recipe}
           deleteRecipe={deleteRecipe}
-          user={currentUser}
+          user={getCurrentUser()}
           toggleFavoriteByRecipeId ={toggleFavoriteByRecipeId}
         />
       );
-    } else if(currentUser) {
+    } else if(getCurrentUser) {
       return (
         <RecipeCard  key={recipe.id}
           recipeData={recipe}
-          user={currentUser}
+          user={getCurrentUser()}
           toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
         />
       );
