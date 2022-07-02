@@ -37,7 +37,7 @@ function App() {
       <Route path="/admin/user">
         <Route path="/admin/user/:userId" element={<User getCurrentData={getCurrentUser} deleteUser={deleteUser} loggOut={loggOut} recipeList={recipeList} userList={userList}/>}/>
         <Route path="/admin/user/edit/:userId" element={<UserForm updateUser={updateUser} getCurrentData={getCurrentUser} userList={userList}/>}/>
-        <Route path="/admin/user" element={<UserList userList={userList} recipeList={recipeList}/>}/>
+        <Route path="/admin/user" element={<UserList getUserList={getUserList} recipeList={recipeList} deleteUser={deleteUser}/>}/>
       </Route>
       <Route path="/admin/recipe">
         <Route path="/admin/recipe/edit/:recipeId" element={<RecipeForm updateRecipe={updateRecipe} currentUser={currentUser.id} recipeList={recipeList} admin></RecipeForm>}/>

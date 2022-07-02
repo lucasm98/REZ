@@ -38,8 +38,8 @@ export const RecipeList = ({userList,recipeList,deleteRecipe}:Props) => {
           <TableCell>{recipe.level}</TableCell>
           <TableCell>{recipe.rating}</TableCell>
           <TableCell>{recipe.persons}</TableCell>
-          <TableCell>zut</TableCell>
-          <TableCell>how</TableCell>
+          <TableCell>{recipe.ingredients.length}</TableCell>
+          <TableCell>{recipe.preparation.length}</TableCell>
         </TableRow>
       ))
     );

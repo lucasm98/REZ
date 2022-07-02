@@ -5,23 +5,32 @@ import IconButton from "@mui/material/IconButton";
 import PersonIcon from '@mui/icons-material/Person';
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import {useNavigate} from "react-router-dom";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 interface Props {
-  userList: UserData[],
+  getUserList: () => UserData[],
   recipeList: RecipeData[],
+  deleteUser:(id:number)=>void,
 }
 
-export const UserList = ({userList,recipeList}:Props) => {
+export const UserList = ({getUserList,recipeList,deleteUser}:Props) => {
   const navigate = useNavigate();
+
+  const onClickDelete = (user:UserData):void => {
+    if (window.confirm('Sind sie sich sicher, dass sie diesen Account löschen wollen?')) {
+      deleteUser(user.id);
+    }
+  }
 
   const renderUserData = () => {
 
     return (
-      userList.map((userData:UserData)=>(
+      getUserList().map((userData:UserData)=>(
         <TableRow key={userData.id}>
           <TableCell>
             <IconButton onClick={()=>navigate(`/admin/user/${userData.id}`)}><PersonIcon /></IconButton>
             <IconButton onClick={()=>navigate(`/admin/user/edit/${userData.id}`)}><BorderColorIcon/></IconButton>
+            <IconButton onClick={()=>onClickDelete(userData)}><DeleteForeverIcon/></IconButton>
           </TableCell>
           <TableCell>{userData.id}</TableCell>
           <TableCell>{userData.name}</TableCell>

@@ -38,7 +38,7 @@ export const ShoppingList = ({recipeList,getCurrentUser,updateUser}:Props) => {
   }
 
   const ingredientsListToString = (ingredientList:Ingredient[]):string => {
-    let textToWrite:string = `Einkaufsliste ${getCurrentDate(".","",":")}\n`;
+    let textToWrite:string = `Einkaufsliste (${getCurrentDate(".",") (",":")})\n`;
     ingredientList.forEach((ingredient:Ingredient)=>{
       textToWrite=textToWrite.concat(`⬤ ${ingredient.name} ${ingredient.amount?ingredient.amount:""} ${ingredient.unit?ingredient.unit:""}\n`);
     })

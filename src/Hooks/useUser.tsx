@@ -134,7 +134,7 @@ export default function useUser(): ReturnProps {
   const deleteUser = async (id: number) => {
     await axios.delete(`http://localhost:3001/user/${id}`);
     setUserList(users => users.filter((user:UserData) => user.id !== id));
-    setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[]});
+    if(currentUser.id === id)setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[]});
   }
 
   const getUserList = ():UserData[] => (userList)
