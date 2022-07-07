@@ -18,6 +18,7 @@ const initialValues:UserData = {
   email:"",
   password:"",
   id:-1,
+  admin:false,
   favorites:[],
   shoppingList:[]
 }
@@ -37,18 +38,19 @@ export const UserForm = ({updateUser,getCurrentData,userList}:Props) => {
         "email":values.email,
         "password":values.confirmationPassword,
         "id":values.id,
+        "admin":false,
         "favorites":values.favorites,
         "shoppingList":values.shoppingList
       })
-      if(getCurrentData && getCurrentData()?.id === 0) navigate("/admin/user");
-      else navigate(getCurrentData?"/account":"/login"); // TO-DO: When logged in redirect to /account and show new Userdata
+      if(getCurrentData && getCurrentData()?.admin) navigate("/admin/user");
+      else navigate(getCurrentData?"/account":"/login");
     },
-    validationSchema:UserSchema(getCurrentData?getCurrentData():undefined,getCurrentData && getCurrentData()?.id === 0 ? user : undefined),
+    validationSchema:UserSchema(getCurrentData?getCurrentData():undefined,getCurrentData && getCurrentData()?.admin ? user : undefined),
     validateOnChange:false
   });
 
   useEffect( ()=> {
-      if(input.userId !== undefined && userList !== undefined && getCurrentData !== undefined && getCurrentData().id === 0)
+      if(input.userId !== undefined && userList !== undefined && getCurrentData !== undefined && getCurrentData().admin)
       {
         const inputUser:UserData = userList.filter((userData:UserData)=>(userData.id === parseInt(input.userId as string)))[0];
         setUser(inputUser);

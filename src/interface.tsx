@@ -1,5 +1,3 @@
-import React from "react";
-
 export interface Ingredient{
   id:number,
   name: string,
@@ -20,11 +18,12 @@ export interface RecipeData{
 }
 
 export interface UserData {
+  id:number;
   name: string;
   username: string;
   password: string;
   email: string;
-  id:number;
+  admin: boolean;
   favorites:number[];
   shoppingList: ShoppingListEntry[];
 }
@@ -33,4 +32,11 @@ export interface ShoppingListEntry {
   amount: number,
   checked: boolean[],
   allChecked: boolean,
+}
+
+export interface UseData {
+  getData: ()=> UserData[]|RecipeData[],
+  addData: (data:UserData|RecipeData) => void,
+  updateData: (data:UserData|RecipeData)=> void,
+  deleteData: (id:number)=> void
 }

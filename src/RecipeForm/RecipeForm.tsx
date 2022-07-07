@@ -1,6 +1,6 @@
 import React from 'react';
 import {Formik, useFormik} from 'formik';
-import {Ingredient, RecipeData} from "../interface";
+import {Ingredient, RecipeData, UserData} from "../interface";
 import {Box, Button, Grid, InputAdornment, Rating, Slider, TextField, Typography} from "@mui/material";
 import {RecipeSchema} from "../Validation/RecipeValidation";
 import LocalDiningIcon from "@mui/icons-material/LocalDining";
@@ -10,12 +10,11 @@ import {useNavigate, useParams} from "react-router-dom";
 
 interface Props {
   updateRecipe: (recipe: RecipeData) => void,
-  currentUser: number,
-  recipeList?: RecipeData[],
-  admin?: boolean,
+  currentUser: UserData,
+  recipeList?: RecipeData[]
 }
 
-export const RecipeForm = ({updateRecipe, currentUser, recipeList,admin}: Props) => {
+export const RecipeForm = ({updateRecipe, currentUser, recipeList}: Props) => {
   const navigate = useNavigate();
   const input = useParams();
 
@@ -24,7 +23,7 @@ export const RecipeForm = ({updateRecipe, currentUser, recipeList,admin}: Props)
     time: 0,
     level: 0,
     rating: 1,
-    user: currentUser,
+    user: currentUser.id,
     persons:0,
     ingredients: [],
     preparation: [],
@@ -34,7 +33,7 @@ export const RecipeForm = ({updateRecipe, currentUser, recipeList,admin}: Props)
   const getRecipe = ():RecipeData => {
     if(input !== undefined && input.recipeId !== undefined && recipeList ) {
       const confirmUserRecipe:RecipeData = recipeList.filter((recipeData:RecipeData)=>(recipeData.id.toString() === input.recipeId))[0];
-      if(confirmUserRecipe.user === currentUser || admin) return confirmUserRecipe;
+      if(confirmUserRecipe.user === currentUser.id || currentUser.admin) return confirmUserRecipe;
       else {
         navigate(`/recipe/${confirmUserRecipe.id}`);
         return initialValues;
@@ -47,7 +46,7 @@ export const RecipeForm = ({updateRecipe, currentUser, recipeList,admin}: Props)
       initialValues: getRecipe(),
       onSubmit: (values) => {
         updateRecipe(values);
-        navigate(currentUser===0?"/admin/recipe":"/created");
+        navigate(currentUser.admin?"/admin/recipe":"/created");
       },
       validationSchema:RecipeSchema
   });

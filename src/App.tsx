@@ -40,7 +40,7 @@ function App() {
         <Route path="/admin/user" element={<UserList getUserList={getUserList} recipeList={recipeList} deleteUser={deleteUser}/>}/>
       </Route>
       <Route path="/admin/recipe">
-        <Route path="/admin/recipe/edit/:recipeId" element={<RecipeForm updateRecipe={updateRecipe} currentUser={currentUser.id} recipeList={recipeList} admin></RecipeForm>}/>
+        <Route path="/admin/recipe/edit/:recipeId" element={<RecipeForm updateRecipe={updateRecipe} currentUser={currentUser} recipeList={recipeList}></RecipeForm>}/>
         <Route path="/admin/recipe" element={<RecipeList userList={userList} recipeList={recipeList} deleteRecipe={deleteRecipe}/>}/>
       </Route>
     </Route>
@@ -121,12 +121,12 @@ function App() {
                  />
                }/>
         <Route path="/recipe/:recipeId" element={<Recipe recipeList={recipeList} addRecipeToShoppingList={addRecipeToShoppingList} ></Recipe>} />
-        <Route path="/edit/:recipeId" element={<RecipeForm updateRecipe={updateRecipe} currentUser={currentUser.id} recipeList={recipeList}></RecipeForm>}/>
-        <Route path="/add" element={<RecipeForm updateRecipe={updateRecipe} currentUser={currentUser.id}/>}/>
+        <Route path="/edit/:recipeId" element={<RecipeForm updateRecipe={updateRecipe} currentUser={currentUser} recipeList={recipeList}></RecipeForm>}/>
+        <Route path="/add" element={<RecipeForm updateRecipe={updateRecipe} currentUser={currentUser}/>}/>
         <Route path="/account" element={<User getCurrentData={getCurrentUser} deleteUser={deleteUser} loggOut={loggOut} recipeList={recipeList}/>}/>
         <Route path="/account/edit" element={<UserForm updateUser={updateUser} getCurrentData={getCurrentUser}/>} />
         <Route path="/shoppinglist" element={<ShoppingList recipeList={recipeList} getCurrentUser={getCurrentUser} updateUser={updateUser} />}/>
-        {currentUser && currentUser.id === 0 && getAdminRoutes() }
+        {currentUser && currentUser.admin && getAdminRoutes() }
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
     );

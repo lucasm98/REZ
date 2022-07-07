@@ -33,6 +33,7 @@ export const UserList = ({getUserList,recipeList,deleteUser}:Props) => {
             <IconButton onClick={()=>onClickDelete(userData)}><DeleteForeverIcon/></IconButton>
           </TableCell>
           <TableCell>{userData.id}</TableCell>
+          <TableCell>{userData.admin?"Admin":"Benutzer"}</TableCell>
           <TableCell>{userData.name}</TableCell>
           <TableCell>{userData.username}</TableCell>
           <TableCell>{userData.email}</TableCell>
@@ -50,6 +51,7 @@ export const UserList = ({getUserList,recipeList,deleteUser}:Props) => {
         <TableRow>
           <TableCell>Aktionen</TableCell>
           <TableCell>ID</TableCell>
+          <TableCell>Accounttyp</TableCell>
           <TableCell>Name</TableCell>
           <TableCell>Benutzername</TableCell>
           <TableCell>Email</TableCell>

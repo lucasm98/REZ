@@ -32,10 +32,21 @@ export const Recipe = ({recipeList,addRecipeToShoppingList}:Props) => {
   const [error,setError] = useState<boolean>(false);
 
   const submit = () => {
-    if(addRecipeToShoppingList && RecipePersonsSchema.isValid(persons)){
-      addRecipeToShoppingList({"recipe":recipe.id,"amount":persons,"checked":new Array(recipe.ingredients.length).fill(true),"allChecked":true});
-      navigate("/shoppinglist");
-    } else if(!addRecipeToShoppingList){
+    if (addRecipeToShoppingList) {
+      ShoppingListPersonsSchema.isValid({persons})
+        .then(valid=>{
+        if(valid){
+          addRecipeToShoppingList({
+            "recipe": recipe.id,
+            "amount": persons,
+            "checked": new Array(recipe.ingredients.length).fill(true),
+            "allChecked": true
+          });
+          navigate("/shoppinglist");
+        }
+      });
+    } else if (!addRecipeToShoppingList) {
+      console.log("no add");
       setError(true);
     }
   };

@@ -38,7 +38,7 @@ export const User = ({getCurrentData,deleteUser,loggOut,recipeList,userList}:Pro
   const navigate = useNavigate();
 
   useEffect( ()=> {
-      if(input !== undefined && input.userId !== undefined && userList !== undefined && getCurrentData().id === 0)
+      if(input !== undefined && input.userId !== undefined && userList !== undefined && getCurrentData().admin)
       {
         const inputUser:UserData = userList.filter((userData:UserData)=>(userData.id === parseInt(input.userId as string)))[0];
         setUser(inputUser);
@@ -51,7 +51,7 @@ export const User = ({getCurrentData,deleteUser,loggOut,recipeList,userList}:Pro
   const deleteAccount = ():void => {
     if (window.confirm('Sind sie sich sicher, dass sie ihren Account löschen wollen?')) {
       deleteUser(user.id);
-      if(getCurrentData().id !== 0){
+      if(!getCurrentData().admin){
         loggOut();
         navigate("/");
       }

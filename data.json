@@ -251,6 +251,7 @@
       "password": "admin",
       "email": "admin@admin.de",
       "id": 0,
+      "admin": false,
       "favorites": [
         4,
         2,
@@ -261,13 +262,21 @@
       "shoppingList": [
         {
           "recipe": 0,
-          "amount": 8,
+          "amount": 12,
           "checked": [
             true,
             true,
             true,
             true,
-            true,
+            false,
+            false
+          ],
+          "allChecked": true
+        },
+        {
+          "recipe": 6,
+          "amount": "1",
+          "checked": [
             true
           ],
           "allChecked": true
@@ -280,6 +289,7 @@
       "password": "as",
       "email": "lucas@lucas.de",
       "id": 1,
+      "admin": false,
       "favorites": [
         1,
         2,
@@ -294,6 +304,7 @@
       "password": "ja",
       "email": "fenja@fenja.de",
       "id": 2,
+      "admin": false,
       "favorites": [
         1,
         4
@@ -306,33 +317,47 @@
       "email": "test@test.test",
       "password": "test",
       "id": 3,
+      "admin": false,
       "favorites": [
         0
       ],
       "shoppingList": [
         {
-          "recipe": 1,
-          "amount": 123,
+          "recipe": 2,
+          "amount": 40,
           "checked": [
             true,
-            true
+            true,
+            true,
+            false,
+            false
           ],
           "allChecked": true
         },
         {
           "recipe": 0,
-          "amount": 52,
+          "amount": 14,
           "checked": [
             true,
             true,
             true,
             true,
-            true,
-            true
+            false,
+            false
           ],
           "allChecked": true
         }
       ]
+    },
+    {
+      "name": "test1",
+      "username": "test1",
+      "email": "test1@test1.test",
+      "password": "test1",
+      "id": 4,
+      "admin": false,
+      "favorites": [],
+      "shoppingList": []
     }
   ]
 }

@@ -17,21 +17,17 @@ interface Props {
 
 export default function Home({currentUser}:Props) {
 
-  const renderAdminCards = () => {
-    if (currentUser.id === 0) {
-      return(
-        <>
-          <Grid item xs={12} md={12} mt={2}>
-            <Typography variant="h3" component="div" >
-              Admin
-            </Typography>
-          </Grid>
-          <HomeCard name="Benutzer verwalten" link="/admin/user" icon={<PersonIcon/>}/>
-          <HomeCard name="Rezepte Verwalten" link="/admin/recipe" icon={<BorderColorIcon/>}/>
-        </>
-      );
-    }
-  }
+  const renderAdminCards = () => (
+    <>
+      <Grid item xs={12} md={12} mt={2}>
+        <Typography variant="h3" component="div" >
+          Admin
+        </Typography>
+      </Grid>
+      <HomeCard name="Benutzer verwalten" link="/admin/user" icon={<PersonIcon/>}/>
+      <HomeCard name="Rezepte Verwalten" link="/admin/recipe" icon={<BorderColorIcon/>}/>
+    </>
+  );
 
   return(
     <Grid container spacing={2}>
@@ -48,7 +44,7 @@ export default function Home({currentUser}:Props) {
       <HomeCard name={"Alle Rezepte"} link={"/recipes"} icon={<MenuBookIcon/>}/>
       <HomeCard name={"Erstellte Rezepte"} link={"/created"} icon={<ListIcon/>}/>
       <HomeCard name={"Einkausliste"} link={"/shoppinglist"} icon={<ShoppingBag/>}/>
-      {renderAdminCards()}
+      {currentUser.admin && renderAdminCards()}
     </Grid>
   );
 }

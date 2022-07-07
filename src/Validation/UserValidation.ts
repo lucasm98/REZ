@@ -14,8 +14,8 @@ export const UserSchema = (currentUser?:UserData,adminEditUser?:UserData) => obj
             .then((res) => {
               let newName:boolean = true;
               res.data.forEach((userData:UserData)=>{
-                if((userData.username === value && value !== currentUser?.username && currentUser?.id !== 0)
-                    ||(currentUser?.id === 0 && userData.username === value && value !== adminEditUser?.username)
+                if((userData.username === value && value !== currentUser?.username && !currentUser?.admin)
+                    ||(currentUser?.admin && userData.username === value && value !== adminEditUser?.username)
                 ) newName = false;
               });
               resolve(newName)
@@ -37,8 +37,8 @@ export const UserSchema = (currentUser?:UserData,adminEditUser?:UserData) => obj
             .then((res) => {
               let newEmail:boolean = true;
               res.data.forEach((userData:UserData)=>{
-                if((userData.email === value && value !== currentUser?.email && currentUser?.id !== 0)
-                  ||(currentUser?.id === 0 && userData.email === value && value !== adminEditUser?.email)
+                if((userData.email === value && value !== currentUser?.email && !currentUser?.admin)
+                  ||(currentUser?.admin && userData.email === value && value !== adminEditUser?.email)
                 ) newEmail = false;
               });
               resolve(newEmail)

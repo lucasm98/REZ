@@ -16,7 +16,7 @@ interface ReturnProps {
 
 export default function useUser(): ReturnProps {
   const [userList,setUserList] = useState<UserData[]>([]);
-  const [currentUser,setCurrentUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[]});
+  const [currentUser,setCurrentUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,admin:false,favorites:[],shoppingList:[]});
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
 
   const getNextFreeId = ():number => {
@@ -134,7 +134,7 @@ export default function useUser(): ReturnProps {
   const deleteUser = async (id: number) => {
     await axios.delete(`http://localhost:3001/user/${id}`);
     setUserList(users => users.filter((user:UserData) => user.id !== id));
-    if(currentUser.id === id)setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[]});
+    if(currentUser.id === id)setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[],admin:false});
   }
 
   const getUserList = ():UserData[] => (userList)

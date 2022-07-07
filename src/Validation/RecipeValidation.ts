@@ -1,5 +1,4 @@
 import {array, number, object, string} from "yup";
-import {ShoppingListEntry} from "../interface";
 
 export const ShoppingListPersonsSchema = object().shape({
   persons: number()
