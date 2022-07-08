@@ -31,7 +31,6 @@ export const UserForm = ({updateUser,getCurrentData,userList}:Props) => {
   const formik = useFormik({
     initialValues: {...user,confirmationPassword:user.password},
     onSubmit: (values)=> {
-      console.log(values);
       updateUser({
         "name":values.name,
         "username":values.username,

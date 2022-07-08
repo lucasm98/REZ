@@ -27,6 +27,7 @@ export interface UserData {
   favorites:number[];
   shoppingList: ShoppingListEntry[];
 }
+
 export interface ShoppingListEntry {
   recipe: number,
   amount: number,
@@ -34,9 +35,16 @@ export interface ShoppingListEntry {
   allChecked: boolean,
 }
 
-export interface UseData {
-  getData: ()=> UserData[]|RecipeData[],
-  addData: (data:UserData|RecipeData) => void,
-  updateData: (data:UserData|RecipeData)=> void,
-  deleteData: (id:number)=> void
+export interface UseUserData {
+  getUserData: ()=> Promise<UserData[]>,
+  addUserData: (userData:UserData) => Promise<UserData>,
+  updateUserData: (userData:UserData)=> Promise<UserData>,
+  deleteUserData: (id:number)=> Promise<UserData>
+}
+
+export interface UseRecipeData {
+  getRecipeList: ()=> Promise<RecipeData[]>,
+  addRecipe: (data:RecipeData) => Promise<RecipeData>,
+  updateRecipe: (data:RecipeData)=> Promise<RecipeData>,
+  deleteRecipe: (id:number)=> Promise<RecipeData>
 }

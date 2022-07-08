@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {ShoppingListEntry, UserData} from "../interface";
-import axios from "axios";
+import {useUserDataJson} from "./useUserDataJson";
 
 interface ReturnProps {
   isLoggedIn:boolean,
@@ -18,6 +18,7 @@ export default function useUser(): ReturnProps {
   const [userList,setUserList] = useState<UserData[]>([]);
   const [currentUser,setCurrentUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,admin:false,favorites:[],shoppingList:[]});
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
+  const {getUserData,addUserData,updateUserData,deleteUserData} = useUserDataJson();
 
   const getNextFreeId = ():number => {
     let id=0;
@@ -32,12 +33,13 @@ export default function useUser(): ReturnProps {
   }
 
   useEffect(() => {
-      let userData:any = null;
-      const fetchData = async () => {
-        const { data } = await axios.get('http://localhost:3001/user');
-        userData = data;
-      };
-      fetchData().then(()=>( setUserList(userData)) );
+      getUserData()
+        .then((userData:UserData[])=>{
+          setUserList(userData)
+        })
+        .catch((error)=>{
+          console.log("ERROR getUserData",error);
+        })
     }, []
   );
 
@@ -99,42 +101,40 @@ export default function useUser(): ReturnProps {
   }
 
   const updateUser = async (data:UserData) => {
-
     console.log("updateUser",data);
     if(data.id === -1) {
       data.id = getNextFreeId();
-      addUser(data)
-        .then(newUser=> {
+      addUserData(data)
+        .then((newUser:UserData)=> {
           setUserList( users => [...users,newUser]);
-      })
+          console.log("User Posted | ID: "+newUser.id+"| Name:"+newUser.username);
+        })
+        .catch((error)=>{
+          console.log("ERROR addUserData",error);
+        })
     } else {
-      correctUser(data)
-        .then(existingUser => {
-          if(currentUser.id !== 0)   setCurrentUser(existingUser);
+      updateUserData(data)
+        .then((existingUser:UserData)=> {
+          if(!currentUser.admin)   setCurrentUser(existingUser);
           setUserList( users => [...users.filter((userData:UserData)=>(userData.id !== existingUser.id)),existingUser]);
+          console.log("User Updated | ID: "+existingUser.id+"| Name:"+existingUser.username);
+        })
+        .catch((error)=>{
+          console.log("ERROR updateUserData",error);
         })
     }
-
-    console.log("User Posted | ID: "+data.id+"| Name:"+data.username);
-  }
-
-  const correctUser = async (existingUser:UserData) => {
-    console.log("correctUser",existingUser);
-    await axios.patch(`http://localhost:3001/user/${existingUser.id}`,existingUser);
-    return existingUser;
-  }
-
-  const addUser = async (newUser:UserData) => {
-    console.log("addUser",newUser);
-    await axios.post('http://localhost:3001/user', newUser);
-    setUserList(users => [...users,newUser]);
-    return newUser
   }
 
   const deleteUser = async (id: number) => {
-    await axios.delete(`http://localhost:3001/user/${id}`);
-    setUserList(users => users.filter((user:UserData) => user.id !== id));
-    if(currentUser.id === id)setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[],admin:false});
+    deleteUserData(id)
+      .then((deleteUser:UserData)=>{
+        setUserList(users => users.filter((user:UserData) => user.id !== id));
+        if(currentUser.id === id)setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[],admin:false});
+        console.log("User Delete | ID: "+deleteUser.id+"| Name:"+deleteUser.username);
+      })
+      .catch((error)=>{
+        console.log("ERROR deleteUserData",error);
+      })
   }
 
   const getUserList = ():UserData[] => (userList)
