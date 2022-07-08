@@ -5,6 +5,7 @@ import {Box, Button} from "@mui/material";
 import {UserData} from "../interface";
 import {useNavigate, useParams} from "react-router-dom";
 import {TextField} from "./TextField";
+import {emptyUser} from "../Hooks/useUser";
 
 interface Props {
   updateUser : (user:UserData)=> void,
@@ -12,21 +13,10 @@ interface Props {
   userList?:  UserData[]
 }
 
-const initialValues:UserData = {
-  name:"",
-  username:"",
-  email:"",
-  password:"",
-  id:-1,
-  admin:false,
-  favorites:[],
-  shoppingList:[]
-}
-
 export const UserForm = ({updateUser,getCurrentData,userList}:Props) => {
   const navigate = useNavigate();
   const input = useParams();
-  const [user,setUser] = useState<UserData>(getCurrentData?getCurrentData():initialValues);
+  const [user,setUser] = useState<UserData>(getCurrentData?getCurrentData():emptyUser);
 
   const formik = useFormik({
     initialValues: {...user,confirmationPassword:user.password},

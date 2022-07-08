@@ -1,9 +1,7 @@
-import React from 'react';
 import {UserData, UseUserData} from "../interface";
 import axios from "axios";
 
 export const useUserDataJson = (): UseUserData => {
-
   const getUserData = async ():Promise<UserData[]> => {
     const { data } = await axios.get('http://localhost:3001/user');
     return data;
@@ -19,7 +17,7 @@ export const useUserDataJson = (): UseUserData => {
     return data;
   }
 
-  const deleteUserData = async (id:number):Promise<UserData> => {
+  const deleteUserData = async (id:number):Promise<number> => {
     const { data } =  await axios.delete(`http://localhost:3001/user/${id}`);
     return data;
   }

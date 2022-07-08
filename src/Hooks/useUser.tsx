@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {ShoppingListEntry, UserData} from "../interface";
 import {useUserDataJson} from "./useUserDataJson";
+import {useUserDataPostgreSQL} from "./useUserDataPostgreSQL";
 
 interface ReturnProps {
   isLoggedIn:boolean,
@@ -14,9 +15,20 @@ interface ReturnProps {
   addRecipeToShoppingList:(shoppingListEntry:ShoppingListEntry)=>void
 }
 
+export const emptyUser:UserData = {
+  name:"",
+  username:"",
+  password:"",
+  email:"",
+  id:-1,
+  admin:false,
+  favorites:[],
+  shoppingList:[]
+}
+
 export default function useUser(): ReturnProps {
   const [userList,setUserList] = useState<UserData[]>([]);
-  const [currentUser,setCurrentUser] = useState<UserData>({name:"",username:"",password:"",email:"",id:-1,admin:false,favorites:[],shoppingList:[]});
+  const [currentUser,setCurrentUser] = useState<UserData>(emptyUser);
   const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false);
   const {getUserData,addUserData,updateUserData,deleteUserData} = useUserDataJson();
 
@@ -127,10 +139,10 @@ export default function useUser(): ReturnProps {
 
   const deleteUser = async (id: number) => {
     deleteUserData(id)
-      .then((deleteUser:UserData)=>{
+      .then((id:number)=>{
         setUserList(users => users.filter((user:UserData) => user.id !== id));
-        if(currentUser.id === id)setCurrentUser({name:"",username:"",password:"",email:"",id:-1,favorites:[],shoppingList:[],admin:false});
-        console.log("User Delete | ID: "+deleteUser.id+"| Name:"+deleteUser.username);
+        if(currentUser.id === id)setCurrentUser(emptyUser);
+        console.log("User Delete | ID: "+id);
       })
       .catch((error)=>{
         console.log("ERROR deleteUserData",error);

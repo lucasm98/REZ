@@ -348,16 +348,6 @@
           "allChecked": true
         }
       ]
-    },
-    {
-      "name": "test2",
-      "username": "test2",
-      "email": "test2@test2.de",
-      "password": "test2",
-      "id": 4,
-      "admin": false,
-      "favorites": [],
-      "shoppingList": []
     }
   ]
 }
