@@ -17,7 +17,7 @@ import {User} from "./User/User";
 import {UserList} from "./Admin/UserList/UserList";
 import {RecipeList} from "./Admin/RecipeList/RecipeList";
 import {ShoppingList} from "./ShoppingList/ShoppingList";
-import {Test} from "./Test";
+// import {Test} from "./Test";
 
 
 
@@ -70,7 +70,7 @@ function App() {
         <Route path="/recipe/:recipeId" element={<Recipe recipeList={recipeList}></Recipe>} />
         <Route path="/register" element={<UserForm updateUser={updateUser}/>} />
         <Route path="/login" element={<Login loggIn={loggIn} isLoggedIn={isLoggedIn}/>}/>
-        <Route path="Test" element={<Test/>}/>
+        {/*<Route path="Test" element={<Test/>}/>*/}
         <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
     );

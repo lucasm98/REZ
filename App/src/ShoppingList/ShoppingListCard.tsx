@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Ingredient, RecipeData, ShoppingListEntry} from "../interface";
 import {Button, Card, CardContent, Checkbox, Grid, Stack, TextField, Typography} from "@mui/material";
 import {RecipePersonsSchema, ShoppingListPersonsSchema} from "../Validation/RecipeValidation";

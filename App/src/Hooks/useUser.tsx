@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {ShoppingListEntry, UserData} from "../interface";
 import {useUserDataJson} from "./useUserDataJson";
-import {useUserDataPostgreSQL} from "./useUserDataPostgreSQL";
 
 interface ReturnProps {
   isLoggedIn:boolean,

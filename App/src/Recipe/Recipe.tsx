@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import './Recipe.css';
-import {Ingredient, RecipeData, ShoppingListEntry, UserData} from "../interface";
+import {Ingredient, RecipeData, ShoppingListEntry} from "../interface";
 import {useNavigate, useParams} from "react-router-dom";
 import {
   List,
@@ -17,7 +17,7 @@ import {
   Card,
   TextField, Button
 } from "@mui/material";
-import {RecipePersonsSchema, ShoppingListPersonsSchema} from "../Validation/RecipeValidation";
+import {ShoppingListPersonsSchema} from "../Validation/RecipeValidation";
 
 interface Props {
   recipeList: RecipeData[],

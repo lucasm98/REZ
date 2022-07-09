@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Ingredient, RecipeData, ShoppingListEntry, UserData} from "../interface";
-import {Card, CardContent, Grid, Typography, TextField, Stack, List, ListItemText, Button} from "@mui/material";
+import {Card, CardContent, Grid, Typography, Stack, List, ListItemText, Button} from "@mui/material";
 import {ShoppingListCard} from "./ShoppingListCard";
 
 interface Props {
