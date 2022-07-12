@@ -60,11 +60,9 @@ function App() {
         <Route path="/search/:input"
                element={
                  <RecipeBook
-                   recipeList={recipeList}
+                   recipeList={filterRecipeListByName()}
                    searchInput={searchInput}
                    setSearchInput={setSearchInput}
-                   toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
-                   getCurrentUser={getCurrentUser}
                  />
                }/>
         <Route path="/recipe/:recipeId" element={<Recipe recipeList={recipeList}></Recipe>} />
@@ -89,6 +87,7 @@ function App() {
                    setSearchInput={setSearchInput}
                    toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
                    getCurrentUser={getCurrentUser}
+                   deleteRecipe={deleteRecipe}
                  />
                }/>
         <Route path="/book"
@@ -99,6 +98,7 @@ function App() {
                    setSearchInput={setSearchInput}
                    toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
                    getCurrentUser={getCurrentUser}
+                   deleteRecipe={deleteRecipe}
                  />
                }/>
         <Route path="/created"
@@ -120,6 +120,7 @@ function App() {
                    setSearchInput={setSearchInput}
                    toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
                    getCurrentUser={getCurrentUser}
+                   deleteRecipe={deleteRecipe}
                  />
                }/>
         <Route path="/recipe/:recipeId" element={<Recipe recipeList={recipeList} addRecipeToShoppingList={addRecipeToShoppingList} ></Recipe>} />

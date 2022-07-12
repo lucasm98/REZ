@@ -40,7 +40,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function RecipeCard({recipeData , user,deleteRecipe, toggleFavoriteByRecipeId}:Props) {
+export default function RecipeCard({recipeData , user, deleteRecipe, toggleFavoriteByRecipeId}:Props) {
   const [expanded, setExpanded] = useState(false);
   const [favoriteLocal, setFavoriteLocal] = useState(user?.favorites.includes(recipeData.id));
   const navigate = useNavigate();
@@ -107,7 +107,7 @@ export default function RecipeCard({recipeData , user,deleteRecipe, toggleFavori
         >
           {favoriteLocal?<FavoriteIcon />:<FavoriteBorderIcon/>}
         </IconButton>}
-        {(user && user?.id === recipeData.user) && <IconButton
+        {(user && user?.id === recipeData.user && deleteRecipe) && <IconButton
           aria-label="delete recipe"
           onClick={onClickDelete}
         >

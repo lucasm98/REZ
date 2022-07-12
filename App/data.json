@@ -262,10 +262,10 @@
       "shoppingList": [
         {
           "recipe": 0,
-          "amount": 12,
+          "amount": 55,
           "checked": [
             true,
-            true,
+            false,
             true,
             true,
             false,
@@ -274,9 +274,11 @@
           "allChecked": true
         },
         {
-          "recipe": 6,
-          "amount": "1",
+          "recipe": 5,
+          "amount": 10,
           "checked": [
+            true,
+            true,
             true
           ],
           "allChecked": true

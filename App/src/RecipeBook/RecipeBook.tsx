@@ -24,22 +24,21 @@ export function RecipeBook({recipeList, deleteRecipe,searchInput, setSearchInput
 
 
   const renderRecipeCard = (recipe:RecipeData):any => {
-    // console.log("recipe.user: "+recipe.user.toString()+"| user?.id:"+user?.id.toString());
     if(getCurrentUser && recipe.user === getCurrentUser()?.id){
       return (
-        <RecipeCard  key={recipe.id}
-          recipeData={recipe}
-          deleteRecipe={deleteRecipe}
-          user={getCurrentUser()}
-          toggleFavoriteByRecipeId ={toggleFavoriteByRecipeId}
+        <RecipeCard   key={recipe.id}
+                      recipeData={recipe}
+                      deleteRecipe={deleteRecipe}
+                      user={getCurrentUser()}
+                      toggleFavoriteByRecipeId ={toggleFavoriteByRecipeId}
         />
       );
-    } else if(getCurrentUser) {
+    }else if(getCurrentUser) {
       return (
-        <RecipeCard  key={recipe.id}
-          recipeData={recipe}
-          user={getCurrentUser()}
-          toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
+        <RecipeCard   key={recipe.id}
+                      recipeData={recipe}
+                      user={getCurrentUser()}
+                      toggleFavoriteByRecipeId={toggleFavoriteByRecipeId}
         />
       );
 

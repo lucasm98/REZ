@@ -22,7 +22,7 @@ export const getCurrentDate = (separator1:string,separator2:string,separator3:st
 }
 
 export const ShoppingList = ({recipeList,getCurrentUser,updateUser}:Props) => {
-  const getRecipeById = (recipeId:number):RecipeData => (recipeList.filter((recipe:RecipeData)=>(recipe.id===recipeId))[0]);
+  const getRecipeById = (recipeId:number):RecipeData|undefined => (recipeList.filter((recipe:RecipeData)=>(recipe.id===recipeId))[0]);
   const [shoppingList,setShoppingList] = useState<ShoppingListEntry[]>(getCurrentUser().shoppingList);
   const [allIngredientList,setAllIngredientList] = useState<Ingredient[]>([]);
 
@@ -62,22 +62,27 @@ export const ShoppingList = ({recipeList,getCurrentUser,updateUser}:Props) => {
     shoppingList.forEach((shoppingListEntry:ShoppingListEntry,recipeIndex:number)=>{
       const recipe = getRecipeById(shoppingListEntry.recipe);
       console.log("Refresh",recipe);
-      recipe.ingredients
-        .filter((ingredient:Ingredient,ingredientIndex:number)=>(shoppingListEntry.checked[ingredientIndex]))
-        .forEach((ingredient:Ingredient,ingredientIndex:number)=>{
-        if(ingredientList.find((ingredientFind:Ingredient)=>(ingredientFind.name === ingredient.name &&ingredientFind.unit === ingredient.unit))) {
-          ingredientList.forEach((ingredientFromList:Ingredient,ingredientFromListIndex:number)=>{
-            if(ingredientFromList.name === ingredient.name && ingredientFromList.unit === ingredient.unit &&
-              ingredientFromList.amount && ingredient.amount)
-            {
-              let newAmount = parseInt(String(ingredientList[ingredientFromListIndex].amount!)) +  parseInt(String(ingredient.amount));
-              ingredientList[ingredientFromListIndex].amount! = newAmount >= 50 ? newAmount : Math.round(newAmount);
+      if (recipe === undefined)
+      {
+        deleteRecipeFromShoppingList(recipeIndex);
+      } else {
+        recipe.ingredients
+          .filter((ingredient:Ingredient,ingredientIndex:number)=>(shoppingListEntry.checked[ingredientIndex]))
+          .forEach((ingredient:Ingredient,ingredientIndex:number)=>{
+            if(ingredientList.find((ingredientFind:Ingredient)=>(ingredientFind.name === ingredient.name &&ingredientFind.unit === ingredient.unit))) {
+              ingredientList.forEach((ingredientFromList:Ingredient,ingredientFromListIndex:number)=>{
+                if(ingredientFromList.name === ingredient.name && ingredientFromList.unit === ingredient.unit &&
+                  ingredientFromList.amount && ingredient.amount)
+                {
+                  let newAmount = parseInt(String(ingredientList[ingredientFromListIndex].amount!)) +  parseInt(String(ingredient.amount));
+                  ingredientList[ingredientFromListIndex].amount! = newAmount >= 50 ? newAmount : Math.round(newAmount);
+                }
+              })
+            } else {
+              ingredientList.push({"id":ingredient.id,"name":ingredient.name,"amount":ingredient.amount?(ingredient.amount*(shoppingList[recipeIndex].amount/recipe.persons)):undefined,"unit":ingredient.unit});
             }
           })
-        } else {
-          ingredientList.push({"id":ingredient.id,"name":ingredient.name,"amount":ingredient.amount?(ingredient.amount*(shoppingList[recipeIndex].amount/recipe.persons)):undefined,"unit":ingredient.unit});
-        }
-      })
+      }
     })
     setAllIngredientList(ingredientList);
   };
@@ -122,15 +127,21 @@ export const ShoppingList = ({recipeList,getCurrentUser,updateUser}:Props) => {
           {shoppingList.length===0
             ?<Card><CardContent><Typography variant="h6" >Kein Rezept Hinzugefügt</Typography></CardContent></Card>
             :shoppingList.map((shoppingListEntry:ShoppingListEntry,recipeIndex:number)=>{
-            const recipe:RecipeData = getRecipeById(shoppingListEntry.recipe);
-            return <ShoppingListCard
-              key={recipeIndex}
-              recipe={recipe}
-              getShoppingListEntry={getShoppingListEntry}
-              shoppingListEntryIndex={recipeIndex}
-              updateShoppingList={updateShoppingList}
-              deleteRecipeFromShoppingList={deleteRecipeFromShoppingList}
-            />
+            const recipe = getRecipeById(shoppingListEntry.recipe);
+            if(recipe === undefined)
+            {
+              deleteRecipeFromShoppingList(recipeIndex);
+              return <></>;
+            }else {
+              return <ShoppingListCard
+                key={recipeIndex}
+                recipe={recipe}
+                getShoppingListEntry={getShoppingListEntry}
+                shoppingListEntryIndex={recipeIndex}
+                updateShoppingList={updateShoppingList}
+                deleteRecipeFromShoppingList={deleteRecipeFromShoppingList}
+              />
+            }
           })}
         </Grid>
       </Grid>
